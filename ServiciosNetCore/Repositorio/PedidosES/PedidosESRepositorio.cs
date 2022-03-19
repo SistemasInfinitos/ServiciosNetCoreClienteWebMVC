@@ -316,16 +316,37 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 //ok = await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC {sp} @id={id}") > 0;
                 ok = await _context.Database.ExecuteSqlRawAsync($"EXEC {sp} @id", param) > 0;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
             return await Task.Run(() => ok);
         }
 
-        public Task<bool> AgregarDetallePedido(DetallePedidosModel entidad)
+        public async Task<bool> AgregarDetallePedido(DetallePedidosModel entidad)
         {
-            throw new NotImplementedException();
+            bool ok = false;
+            try
+            {
+                DetallePedido nuevoDetalle = new DetallePedido
+                {
+                    encabezadoPedidosId = entidad.encabezadoPedidosId.Value,
+                    productoId = entidad.productoId,
+                    cantidad = entidad.cantidad,
+                    porcentajeIva = entidad.porcentajeIva,
+                    valorUnitario = entidad.valorUnitario,
+                    estado = true,
+                    fechaCreacion = DateTime.Now,
+                    fechaActualizacion = null
+                };
+                _context.DetallePedidos.Add(nuevoDetalle);
+                ok = await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            return await Task.Run(() => ok);
         }
     }
 }
