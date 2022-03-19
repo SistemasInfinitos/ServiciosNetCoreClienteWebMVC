@@ -195,7 +195,6 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     }).ToList();
                 }
 
-
                 return await Task.Run(() => datos);
             }
             catch (Exception ex)
