@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Server=SISTEMASINFINIT\SERVERDESARROLLO;Database=DesarrolladorSemiSenior;user=sa;Password=YoSoyJovenDeCristo*;trustServerCertificate=true;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir ModelsDB -ContextDir ModelsDB\Contexts -Context Context -UseDatabaseNames -Tables Usuarios, Personas -force
