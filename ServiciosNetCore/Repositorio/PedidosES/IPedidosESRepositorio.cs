@@ -51,6 +51,13 @@ namespace ServiciosNetCore.Repositorio.PedidosES
         Task<EncabezadoPedidosModel> GetPedido(string buscar, int? id);
 
         /// <summary>
+        /// obtiene la lista de productos de un pedido segun su id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<List<DetallePedidosModel>> GetListDetallePedido(int? id);
+
+        /// <summary>
         /// obtiene una lista para un DropDownList  segun el filtro, maximo 10 item por coincidencia o los primero 10,  top 10
         /// </summary>
         /// <param name="buscar"></param>

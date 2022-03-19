@@ -375,5 +375,39 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             }
             return await Task.Run(() => ok);
         }
+
+        public async Task<List<DetallePedidosModel>> GetListDetallePedido(int? id)
+        {
+            List<DetallePedidosModel> lisDetalle = new List<DetallePedidosModel>();
+            try
+            {
+                if (id>0)
+                {
+                    var dataDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).ToList();
+                    if (dataDetalle != null)
+                    {
+                        foreach (var item in dataDetalle)
+                        {
+                            lisDetalle.Add(new DetallePedidosModel
+                            {
+                                id = item.id,
+                                encabezadoPedidosId = item.encabezadoPedidosId,
+                                productoId = item.productoId,
+                                cantidad = item.cantidad ?? 0,
+                                porcentajeIva = item.porcentajeIva ?? 0,
+                                valorUnitario = item.valorUnitario ?? 0,
+                                fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
+                            });
+                        };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return await Task.Run(() => lisDetalle);
+        }
     }
 }
