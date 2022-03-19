@@ -9,7 +9,7 @@ namespace ServiciosNetCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductosController : ControllerBase
+    public class ServicioPedidosController : ControllerBase
     {
     }
 }
