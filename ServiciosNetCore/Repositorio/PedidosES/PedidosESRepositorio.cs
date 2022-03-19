@@ -238,11 +238,16 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             {
                 try
                 {
-                    var deleteDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).ToList();
                     var delete = _context.EncabezadoPedidos.Where(x => x.id == id).FirstOrDefault();
 
                     if (delete != null)
                     {
+                        var deleteDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).ToList();
+                        foreach (DetallePedido item in deleteDetalle)
+                        {
+                            _context.Entry(item).State = EntityState.Deleted;
+                            await _context.SaveChangesAsync();
+                        }
                         _context.Entry(delete).State = EntityState.Deleted;
                         ok = await _context.SaveChangesAsync() > 0;
                     }
