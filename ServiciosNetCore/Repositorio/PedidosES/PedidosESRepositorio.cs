@@ -153,9 +153,33 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 if (data != null)
                 {
                     entidad.id = data.id;
+                    entidad.usuarioId = data.usuarioId;
+                    entidad.clientePersonaId = data.clientePersonaId;
+                    entidad.valorNeto = data.valorNeto;
+                    entidad.valorIva = data.valorIva;
+                    entidad.valorTotal = data.valorTotal;
                     entidad.estado = true;
                     entidad.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     entidad.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
+
+                    var dataDetalle = _context.DetallePedidos.Where(x=>x.encabezadoPedidosId== data.id).ToList();
+                    if (dataDetalle!=null)
+                    {
+                        List<DetallePedidosModel> lisDetalle = new List<DetallePedidosModel>();
+                        foreach (var item in dataDetalle)
+                        {
+                            lisDetalle.Add(new DetallePedidosModel 
+                            { 
+                                id=item.id,
+                                encabezadoPedidosId=item.encabezadoPedidosId,
+                                productoId = item.productoId,
+                                cantidad = item.cantidad??0,
+                                porcentajeIva = item.porcentajeIva??0,
+                                valorUnitario = item.valorUnitario ?? 0,
+                                fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
+                            });
+                        };
+                    }
                 }
             }
             catch (Exception ex)
