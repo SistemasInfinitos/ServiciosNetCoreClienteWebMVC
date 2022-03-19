@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -11,6 +12,7 @@ using ServiciosNetCore.Repositorio.PedidosES;
 using ServiciosNetCore.Repositorio.ProductosES;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -298,9 +300,27 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             return await Task.Run(() => datos);
         }
 
-        public Task<bool> DeletePedidoDetalle(int id)
+        public async Task<bool> DeletePedidoDetalle(int id)
         {
-            throw new NotImplementedException();
+            bool ok = false;
+            try
+            {
+                //var deleteDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).FirstOrDefaultAsync();
+                //_context.Entry(deleteDetalle).State = EntityState.Deleted;
+                //ok = await _context.SaveChangesAsync() > 0;
+
+                string sp = "SpDeleteDetallePedido";
+                List<SqlParameter> parametros = new List<SqlParameter>();
+                parametros.Add(new SqlParameter() { ParameterName = "@id", Value = id, SqlDbType = SqlDbType.Int });
+                var param = parametros.ToArray();
+                //ok = await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC {sp} @id={id}") > 0;
+                ok = await _context.Database.ExecuteSqlRawAsync($"EXEC {sp} @id", param) > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return await Task.Run(() => ok);
         }
 
         public Task<bool> AgregarDetallePedido(DetallePedidosModel entidad)
