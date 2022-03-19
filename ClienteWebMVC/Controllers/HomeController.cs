@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClienteWebMVC.Configuration;
+using ClienteWebMVC.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ClienteWebMVC.Configuration;
-using ClienteWebMVC.Models;
 using System;
 using System.Diagnostics;
 using System.Net.Http;

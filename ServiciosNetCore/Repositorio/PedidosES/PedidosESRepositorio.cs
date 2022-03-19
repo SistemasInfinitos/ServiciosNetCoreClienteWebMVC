@@ -5,11 +5,9 @@ using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
 using ServiciosNetCore.ModelsAPI.DataTable;
 using ServiciosNetCore.ModelsAPI.Pedidos;
-using ServiciosNetCore.ModelsAPI.Productos;
 using ServiciosNetCore.ModelsDB;
 using ServiciosNetCore.ModelsDB.Contexts;
 using ServiciosNetCore.Repositorio.PedidosES;
-using ServiciosNetCore.Repositorio.ProductosES;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -91,22 +89,22 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         nuevoRegistro.fechaActualizacion = null;
 
                         _context.EncabezadoPedidos.Add(nuevoRegistro);
-                         await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
 
-                        if (entidad.detallePedidos!=null && entidad.detallePedidos.Count()>0)
+                        if (entidad.detallePedidos != null && entidad.detallePedidos.Count() > 0)
                         {
                             foreach (var item in entidad.detallePedidos)
                             {
                                 DetallePedido nuevoDetalle = new DetallePedido
                                 {
-                                    encabezadoPedidosId= nuevoRegistro.id,
+                                    encabezadoPedidosId = nuevoRegistro.id,
                                     productoId = item.productoId,
                                     cantidad = item.cantidad,
                                     porcentajeIva = item.porcentajeIva,
                                     valorUnitario = item.valorUnitario,
                                     estado = true,
                                     fechaCreacion = DateTime.Now,
-                                    fechaActualizacion= null
+                                    fechaActualizacion = null
                                 };
                                 _context.DetallePedidos.Add(nuevoDetalle);
                                 ok = await _context.SaveChangesAsync() > 0;
@@ -162,19 +160,19 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     entidad.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     entidad.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
 
-                    var dataDetalle = _context.DetallePedidos.Where(x=>x.encabezadoPedidosId== data.id).ToList();
-                    if (dataDetalle!=null)
+                    var dataDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == data.id).ToList();
+                    if (dataDetalle != null)
                     {
                         List<DetallePedidosModel> lisDetalle = new List<DetallePedidosModel>();
                         foreach (var item in dataDetalle)
                         {
-                            lisDetalle.Add(new DetallePedidosModel 
-                            { 
-                                id=item.id,
-                                encabezadoPedidosId=item.encabezadoPedidosId,
+                            lisDetalle.Add(new DetallePedidosModel
+                            {
+                                id = item.id,
+                                encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
-                                cantidad = item.cantidad??0,
-                                porcentajeIva = item.porcentajeIva??0,
+                                cantidad = item.cantidad ?? 0,
+                                porcentajeIva = item.porcentajeIva ?? 0,
                                 valorUnitario = item.valorUnitario ?? 0,
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
                             });
@@ -228,7 +226,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     dtParameters.length = datos.recordsFiltered;
                 }
                 string order = "asc";
-                if (dtParameters.order.Count >0)
+                if (dtParameters.order.Count > 0)
                 {
                     order = dtParameters.order?[0].dir;
                 }
@@ -352,7 +350,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             bool ok = false;
             try
             {
-                if (entidad.cantidad>0 && entidad.valorUnitario>0)
+                if (entidad.cantidad > 0 && entidad.valorUnitario > 0)
                 {
                     DetallePedido nuevoDetalle = new DetallePedido
                     {
@@ -381,7 +379,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             List<DetallePedidosModel> lisDetalle = new List<DetallePedidosModel>();
             try
             {
-                if (id>0)
+                if (id > 0)
                 {
                     var dataDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).ToList();
                     if (dataDetalle != null)

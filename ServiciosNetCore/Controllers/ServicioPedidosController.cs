@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -9,8 +8,6 @@ using ServiciosNetCore.ModelsDB.Contexts;
 using ServiciosNetCore.Repositorio.PedidosES;
 using ServiciosNetCore.Repositorio.ProcuctosES;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -46,8 +43,8 @@ namespace ServiciosNetCore.Controllers
                 data.mensaje = "Ups!. Algo salio mal!. Error interno. " + x.HResult;
                 return BadRequest(data);
             }
-        }       
-        
+        }
+
         [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> AgregarDetallePedido([FromBody] DetallePedidosModel entidad)
@@ -116,8 +113,8 @@ namespace ServiciosNetCore.Controllers
                 }
             }
             return BadRequest(data);
-        }        
-        
+        }
+
         [Route("[action]")]
         [HttpDelete]
         public async Task<IActionResult> DeletePedidoDetalle(int? id)
@@ -159,8 +156,8 @@ namespace ServiciosNetCore.Controllers
             var options = new JsonSerializerOptions { IncludeFields = true };
             var json = JsonSerializer.Serialize(pedido, options);
             return Ok(json);
-        }       
-        
+        }
+
         [Route("[action]", Name = "GetListDetallePedido")]
         [HttpGet]
         public async Task<IActionResult> GetListDetallePedido(int? id)

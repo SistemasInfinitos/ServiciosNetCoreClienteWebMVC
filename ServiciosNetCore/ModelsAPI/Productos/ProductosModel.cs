@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ServiciosNetCore.ModelsAPI.Productos
+﻿namespace ServiciosNetCore.ModelsAPI.Productos
 {
     public class ProductosModel
     {
@@ -14,5 +9,5 @@ namespace ServiciosNetCore.ModelsAPI.Productos
         public string fechaCreacion { get; set; }
         public string fechaActualizacion { get; set; }
 
-	}
+    }
 }

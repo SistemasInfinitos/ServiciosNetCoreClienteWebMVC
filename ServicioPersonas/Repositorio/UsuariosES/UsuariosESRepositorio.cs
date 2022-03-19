@@ -6,7 +6,6 @@ using ServicioPersonas.ModelsAPI.DataTable;
 using ServicioPersonas.ModelsAPI.Persona;
 using ServicioPersonas.ModelsDB;
 using ServicioPersonas.ModelsDB.Contexts;
-using ServicioPersonas.Repositorio.UsuariosES;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -174,7 +173,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     dtParameters.length = datos.recordsFiltered;
                 }
                 string order = "asc";
-                if (dtParameters.order.Count >0)
+                if (dtParameters.order.Count > 0)
                 {
                     order = dtParameters.order?[0].dir;
                 }
@@ -254,7 +253,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.nombreUsuario 
+                    text = x.nombreUsuario
                 }).ToList();
             }
             catch (Exception ex)

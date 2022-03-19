@@ -128,7 +128,7 @@ namespace ServicioPersonas.Repositorio.PersonasES
                     persona.estado = true;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
-                    persona.cliente = data.nombres +  " " + data.apellidos;
+                    persona.cliente = data.nombres + " " + data.apellidos;
                 }
             }
             catch (Exception ex)
@@ -178,7 +178,7 @@ namespace ServicioPersonas.Repositorio.PersonasES
                     dtParameters.length = datos.recordsFiltered;
                 }
                 string order = "asc";
-                if (dtParameters.order.Count >0)
+                if (dtParameters.order.Count > 0)
                 {
                     order = dtParameters.order?[0].dir;
                 }
@@ -261,7 +261,7 @@ namespace ServicioPersonas.Repositorio.PersonasES
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.nombres + " " + x.apellidos 
+                    text = x.nombres + " " + x.apellidos
                 }).ToList();
             }
             catch (Exception ex)

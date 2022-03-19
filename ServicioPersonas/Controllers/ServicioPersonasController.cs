@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServicioPersonas.Configuration;
 using ServicioPersonas.ModelsAPI.Comun;
@@ -9,8 +8,6 @@ using ServicioPersonas.ModelsAPI.Persona;
 using ServicioPersonas.ModelsDB.Contexts;
 using ServicioPersonas.Repositorio.PersonasES;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 

@@ -175,7 +175,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     dtParameters.length = datos.recordsFiltered;
                 }
                 string order = "asc";
-                if (dtParameters.order.Count >0)
+                if (dtParameters.order.Count > 0)
                 {
                     order = dtParameters.order?[0].dir;
                 }
@@ -257,7 +257,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.descripcion + " " + x.descripcion 
+                    text = x.descripcion + " " + x.descripcion
                 }).ToList();
             }
             catch (Exception ex)
