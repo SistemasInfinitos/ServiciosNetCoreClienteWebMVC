@@ -328,19 +328,22 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             bool ok = false;
             try
             {
-                DetallePedido nuevoDetalle = new DetallePedido
+                if (entidad.cantidad>0 && entidad.valorUnitario>0)
                 {
-                    encabezadoPedidosId = entidad.encabezadoPedidosId.Value,
-                    productoId = entidad.productoId,
-                    cantidad = entidad.cantidad,
-                    porcentajeIva = entidad.porcentajeIva,
-                    valorUnitario = entidad.valorUnitario,
-                    estado = true,
-                    fechaCreacion = DateTime.Now,
-                    fechaActualizacion = null
-                };
-                _context.DetallePedidos.Add(nuevoDetalle);
-                ok = await _context.SaveChangesAsync() > 0;
+                    DetallePedido nuevoDetalle = new DetallePedido
+                    {
+                        encabezadoPedidosId = entidad.encabezadoPedidosId.Value,
+                        productoId = entidad.productoId,
+                        cantidad = entidad.cantidad,
+                        porcentajeIva = entidad.porcentajeIva,
+                        valorUnitario = entidad.valorUnitario,
+                        estado = true,
+                        fechaCreacion = DateTime.Now,
+                        fechaActualizacion = null
+                    };
+                    _context.DetallePedidos.Add(nuevoDetalle);
+                    ok = await _context.SaveChangesAsync() > 0;
+                }
             }
             catch (Exception e)
             {
