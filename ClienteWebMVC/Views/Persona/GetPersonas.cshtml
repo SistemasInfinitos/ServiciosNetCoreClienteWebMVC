@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewData["Title"] = "Personas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mb-3" style="margin-top:57px;">
+
+    <div class="card-header">
+        <i class="fa fa-table"></i> @ViewData["Title"] &emsp;
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <br />
+            <div style="width:90%; margin:0 auto;">
+                <table id="tableDinamica" class="table table-striped table-bordered table-hover dt-responsive nowrap display compact" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Editar</th>
+                            <th style="text-align:center">NIU</th>
+                            <th style="text-align:center">Cliente</th>
+                            <th style="text-align:center">Tel-Cel</th>
+                            <th style="text-align:center">Correo</th>
+                            <th style="text-align:center">Rango Edad</th>
+                            <th style="text-align:center">Acción</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    DataTablePaginada = "";
+    var api = localStorage.getItem("api");
+    $(document).ready(function () {
+        GetPersonas();
+    });
+    function GetPersonas() {
+        $('#tableDinamica').find('tbody').empty();
+        //$('#tableDinamica').dataTable().fnClearTable();
+        $('#tableDinamica').dataTable().fnDestroy();
+        DataTablePaginada = "";
+
+        if ($.fn.DataTable.isDataTable("#tableDinamica")) {
+
+            $('#tableDinamica').datatable.fnClearTable();
+            $('#tableDinamica').datatable.fnDestroy();
+        }
+        DataTablePaginada = $('#tableDinamica').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "orderMulti": false,
+            "searching": false,
+            dom: "<''<'col-sm-4'><'col-sm-4 text-center'B><'col-sm-4'f>>t<'col-sm-4'li>p",
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            ajax: {
+                url: `${api}/api/Personas/ListPersonas`,
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'JSON',
+                cache: false,
+                traditional: true,
+                async: true,
+                data: function (datatParms)
+                {                    
+                    return JSON.stringify(datatParms);
+                },
+                header: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            },
+            "columns": [
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (o) {
+                        var boton = `<button type="button" class="btn btn-success btn-xs" onclick="Gestion('${o.id}')">
+                                        <i class="fa fa-pencil-square"></i>&nbsp;Editar&nbsp;&nbsp;
+                                    </button>`;
+                        return boton;
+                    }
+                },
+                { "data": "identificacion", "name": "identificacion", "autoWidth": true, className: "align-right" },
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (o) {
+                        var boton = ``;
+                        boton = `${o.primerNombre} ${o.segundoNombre} ${o.primerApellido} ${o.segundoNombre}`
+                        return boton;
+                    }
+                },
+                { "data": "telefono", "name": "telefono", className: "align-right" },
+                { "data": "correo", "name": "correo", className: "align-right" },
+                { "data": "edad", "name": "edad", className: "align-right" },
+                {
+                    "mData": null,
+                    "bSortable": false,
+                    "mRender": function (o) {
+                        var boton = ``;
+                        boton = `<button type="button" class="btn btn-warning btn-xs" onclick="BorrarPersona(${o.id})"><i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;</button>`
+                        return boton;
+                    }
+                }
+            ],
+            buttons: [
+            ],
+            "order": [[1, "desc"]]
+        });
+    }
+
+    function Gestion(id) {
+        if (id != "" && id != undefined && id != NaN) {
+            var url = '?' + $.param({ "id": id });
+            window.location.href = "/web/per/Gestion" + url;
+        }
+    };
+
+    function BorrarPersona(id) {
+
+        if (id >0) {
+            var parametro = '?' + $.param({ "id": id });
+            $.ajax({
+                url: `${api}/api/Personas/BorrarPersona${parametro}`,
+                type: 'DELETE',
+                success: function (response) {
+                    
+                    if (response.ok) {
+                        toastr.success(response.mensaje);
+                    } else {
+                        toastr.warning(response.mensaje);
+                    };
+                    GetPersonas();
+                },
+                error: function (jQXHR) {
+                    toastr.error('error, No pudimos procesar su Solicitud!');
+                }
+            });
+        }
+    };
+
+</script>
+
