@@ -42,15 +42,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
                     if (actualizarRegistro != null)
                     {
-                        actualizarRegistro.usuarioId = entidad.usuarioId;
+                        actualizarRegistro.usuarioId = entidad.usuarioId.Value;
                         actualizarRegistro.clientePersonaId = entidad.clientePersonaId;
                         actualizarRegistro.valorNeto = entidad.valorNeto;
                         actualizarRegistro.valorIva = entidad.valorIva;
                         actualizarRegistro.valorTotal = entidad.valorTotal;
-                        actualizarRegistro.estado = true;
-                        actualizarRegistro.fechaCreacion = DateTime.Now;
-                        actualizarRegistro.fechaActualizacion = null;
-
+                        actualizarRegistro.estado = entidad.estado.Value;
                         actualizarRegistro.fechaActualizacion = DateTime.Now;
 
                         _context.Entry(actualizarRegistro).State = EntityState.Modified;
@@ -82,7 +79,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (verificarExiste == null)
                     {
-                        nuevoRegistro.usuarioId = entidad.usuarioId;
+                        nuevoRegistro.usuarioId = entidad.usuarioId.Value;
                         nuevoRegistro.clientePersonaId = entidad.clientePersonaId;
                         nuevoRegistro.valorNeto = entidad.valorNeto;
                         nuevoRegistro.valorIva = entidad.valorIva;
@@ -92,7 +89,31 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         nuevoRegistro.fechaActualizacion = null;
 
                         _context.EncabezadoPedidos.Add(nuevoRegistro);
-                        ok = await _context.SaveChangesAsync() > 0;
+                         await _context.SaveChangesAsync();
+
+                        if (entidad.detallePedidos!=null && entidad.detallePedidos.Count()>0)
+                        {
+                            foreach (var item in entidad.detallePedidos)
+                            {
+                                DetallePedido nuevoDetalle = new DetallePedido
+                                {
+                                    encabezadoPedidosId= nuevoRegistro.id,
+                                    productoId = item.productoId,
+                                    cantidad = item.cantidad,
+                                    porcentajeIva = item.porcentajeIva,
+                                    valorUnitario = item.valorUnitario,
+                                    estado = true,
+                                    fechaCreacion = DateTime.Now,
+                                    fechaActualizacion= null
+                                };
+                                _context.DetallePedidos.Add(nuevoDetalle);
+                                ok = await _context.SaveChangesAsync() > 0;
+                            }
+                        }
+                        else
+                        {
+                            DbTran.Rollback();
+                        }
                     }
 
                     if (ok)
@@ -217,6 +238,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             {
                 try
                 {
+                    var deleteDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).ToList();
                     var delete = _context.EncabezadoPedidos.Where(x => x.id == id).FirstOrDefault();
 
                     if (delete != null)
@@ -269,6 +291,16 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 throw ex;
             }
             return await Task.Run(() => datos);
+        }
+
+        public Task<bool> DeletePedidoDetalle(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AgregarDetallePedido(DetallePedidosModel entidad)
+        {
+            throw new NotImplementedException();
         }
     }
 }

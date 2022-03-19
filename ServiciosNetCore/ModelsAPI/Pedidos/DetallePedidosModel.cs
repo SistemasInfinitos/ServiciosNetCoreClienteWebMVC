@@ -13,7 +13,7 @@ namespace ServiciosNetCore.ModelsAPI.Pedidos
         public decimal cantidad { get; set; }
         public decimal porcentajeIva { get; set; }
         public decimal valorUnitario { get; set; }
-        public bool estado { get; set; }
+        public bool? estado { get; set; }
         public string fechaCreacion { get; set; }
         public string fechaActualizacion { get; set; }
     }
