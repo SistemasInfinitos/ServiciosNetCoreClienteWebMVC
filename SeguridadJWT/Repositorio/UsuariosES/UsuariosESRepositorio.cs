@@ -3,17 +3,17 @@ using Microsoft.Extensions.Options;
 using SeguridadJWT.Configuration;
 using SeguridadJWT.ModelsAPI.Comun;
 using SeguridadJWT.ModelsAPI.DataTable;
-using SeguridadJWT.ModelsAPI.DataTable.Persona;
 using SeguridadJWT.ModelsAPI.Persona;
 using SeguridadJWT.ModelsDB;
 using SeguridadJWT.ModelsDB.Contexts;
+using SeguridadJWT.Repositorio.UsuariosES;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SeguridadJWT.Repositorio.PersonasES
+namespace SeguridadJWT.Repositorio.UsuariosES
 {
     public class UsuariosESRepositorio : IUsuariosESRepositorio
     {
@@ -29,19 +29,19 @@ namespace SeguridadJWT.Repositorio.PersonasES
         private readonly CultureInfo culture = new CultureInfo("is-IS");
         private readonly CultureInfo cultureFecha = new CultureInfo("en-US");
 
-        public async Task<bool> ActualizarPersona(PersonasModel entidad)
+        public async Task<bool> ActualizarUsuario(UsuariosModel entidad)
         {
             bool ok = false;
             using (var DbTran = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    Persona actualizarRegistro = _context.Personas.Where(x => x.id == entidad.id).FirstOrDefault();
+                    Usuario actualizarRegistro = _context.Usuarios.Where(x => x.id == entidad.id).FirstOrDefault();
 
                     if (actualizarRegistro != null)
                     {
-                        actualizarRegistro.nombres = entidad.nombres;
-                        actualizarRegistro.apellidos = entidad.apellidos;
+                        actualizarRegistro.nombreUsuario = entidad.nombreUsuario;
+                        actualizarRegistro.passwordHash = entidad.passwordHash;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
                         actualizarRegistro.fechaActualizacion = null;
@@ -65,7 +65,7 @@ namespace SeguridadJWT.Repositorio.PersonasES
             return await Task.Run(() => ok);
         }
 
-        public async Task<bool> CrearPersona(PersonasModel entidad)
+        public async Task<bool> CrearUsuario(UsuariosModel entidad)
         {
             bool ok = false;
 
@@ -73,17 +73,17 @@ namespace SeguridadJWT.Repositorio.PersonasES
             {
                 try
                 {
-                    var verificarExiste = _context.Personas.Where(x => x.nombres == entidad.nombres).FirstOrDefault();
-                    Persona nuevoRegistro = new Persona();
+                    var verificarExiste = _context.Usuarios.Where(x => x.nombreUsuario == entidad.nombreUsuario).FirstOrDefault();
+                    Usuario nuevoRegistro = new Usuario();
                     if (verificarExiste == null)
                     {
-                        nuevoRegistro.nombres = entidad.nombres;
-                        nuevoRegistro.apellidos = entidad.apellidos;
+                        nuevoRegistro.nombreUsuario = entidad.nombreUsuario;
+                        nuevoRegistro.passwordHash = entidad.passwordHash;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
 
-                        _context.Personas.Add(nuevoRegistro);
+                        _context.Usuarios.Add(nuevoRegistro);
                         ok = await _context.SaveChangesAsync() > 0;
                     }
 
@@ -100,35 +100,32 @@ namespace SeguridadJWT.Repositorio.PersonasES
             return await Task.Run(() => ok);
         }
 
-        public async Task<PersonasModel> GetPersona(string buscar, int? Id)
+        public async Task<UsuariosModel> GetUsuario(string buscar, int? Id)
         {
-            PersonasModel persona = new PersonasModel();
+            UsuariosModel persona = new UsuariosModel();
             try
             {
-                var predicado = PredicateBuilder.True<Persona>();
-                var predicado2 = PredicateBuilder.False<Persona>();
+                var predicado = PredicateBuilder.True<Usuario>();
+                var predicado2 = PredicateBuilder.False<Usuario>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(buscar))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombres.Contains(buscar));
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.apellidos.Contains(buscar));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombreUsuario.Contains(buscar));
                     predicado = predicado.And(predicado2);
                 }
                 if (Id != null)
                 {
                     predicado = predicado.And(x => x.id == Id);
                 }
-                var data = _context.Personas.Where(predicado).FirstOrDefault();
+                var data = _context.Usuarios.Where(predicado).FirstOrDefault();
                 if (data != null)
                 {
                     persona.id = data.id;
-                    persona.nombres = data.nombres;
-                    persona.apellidos = data.apellidos;
+                    persona.nombreUsuario = data.nombreUsuario;
                     persona.estado = true;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
-                    persona.cliente = data.nombres +  " " + data.apellidos;
                 }
             }
             catch (Exception ex)
@@ -138,11 +135,11 @@ namespace SeguridadJWT.Repositorio.PersonasES
             return await Task.Run(() => persona);
         }
 
-        public async Task<DataTableResponsePersona> GetPersonasDataTable(DataTableParameter dtParameters)
+        public async Task<DataTableResponseUsuario> GetUsuariosDataTable(DataTableParameter dtParameters)
         {
             try
             {
-                DataTableResponsePersona datos = new DataTableResponsePersona();
+                DataTableResponseUsuario datos = new DataTableResponseUsuario();
                 string search = dtParameters.search?.value;
                 search = search.Replace(" ", "");
                 List<string> sortcolumn2 = new List<string>();
@@ -158,18 +155,17 @@ namespace SeguridadJWT.Repositorio.PersonasES
                 }
                 string sortcolumn = dtParameters.columns[dtParameters.order[0].column].name;
 
-                var predicado = PredicateBuilder.True<Persona>();
-                var predicado2 = PredicateBuilder.False<Persona>();
+                var predicado = PredicateBuilder.True<Usuario>();
+                var predicado2 = PredicateBuilder.False<Usuario>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(dtParameters.search.value))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombres.Contains(dtParameters.search.value));
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.apellidos.Contains(dtParameters.search.value));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombreUsuario.Contains(dtParameters.search.value));
                     predicado = predicado.And(predicado2);
                 }
 
-                datos.recordsFiltered = _context.Personas.Where(predicado).ToList().Count();
+                datos.recordsFiltered = _context.Usuarios.Where(predicado).ToList().Count();
                 datos.recordsTotal = datos.recordsFiltered;
                 datos.draw = dtParameters.draw;
 
@@ -186,15 +182,14 @@ namespace SeguridadJWT.Repositorio.PersonasES
                 {
                     sortcolumn = "PrimerNombre";
                 }
-                List<Persona> datos2 = new List<Persona>();
+                List<Usuario> datos2 = new List<Usuario>();
                 if (datos.recordsFiltered > 0)
                 {
-                    datos2 = _context.Personas.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToList();
-                    datos.data = datos2.Select(x => new PersonasModel
+                    datos2 = _context.Usuarios.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToList();
+                    datos.data = datos2.Select(x => new UsuariosModel
                     {
                         id = x.id,
-                        nombres = x.nombres,
-                        apellidos = x.apellidos,
+                        nombreUsuario = x.nombreUsuario,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
@@ -209,14 +204,14 @@ namespace SeguridadJWT.Repositorio.PersonasES
             }
         }
 
-        public async Task<bool> DeletePersona(int id)
+        public async Task<bool> DeleteUsuario(int id)
         {
             bool ok = false;
             using (var DbTran = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    var delete = _context.Personas.Where(x => x.id == id).FirstOrDefault();
+                    var delete = _context.Usuarios.Where(x => x.id == id).FirstOrDefault();
 
                     if (delete != null)
                     {
@@ -236,19 +231,18 @@ namespace SeguridadJWT.Repositorio.PersonasES
             return await Task.Run(() => ok);
         }
 
-        public async Task<List<DropListModel>> GetPersonasDropList(string buscar, int? id)
+        public async Task<List<DropListModel>> GetUsuariosDropList(string buscar, int? id)
         {
             List<DropListModel> datos = new List<DropListModel>();
             try
             {
-                var predicado = PredicateBuilder.True<Persona>();
-                var predicado2 = PredicateBuilder.False<Persona>();
+                var predicado = PredicateBuilder.True<Usuario>();
+                var predicado2 = PredicateBuilder.False<Usuario>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(buscar))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombres.Contains(buscar));
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.apellidos.Contains(buscar));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombreUsuario.Contains(buscar));
                     predicado = predicado.And(predicado2);
                 }
                 if (id != null)
@@ -256,12 +250,12 @@ namespace SeguridadJWT.Repositorio.PersonasES
                     predicado = predicado.And(d => d.id == id);
                 }
 
-                var data = _context.Personas.Where(predicado).Take(10).ToList();
+                var data = _context.Usuarios.Where(predicado).Take(10).ToList();
 
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.nombres + " " + x.apellidos 
+                    text = x.nombreUsuario 
                 }).ToList();
             }
             catch (Exception ex)
