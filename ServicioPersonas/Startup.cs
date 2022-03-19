@@ -1,12 +1,15 @@
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ServicioPersonas.ModelsDB.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +29,18 @@ namespace ServicioPersonas
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string[] audience = Configuration["JwtConfig:Audience"].ToString().Split(",");
+            string connectionString = Configuration["JwtConfig:connectionString"];
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AudienciaPolicy", builder =>
+                {
+                    builder.WithOrigins(audience).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((host) => true).AllowCredentials();
+                });
+            });
+            services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
+            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -37,6 +51,7 @@ namespace ServicioPersonas
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AudienciaPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

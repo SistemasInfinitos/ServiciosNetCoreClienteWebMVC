@@ -46,6 +46,28 @@ namespace ServiciosNetCore.Controllers
                 data.mensaje = "Ups!. Algo salio mal!. Error interno. " + x.HResult;
                 return BadRequest(data);
             }
+        }       
+        
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> AgregarDetallePedido([FromBody] DetallePedidosModel entidad)
+        {
+            ResponseApp data = new ResponseApp()
+            {
+                mensaje = "Ups!. Tu Solicitud No Pudo ser Procesada",
+                ok = false
+            };
+            try
+            {
+                data.ok = await Task.Run(() => _repositoryPedido.AgregarDetallePedido(entidad));
+                data.mensaje = "Transaccion exitosa!";
+                return Ok(data);
+            }
+            catch (Exception x)
+            {
+                data.mensaje = "Ups!. Algo salio mal!. Error interno. " + x.HResult;
+                return BadRequest(data);
+            }
         }
 
         [Route("[action]")]
@@ -94,6 +116,32 @@ namespace ServiciosNetCore.Controllers
                 }
             }
             return BadRequest(data);
+        }        
+        
+        [Route("[action]")]
+        [HttpDelete]
+        public async Task<IActionResult> DeletePedidoDetalle(int? id)
+        {
+            ResponseApp data = new ResponseApp()
+            {
+                mensaje = "Ups!. Tu Solicitud No Pudo ser Procesada",
+                ok = false
+            };
+
+            if (id != null)
+            {
+                try
+                {
+                    data.ok = await Task.Run(() => _repositoryPedido.DeletePedidoDetalle(id.Value));
+                    data.mensaje = "Transaccion exitosa!";
+                    return Ok(data);
+                }
+                catch (Exception x)
+                {
+                    data.mensaje = "Ups!. Algo salio mal!. Error interno. " + x.HResult;
+                }
+            }
+            return BadRequest(data);
         }
 
         [Route("[action]", Name = "GetPedido")]
@@ -108,6 +156,16 @@ namespace ServiciosNetCore.Controllers
                 mensaje = "ok";
                 ok = true;
             }
+            var options = new JsonSerializerOptions { IncludeFields = true };
+            var json = JsonSerializer.Serialize(pedido, options);
+            return Ok(json);
+        }       
+        
+        [Route("[action]", Name = "GetListDetallePedido")]
+        [HttpGet]
+        public async Task<IActionResult> GetListDetallePedido(int? id)
+        {
+            var pedido = await Task.Run(() => _repositoryPedido.GetListDetallePedido(id));
             var options = new JsonSerializerOptions { IncludeFields = true };
             var json = JsonSerializer.Serialize(pedido, options);
             return Ok(json);
