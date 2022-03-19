@@ -9,28 +9,28 @@ namespace ServiciosNetCore.Repositorio.ProductosES
     public interface IProductosESRepositorio
     {
         /// <summary>
-        /// Borra una persona de la base de datos
+        /// Borra un producto de la base de datos
         /// </summary>
         /// <param name="entidad"></param>
         /// <returns></returns>
         Task<bool> DeleteProducto(int id);
 
         /// <summary>
-        /// Actualiza una persona existente en la base de datos
+        /// Actualiza un producto existente en la base de datos
         /// </summary>
         /// <param name="entidad"></param>
         /// <returns></returns>
         Task<bool> ActualizarProducto(ProductosModel entidad);
 
         /// <summary>
-        /// Crea una nueva persona en la base de datos
+        /// Crea una nuevo producto en la base de datos
         /// </summary>
         /// <param name="entidad"></param>
         /// <returns></returns>
         Task<bool> CrearProducto(ProductosModel entidad);
 
         /// <summary>
-        /// trae una persona segun si id de la base de datos
+        /// trae un producto segun su id de la base de datos
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -44,7 +44,7 @@ namespace ServiciosNetCore.Repositorio.ProductosES
         Task<List<DropListModel>> GetProductosDropList(string buscar, int? id);
 
         /// <summary>
-        /// Trae las personas de la base de datos,  segun el rango de paginado configurado
+        /// Trae las productos de la base de datos,  segun el rango de paginado configurado
         /// </summary>
         /// <returns></returns>
         Task<DataTableResponseProducto> GetProductosDataTable(DataTableParameter dtParameters);

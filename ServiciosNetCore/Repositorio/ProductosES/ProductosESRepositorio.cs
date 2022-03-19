@@ -3,14 +3,17 @@ using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
 using ServiciosNetCore.ModelsAPI.DataTable;
+using ServiciosNetCore.ModelsAPI.Productos;
+using ServiciosNetCore.ModelsDB;
 using ServiciosNetCore.ModelsDB.Contexts;
+using ServiciosNetCore.Repositorio.ProductosES;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ServiciosNetCore.Repositorio.PersonasES
+namespace ServiciosNetCore.Repositorio.ProcuctosES
 {
     public class ProductosESRepositorio : IProductosESRepositorio
     {
@@ -26,19 +29,19 @@ namespace ServiciosNetCore.Repositorio.PersonasES
         private readonly CultureInfo culture = new CultureInfo("is-IS");
         private readonly CultureInfo cultureFecha = new CultureInfo("en-US");
 
-        public async Task<bool> ActualizarPersona(PersonasModel entidad)
+        public async Task<bool> ActualizarProducto(ProductosModel entidad)
         {
             bool ok = false;
             using (var DbTran = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    Persona actualizarRegistro = _context.Personas.Where(x => x.id == entidad.id).FirstOrDefault();
+                    Producto actualizarRegistro = _context.Productos.Where(x => x.id == entidad.id).FirstOrDefault();
 
                     if (actualizarRegistro != null)
                     {
-                        actualizarRegistro.nombres = entidad.nombres;
-                        actualizarRegistro.apellidos = entidad.apellidos;
+                        actualizarRegistro.descripcion = entidad.descripcion;
+                        actualizarRegistro.valorUnitario = entidad.valorUnitario;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
                         actualizarRegistro.fechaActualizacion = null;
@@ -62,7 +65,7 @@ namespace ServiciosNetCore.Repositorio.PersonasES
             return await Task.Run(() => ok);
         }
 
-        public async Task<bool> CrearPersona(PersonasModel entidad)
+        public async Task<bool> CrearProducto(ProductosModel entidad)
         {
             bool ok = false;
 
@@ -70,17 +73,17 @@ namespace ServiciosNetCore.Repositorio.PersonasES
             {
                 try
                 {
-                    var verificarExiste = _context.Personas.Where(x => x.nombres == entidad.nombres).FirstOrDefault();
-                    Persona nuevoRegistro = new Persona();
+                    var verificarExiste = _context.Productos.Where(x => x.descripcion == entidad.descripcion).FirstOrDefault();
+                    Producto nuevoRegistro = new Producto();
                     if (verificarExiste == null)
                     {
-                        nuevoRegistro.nombres = entidad.nombres;
-                        nuevoRegistro.apellidos = entidad.apellidos;
+                        nuevoRegistro.descripcion = entidad.descripcion;
+                        nuevoRegistro.valorUnitario = entidad.valorUnitario;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
 
-                        _context.Personas.Add(nuevoRegistro);
+                        _context.Productos.Add(nuevoRegistro);
                         ok = await _context.SaveChangesAsync() > 0;
                     }
 
@@ -97,35 +100,33 @@ namespace ServiciosNetCore.Repositorio.PersonasES
             return await Task.Run(() => ok);
         }
 
-        public async Task<PersonasModel> GetPersona(string buscar, int? Id)
+        public async Task<ProductosModel> GetProducto(string buscar, int? Id)
         {
-            PersonasModel persona = new PersonasModel();
+            ProductosModel persona = new ProductosModel();
             try
             {
-                var predicado = PredicateBuilder.True<Persona>();
-                var predicado2 = PredicateBuilder.False<Persona>();
+                var predicado = PredicateBuilder.True<Producto>();
+                var predicado2 = PredicateBuilder.False<Producto>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(buscar))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombres.Contains(buscar));
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.apellidos.Contains(buscar));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.descripcion.Contains(buscar));
                     predicado = predicado.And(predicado2);
                 }
                 if (Id != null)
                 {
                     predicado = predicado.And(x => x.id == Id);
                 }
-                var data = _context.Personas.Where(predicado).FirstOrDefault();
+                var data = _context.Productos.Where(predicado).FirstOrDefault();
                 if (data != null)
                 {
                     persona.id = data.id;
-                    persona.nombres = data.nombres;
-                    persona.apellidos = data.apellidos;
+                    persona.descripcion = data.descripcion;
+                    persona.valorUnitario = data.valorUnitario;
                     persona.estado = true;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
-                    persona.cliente = data.nombres +  " " + data.apellidos;
                 }
             }
             catch (Exception ex)
@@ -135,11 +136,11 @@ namespace ServiciosNetCore.Repositorio.PersonasES
             return await Task.Run(() => persona);
         }
 
-        public async Task<DataTableResponsePersona> GetPersonasDataTable(DataTableParameter dtParameters)
+        public async Task<DataTableResponseProducto> GetProductosDataTable(DataTableParameter dtParameters)
         {
             try
             {
-                DataTableResponsePersona datos = new DataTableResponsePersona();
+                DataTableResponseProducto datos = new DataTableResponseProducto();
                 string search = dtParameters.search?.value;
                 search = search.Replace(" ", "");
                 List<string> sortcolumn2 = new List<string>();
@@ -155,18 +156,17 @@ namespace ServiciosNetCore.Repositorio.PersonasES
                 }
                 string sortcolumn = dtParameters.columns[dtParameters.order[0].column].name;
 
-                var predicado = PredicateBuilder.True<Persona>();
-                var predicado2 = PredicateBuilder.False<Persona>();
+                var predicado = PredicateBuilder.True<Producto>();
+                var predicado2 = PredicateBuilder.False<Producto>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(dtParameters.search.value))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombres.Contains(dtParameters.search.value));
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.apellidos.Contains(dtParameters.search.value));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.descripcion.Contains(dtParameters.search.value));
                     predicado = predicado.And(predicado2);
                 }
 
-                datos.recordsFiltered = _context.Personas.Where(predicado).ToList().Count();
+                datos.recordsFiltered = _context.Productos.Where(predicado).ToList().Count();
                 datos.recordsTotal = datos.recordsFiltered;
                 datos.draw = dtParameters.draw;
 
@@ -183,15 +183,15 @@ namespace ServiciosNetCore.Repositorio.PersonasES
                 {
                     sortcolumn = "PrimerNombre";
                 }
-                List<Persona> datos2 = new List<Persona>();
+                List<Producto> datos2 = new List<Producto>();
                 if (datos.recordsFiltered > 0)
                 {
-                    datos2 = _context.Personas.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToList();
-                    datos.data = datos2.Select(x => new PersonasModel
+                    datos2 = _context.Productos.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToList();
+                    datos.data = datos2.Select(x => new ProductosModel
                     {
                         id = x.id,
-                        nombres = x.nombres,
-                        apellidos = x.apellidos,
+                        descripcion = x.descripcion,
+                        valorUnitario = x.valorUnitario,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
@@ -206,14 +206,14 @@ namespace ServiciosNetCore.Repositorio.PersonasES
             }
         }
 
-        public async Task<bool> DeletePersona(int id)
+        public async Task<bool> DeleteProducto(int id)
         {
             bool ok = false;
             using (var DbTran = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    var delete = _context.Personas.Where(x => x.id == id).FirstOrDefault();
+                    var delete = _context.Productos.Where(x => x.id == id).FirstOrDefault();
 
                     if (delete != null)
                     {
@@ -233,19 +233,18 @@ namespace ServiciosNetCore.Repositorio.PersonasES
             return await Task.Run(() => ok);
         }
 
-        public async Task<List<DropListModel>> GetPersonasDropList(string buscar, int? id)
+        public async Task<List<DropListModel>> GetProductosDropList(string buscar, int? id)
         {
             List<DropListModel> datos = new List<DropListModel>();
             try
             {
-                var predicado = PredicateBuilder.True<Persona>();
-                var predicado2 = PredicateBuilder.False<Persona>();
+                var predicado = PredicateBuilder.True<Producto>();
+                var predicado2 = PredicateBuilder.False<Producto>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(buscar))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombres.Contains(buscar));
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.apellidos.Contains(buscar));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.descripcion.Contains(buscar));
                     predicado = predicado.And(predicado2);
                 }
                 if (id != null)
@@ -253,12 +252,12 @@ namespace ServiciosNetCore.Repositorio.PersonasES
                     predicado = predicado.And(d => d.id == id);
                 }
 
-                var data = _context.Personas.Where(predicado).Take(10).ToList();
+                var data = _context.Productos.Where(predicado).Take(10).ToList();
 
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.nombres + " " + x.apellidos 
+                    text = x.descripcion + " " + x.descripcion 
                 }).ToList();
             }
             catch (Exception ex)
