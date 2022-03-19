@@ -26,10 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="ModelsAPI\Comun\" />
-    <Folder Include="ModelsAPI\DataTable\" />
     <Folder Include="ModelsDB\Contexts\" />
-    <Folder Include="Repositorio\" />
   </ItemGroup>
 
 </Project>
