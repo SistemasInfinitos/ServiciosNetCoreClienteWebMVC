@@ -104,9 +104,18 @@
                         toastr.warning(response.mensaje);
                     }
                 },
-                error: function (data) {
-
-                   toastr.error("No pudimos completar tu solicitud!");
+                error: function (response) {
+                    debugger                  
+                    if (response.responseJSON != null && response.responseJSON.errors.nombreUsuario.length>0) {
+                        $(response.responseJSON.errors.nombreUsuario).each(function (i) {
+                            toastr.error(response.responseJSON.errors.nombreUsuario[i]," No pudimos completar tu solicitud! ");
+                        });
+                     }
+                    if (response.responseJSON != null && response.responseJSON.errors.passwordHash.length > 0) {
+                        $(response.responseJSON.errors.passwordHash).each(function (i) {
+                            toastr.error(response.responseJSON.errors.passwordHash[i], " No pudimos completar tu solicitud! ");
+                        });
+                    }
                 }
             });
         }
