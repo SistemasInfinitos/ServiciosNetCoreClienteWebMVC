@@ -165,7 +165,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
                 var predicado = PredicateBuilder.True<Producto>();
                 var predicado2 = PredicateBuilder.False<Producto>();
-                predicado = predicado.And(d => d.estado == true);
+                //predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(dtParameters.search.value))
                 {
