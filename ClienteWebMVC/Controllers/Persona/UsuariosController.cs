@@ -28,13 +28,13 @@ namespace ClienteWebMVC.Controllers.Persona
             var httpClient = new HttpClient();
             List<JwtConfiguracionAPI> api = new List<JwtConfiguracionAPI>();
             api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
-            PersonasModel model = new PersonasModel();
+            UsuariosModel model = new UsuariosModel();
             ViewBag.idString = "";
 
             if (!string.IsNullOrWhiteSpace(id))
             {
                 ViewBag.idString = id;
-                string endpoint = "api/ServicioPersonas/GetPersona";
+                string endpoint = "api/ServicioUsuario/GetUsuario";
                 string parmetro = id;
                 var apis = api.Where(x => x.servicio == "ServicioPersonas").FirstOrDefault();
                 string uri = apis.uri + "/" + endpoint + "?id=" + parmetro;
@@ -44,7 +44,7 @@ namespace ClienteWebMVC.Controllers.Persona
                     var response = await httpClient.GetAsync(uri);
                     if (response.IsSuccessStatusCode)
                     {
-                        model = JsonConvert.DeserializeObject<PersonasModel>(await response.Content.ReadAsStringAsync());
+                        model = JsonConvert.DeserializeObject<UsuariosModel>(await response.Content.ReadAsStringAsync());
                     }
                 }
                 catch (Exception X)
