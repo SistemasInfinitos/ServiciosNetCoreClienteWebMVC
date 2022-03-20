@@ -131,7 +131,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     persona.descripcion = data.descripcion;
                     persona.valorUnitario = data.valorUnitario.ToString("N2",culture);
                     persona.iva = data.iva.ToString("N2",culture);
-                    persona.estado = true;
+                    persona.estado = data.estado??false;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
                 }
