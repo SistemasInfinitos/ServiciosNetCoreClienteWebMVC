@@ -38,10 +38,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     Producto actualizarRegistro = _context.Productos.Where(x => x.id == entidad.id).FirstOrDefault();
                     var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+                    var convertirIva = decimal.TryParse(entidad.iva, NumberStyles.Number, culture, out decimal iva);
                     if (actualizarRegistro != null&& convertir)
                     {
                         actualizarRegistro.descripcion = entidad.descripcion;
                         actualizarRegistro.valorUnitario = valorUnitario;
+                        actualizarRegistro.iva = iva;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
                         actualizarRegistro.fechaActualizacion = null;
@@ -76,11 +78,13 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     var verificarExiste = _context.Productos.Where(x => x.descripcion == entidad.descripcion).FirstOrDefault();
                     Producto nuevoRegistro = new Producto();
                     var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+                    var convertirIva = decimal.TryParse(entidad.iva, NumberStyles.Number, culture, out decimal iva);
 
                     if (verificarExiste == null && convertir)
                     {
                         nuevoRegistro.descripcion = entidad.descripcion;
                         nuevoRegistro.valorUnitario = valorUnitario;
+                        nuevoRegistro.iva = iva;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
