@@ -57,10 +57,6 @@
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     var update = false;
     var id = '@ViewBag.idString';
-    var pais = "";
-    var departamento = "";
-    var idCiudad = "";
-    var edad = "";
 
     $(document).ready(function () {
         $(".collapse-inner").select2();
@@ -68,30 +64,21 @@
         if (id != "") {
             update = true;
         }
-        else {
-            DropListPais();
-        }
     });
 
     $("#btnCrear").click(function () {
-        idCiudad = $("#idCiudad").val();
+        //id = $("#id").val();
         
         var entidad = {
             id: parseInt(id),
-            primerNombre: $("#primerNombre").val(),
-            segundoNombre: $("#segundoNombre").val(),
-            primerApellido: $("#primerApellido").val(),
-            segundoApellido: $("#segundoApellido").val(),
-            identificacion: $("#identificacion").val(),
-            telefono: $("#telefono").val(),
-            correo: $("#correo").val(),
-            edad: parseInt($("#edad").val()),
-            idCiudad: parseInt(idCiudad)
+            nombres: $("#nombres").val(),
+            apellidos: $("#apellidos").val(),
+            estado: $("#estado").val(),
         }
         
         if (update == false) {
             $.ajax({
-                url: `${apiServicioPersonas}/api/Personas/CreatePersona`,
+                url: `${apiServicioPersonas}/api/ServicioPersonas/CreatePersona`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -198,202 +185,5 @@
             });
         }
     };
-
-    function DropListPais() {
-        $.ajax({
-            url: `${apiServicioPersonas}/api/Comun/GetDropListPaises`,
-            data: {},
-            method: 'get',
-            traditional: true,
-            async: true,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            headers: {
-                'Authorization': 'Bearer '
-                    + localStorage.getItem("accessToken")
-            },
-            success: function (data) {
-                $('#pais').empty();
-                if (data.length>0) {
-
-                    $('#pais').append($('<option>', {
-                        value: "",
-                        text: "Seleccione el Pais",
-                    }));
-
-                    $(data).each(function (i) {
-                        $('#pais').append($('<option>', {
-                            value: data[i].id,
-                            text: data[i].paisNombre,
-                        }));
-                    });
-
-                    if (pais != "" || data.length == 1) {
-                        $("#pais").val(data[0].id).trigger('change.select2');
-                        pais = data[0].id;
-                        DropListDepartamentos();
-                    }
-                } else {
-                    toastr.warning("No pudimos procesar su Solicitud!");
-                }
-            },
-            error: function (data) {
-                toastr.error("error!");
-            }
-        });
-    }
-
-    $("#pais").change(function ()
-    {
-        pais = $("#pais").val();
-        DropListDepartamentos()
-    });
-
-    $("#departamento").change(function ()
-    {
-        departamento = $("#departamento").val();
-        DropListCiudades()
-    });
-
-    function DropListDepartamentos() {
-
-        if (pais != "" && pais != undefined) {
-            $.ajax({
-                url: `${apiServicioPersonas}/api/Comun/GetDropListDepartamentos`,
-                data:
-                {
-                    buscar: "",
-                    idPais: pais
-                },
-                method: 'get',
-                traditional: true,
-                async: true,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                headers: {
-                    'Authorization': 'Bearer '
-                        + localStorage.getItem("accessToken")
-                },
-                success: function (data) {
-                    $('#departamento').empty();
-                    
-                    if (data.length>0) {
-                        $('#departamento').append($('<option>', {
-                            value: "",
-                            text: "Seleccione el Departamento",
-                        }));
-                        $(data).each(function (i) {
-                            $('#departamento').append($('<option>', {
-                                value: data[i].id,
-                                text: data[i].distritoDepartamento,
-                            }));
-                        });
-
-                        if (data.length ==1) {
-                            $("#departamento").val(data[0].id).trigger('change.select2');
-                            departamento = data[0].id;
-                            DropListCiudades();
-                        }
-                    } else {
-                        toastr.warning("No encontramos Departamentos para el pais Seleccionado!");
-                    }
-                },
-                error: function (data) {
-                    toastr.error("error!");
-                }
-            });
-        }
-    }
-
-    function DropListCiudades() {
-
-        if (departamento != "" && departamento != undefined) {
-            $.ajax({
-                url: `${apiServicioPersonas}/api/Comun/GetDropListCiudades`,
-                data:
-                {
-                    buscar: "",
-                    idDepartamento: departamento
-                },
-                method: 'get',
-                traditional: true,
-                async: true,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                headers: {
-                    'Authorization': 'Bearer '
-                        + localStorage.getItem("accessToken")
-                },
-                success: function (data) {
-                    $('#idCiudad').empty();
-
-                    $('#idCiudad').append($('<option>', {
-                        value: "",
-                        text: "Seleccione la Ciuda",
-                    }));
-                    if (data.length>0) {
-                        $(data).each(function (i) {
-
-                            $('#idCiudad').append($('<option>', {
-                                value: data[i].id,
-                                text: data[i].ciudadNombre,
-                            }));
-                        });
-                        if (data.length == 1) {
-                            $("#idCiudad").val(data[0].id).trigger('change.select2');
-                            idCiudad = data[0].id;
-                        }
-                    } else {
-                        toastr.warning("No econtramos Ciudades para el Departamento Seleccionado!");
-                    }
-                },
-                error: function (data) {
-                    toastr.error("error!");
-                }
-            });
-        }
-    }
-
-    function DropListEdades() {
-
-        $.ajax({
-            url: `${apiServicioPersonas}/api/Comun/GetDropListRangoEades`,
-            data: {},
-            method: 'get',
-            traditional: true,
-            async: true,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            headers: {
-                'Authorization': 'Bearer '
-                    + localStorage.getItem("accessToken")
-            },
-            success: function (data) {
-                $('#edad').empty();
-
-                $('#edad').append($('<option>', {
-                    value: "",
-                    text: "Seleccione un rango de Edad",
-                }));
-                if (data.ok) {
-                    $(data.listEdades).each(function (i) {
-                        $('#edad').append($('<option>', {
-                            value: data.listEdades[i].id,
-                            text: data.listEdades[i].rangoEdades,
-                        }));
-                    });
-                    if (data.listEdades.length == 1) {
-                        $("#edad").val(data.listEdades[0].id).trigger('change.select2');
-                        edad = data.listEdades[0].id;
-                    }
-                } else {
-                    toastr.warning(data.mensaje);
-                }
-            },
-            error: function (data) {
-                toastr.error("error!");
-            }
-        });
-    }
 
 </script>

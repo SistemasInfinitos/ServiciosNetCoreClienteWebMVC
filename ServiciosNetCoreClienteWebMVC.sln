@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClienteWebMVC", "ClienteWeb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiciosNetCore", "ServiciosNetCore\ServiciosNetCore.csproj", "{D63D587B-3A5E-4C43-B80E-950A20DA189E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicioPersonas", "ServicioPersonas\ServicioPersonas.csproj", "{8D704E05-0700-47E5-9B07-0E3DF4C59D6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicioPersonas", "ServicioPersonas\ServicioPersonas.csproj", "{8D704E05-0700-47E5-9B07-0E3DF4C59D6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
