@@ -1,4 +1,6 @@
-﻿namespace ServicioPersonas.ModelsAPI.Persona
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ServicioPersonas.ModelsAPI.Persona
 {
     public class UsuariosModel
     {
