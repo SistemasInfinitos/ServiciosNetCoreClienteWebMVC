@@ -27,11 +27,13 @@
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="descripcion"><span style="color:red">*</span>Descripción Producto</label>
-                        @Html.EditorFor(Model => Model.descripcion, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombres", @required = "required" } })
+                        @Html.EditorFor(Model => Model.descripcion, new { htmlAttributes = new { @class = "form-control", @placeholder = "Descripción Producto", @required = "required" } })
+                        @Html.ValidationMessageFor(Model => Model.descripcion)
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="valorUnitario">Valor Unitario</label>
-                        @Html.EditorFor(Model => Model.valorUnitario, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Apellidos", @required = "required" } })
+                        @Html.EditorFor(Model => Model.valorUnitario, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Valor Unitario", @required = "required" } })
+                        @Html.ValidationMessageFor(Model => Model.valorUnitario)
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:block">
                         <label class="col-form-label" for="estado">IVA Venta</label>
