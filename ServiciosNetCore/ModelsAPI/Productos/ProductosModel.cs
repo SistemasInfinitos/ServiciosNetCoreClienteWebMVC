@@ -1,4 +1,6 @@
-﻿namespace ServiciosNetCore.ModelsAPI.Productos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ServiciosNetCore.ModelsAPI.Productos
 {
     public class ProductosModel
     {
