@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClienteWebMVC.Controllers.Pedido
 {
+    [Route("web/ped")]
     public class PedidosController : Controller
     {
         public IActionResult Index()

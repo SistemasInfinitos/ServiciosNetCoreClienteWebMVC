@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ClienteWebMVC.Controllers.Producto
 {
+    [Route("web/pro")]
     public class ProductosController : Controller
     {
         private readonly JwtConfiguracion _jwtConfig;

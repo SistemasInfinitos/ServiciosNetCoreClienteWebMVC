@@ -1,8 +1,173 @@
-﻿
+﻿@model ClienteWebMVC.Models.Producto.ProductosModel
 @{
     ViewData["Title"] = "Gestion";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Gestion</h1>
+<nav class="navbar navbar-expand-sm navbar-light bg-light" style="margin-top:67px;">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Clientes</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+<div class="card o-hidden border-0 shadow-lg my-n2">
+    <div class="tab-content">
+        <br />
+        @* Persona *@
+        <div class="tab-pane active" id="home1">
+            <form class="user" style="margin:2%">
+                <div class="form-group row">
+
+                    <div class="col-sm-3 mb-3 mb-sm-3" hidden>
+                        @Html.Hidden("id")
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-3">
+                        <label class="col-form-label" for="descripcion"><span style="color:red">*</span>Descripción Producto</label>
+                        @Html.EditorFor(Model => Model.descripcion, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombres", @required = "required" } })
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-3">
+                        <label class="col-form-label" for="valorUnitario">Valor Unitario</label>
+                        @Html.EditorFor(Model => Model.valorUnitario, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Apellidos", @required = "required" } })
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:block">
+                        <label class="col-form-label" for="estado">IVA Venta</label>
+                        <input class="form-control" value="19" readonly placeholder="un producto debe definir si aplica iva pero depende de las reglas de negocio"/>
+                        @*@Html.CheckBoxFor(Model => Model.iva, new { @class = "form-control check", @checked = Model.estado })*@
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
+                        <label class="col-form-label" for="estado">Estado</label>
+                        @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-3">
+                        <label class="col-form-label" for="btnCrear">.</label>
+                        <button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>
+                        <a class="fa fa-reply" asp-action="GetPersonas">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
+    var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
+    var update = false;
+    var id = '@ViewBag.idString';
+
+    $(document).ready(function () {
+        $(".collapse-inner").select2();
+
+        if (id != "") {
+            update = true;
+            $(".estado").show();
+        } else {
+            $(".estado").hide();
+        }
+    });
+
+    $("#btnCrear").click(function () {
+        //id = $("#id").val();
+
+        var entidad = {
+            id: parseInt(id),
+            descripcion: $("#descripcion").val(),
+            valorUnitario: $("#valorUnitario").val(),
+            estado: $("#estado").prop("checked"),
+        }
+
+        if (update == false) {
+            $.ajax({
+                url: `${apiServicioPersonas}/api/ServicioPersonas/CreatePersona`,
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'JSON',
+                cache: false,
+                traditional: true,
+                async: true,
+                data: JSON.stringify(entidad),
+                header: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (response) {
+
+                    if (response.ok) {
+                        toastr.success(response.mensaje);
+                    } else {
+                        toastr.warning(response.mensaje);
+                    }
+                },
+                error: function (data) {
+
+                   toastr.error("No pudimos completar tu solicitud!");
+                }
+            });
+        }
+        else if (id != "" && id != undefined && id != NaN) {
+            $.ajax({
+                url: `${apiServicioPersonas}/api/ServicioPersonas/ActualizarPersona`,
+                type: 'PUT',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'JSON',
+                cache: false,
+                traditional: true,
+                async: true,
+                data: JSON.stringify(entidad),
+                header: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (ok) {
+
+                    if (ok) {
+                        toastr.success("success");
+                    } else {
+                        toastr.warning(ok.mensaje);
+                    }
+                },
+                error: function (data) {
+                    toastr.error("No pudimos completar tu solicitud!");
+                }
+            });
+        }
+        else {
+            toastr.warning("selecciona una accion!");
+        }
+    });
+
+
+    var numero_miles = "";
+
+    function formatNumber(n) {
+        n = String(n).replace(/\D/g, "");
+        return n === '' ? n : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function miles(id) {
+        numero_miles = formatNumber($('#' + id + '').val());
+        $('#' + id + '').val(numero_miles);
+    }
+
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + '.' + '$2');
+        }
+        return x1 + x2;
+    }
+
+    function quitCommas(nStr) {
+        nStr.toString();
+        var s = nStr.replace(/\./g, "");
+        return s;
+    }
+</script>
 
