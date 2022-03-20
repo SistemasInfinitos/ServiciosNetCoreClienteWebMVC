@@ -37,8 +37,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 try
                 {
                     Producto actualizarRegistro = _context.Productos.Where(x => x.id == entidad.id).FirstOrDefault();
-                    var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, cultureFecha, out decimal valorUnitario);
-
+                    var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
                     if (actualizarRegistro != null&& convertir)
                     {
                         actualizarRegistro.descripcion = entidad.descripcion;
