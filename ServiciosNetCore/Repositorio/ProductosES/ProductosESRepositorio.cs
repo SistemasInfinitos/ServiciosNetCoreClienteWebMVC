@@ -76,7 +76,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     var verificarExiste = _context.Productos.Where(x => x.descripcion == entidad.descripcion).FirstOrDefault();
                     Producto nuevoRegistro = new Producto();
-                    var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, cultureFecha, out decimal valorUnitario);
+                    var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
 
                     if (verificarExiste == null && convertir)
                     {
