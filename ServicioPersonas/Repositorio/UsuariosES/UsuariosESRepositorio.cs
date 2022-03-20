@@ -40,7 +40,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     if (actualizarRegistro != null)
                     {
                         actualizarRegistro.nombreUsuario = entidad.nombreUsuario;
-                        actualizarRegistro.passwordHash = entidad.passwordHash;
+                        actualizarRegistro.passwordHash = entidad.passwordHash; // requiere encriptacion -- no lo encripto porque es una prueba
                         actualizarRegistro.personaId = entidad.personaId;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
@@ -78,7 +78,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     if (verificarExiste == null)
                     {
                         nuevoRegistro.nombreUsuario = entidad.nombreUsuario;
-                        nuevoRegistro.passwordHash = entidad.passwordHash;
+                        nuevoRegistro.passwordHash = entidad.passwordHash;// requiere encriptacion -- no lo encripto porque es una prueba
                         nuevoRegistro.personaId = entidad.personaId;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
@@ -195,7 +195,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                         personaId=x.personaId,
-                        persona= x.persona!=null?x.persona.nombres +" "+ x.persona.apellidos:""
+                        //persona= x.persona!=null?x.persona.nombres +" "+ x.persona.apellidos:"" esto deberia tener una vista para traer todo los datos y por rendimiento
                     }).ToList();
                 }
 
