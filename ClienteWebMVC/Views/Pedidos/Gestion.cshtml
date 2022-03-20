@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Productos</a>
+                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Pedido</a>
             </li>
 
         </ul>
@@ -34,13 +34,38 @@
                         <label class="col-form-label" for="usuarioId">Usuario</label>
                         @Html.Editor("usuarioId", new { htmlAttributes = new { @class = "form-control", @placeholder = "Usuario Actual", @readonly = "readonly" } })
                     </div>
-
                     <div class="col-sm-3 mb-3 mb-lg-3 estado" style="display:none">
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
-                    <div class="card col-sm-12 mb-12 mb-lg-12" @*style="margin-top:57px;"*@>
-
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="col-sm-12 mb-12 mb-lg-12 row">
+                                    <div class="col-sm-3 mb-3 mb-lg-3 row">
+                                        <select id="productoId" name="productoId" class="form-control form-select js-example-responsive" style = "width: 100%;">
+                                            <option selected>Choose...</option>
+                                        </select>
+                                    </div>&nbsp;
+                                    <div class="col-sm-3 mb-3 mb-lg-3 row">
+                                        <input id="porcentajeIva" name="porcentajeIva" type="text" class="form-control" placeholder="Iva" readonly />
+                                    </div>&nbsp;
+                                    <div class="col-sm-3 mb-3 mb-lg-3 row">
+                                        <input id="valorUnitario" name="valorUnitario" type="text" class="form-control" placeholder="Valor Unitatio" />
+                                    </div>
+                                    <div class="col-sm-3 mb-3 mb-lg-3">
+                                        <div class="input-group">
+                                            <input id="cantidad" type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad">
+                                            <button class="btn btn-sm btn-outline-secondary bg-danger" type="button" id="Limpiar">Agregar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="card">
                         <div class="card-body col-sm-12 mb-12 mb-lg-12">
                             <div class="container">
                                 <br />
@@ -174,6 +199,32 @@
     $('#clientePersonaId').select2({
         ajax: {
             url: `${apiServicioPersonas}/api/ServicioPersonas/GetPersonasDropList`,
+            cache: false,
+            tags: "true",
+            placeholder: "Select an option",
+            allowClear: true,
+            width: 'resolve',
+            data: function (params) {
+                var query = {
+                    buscar: params.term,
+                    page: params.page || 1
+                }
+                return query;
+            },
+            processResults: function (data, params) {
+                return {
+                    "results": data,
+                    "pagination": {
+                        "more": false
+                    }
+                }
+            }
+        }
+    });
+
+    $('#productoId').select2({
+        ajax: {
+            url: `${apiServiciosNetCore}/api/ServicioProductos/GetProductoDropList`,
             cache: false,
             tags: "true",
             placeholder: "Select an option",
