@@ -27,32 +27,57 @@
                         @Html.Hidden("id")
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
-                        <label class="col-form-label" for="estado">Persona</label>
-                        @Html.DropDownList("personaId", null, "Buscar Persona", htmlAttributes: new { @class = "js-example-responsive form-control", @required = "required", @style = "width: 100%;" })
+                        <label class="col-form-label" for="clientePersonaId">Cliente</label>
+                        @Html.DropDownList("clientePersonaId", null, "Buscar Persona", htmlAttributes: new { @class = "js-example-responsive form-control", @required = "required", @style = "width: 100%;" })
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
-                        <label class="col-form-label" for="descripcion"><span style="color:red">*</span>Descripción Producto</label>
-                        @Html.EditorFor(Model => Model.usuarioId, new { htmlAttributes = new { @class = "form-control", @placeholder = "Descripción Producto", @required = "required" } })
-                        @Html.ValidationMessageFor(Model => Model.descripcion)
+                        <label class="col-form-label" for="usuarioId">Usuario</label>
+                        @Html.Editor("usuarioId", new { htmlAttributes = new { @class = "form-control", @placeholder = "Usuario Actual", @readonly = "readonly" } })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-lg-3">
-                        <label class="col-form-label" for="valorUnitario">Valor Unitario</label>
-                        @Html.EditorFor(Model => Model.valorUnitario, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Valor Unitario", @required = "required" } })
-                        @Html.ValidationMessageFor(Model => Model.valorUnitario)
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-lg-3 estado" style="display:block">
-                        @*el iva deberia ser configurable ya que exiten varios poscentajes dependiendo del producto o modelo de negocio*@
-                        <label class="col-form-label" for="estado">IVA Venta</label>
-                        @Html.EditorFor(Model => Model.iva, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Pocentaje Iva", @required = "required" } })
-                    </div>
+
                     <div class="col-sm-3 mb-3 mb-lg-3 estado" style="display:none">
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
+                    <div class="card col-sm-12 mb-12 mb-lg-12" @*style="margin-top:57px;"*@>
+
+                        <div class="card-body col-sm-12 mb-12 mb-lg-12">
+                            <div class="container">
+                                <br />
+                                <div style="width:99%; margin:0 auto;">
+                                    <table id="tableDinamica" class="table table-striped table-bordered table-hover dt-responsive nowrap display compact" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">Editar</th>
+                                                <th style="text-align:left">Id Codigo</th>
+                                                <th style="text-align:left">Producto</th>
+                                                <th style="text-align:right">Valor Unitario</th>
+                                                <th style="text-align:right">% Descuento</th>
+                                                <th style="text-align:right">Gravado</th>
+                                                <th style="text-align:right">% Iva</th>
+                                                <th style="text-align:right">Sub-Total</th>
+                                                <th style="text-align:center">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th style="text-align:center" colspan="3">Totales</th>
+                                                <th style="text-align:right">Total Bruto</th>
+                                                <th style="text-align:right">Total Descuento</th>
+                                                <th style="text-align:right">Total Gravado</th>
+                                                <th style="text-align:right">Total Iva</th>
+                                                <th style="text-align:right" colspan="2">Total</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
                         <label class="col-form-label" for="btnCrear">.</label>
                         <button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>
-                        <a class="fa fa-reply" asp-action="GetProductos">Back to List</a>
+                        <a class="fa fa-reply" asp-action="GetPedidos">Back to List</a>
                     </div>
                 </div>
             </form>
