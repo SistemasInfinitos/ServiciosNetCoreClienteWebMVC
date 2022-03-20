@@ -37,11 +37,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 try
                 {
                     Producto actualizarRegistro = _context.Productos.Where(x => x.id == entidad.id).FirstOrDefault();
+                    var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, cultureFecha, out decimal valorUnitario);
 
-                    if (actualizarRegistro != null)
+                    if (actualizarRegistro != null&& convertir)
                     {
                         actualizarRegistro.descripcion = entidad.descripcion;
-                        actualizarRegistro.valorUnitario = entidad.valorUnitario;
+                        actualizarRegistro.valorUnitario = valorUnitario;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
                         actualizarRegistro.fechaActualizacion = null;
@@ -75,10 +76,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     var verificarExiste = _context.Productos.Where(x => x.descripcion == entidad.descripcion).FirstOrDefault();
                     Producto nuevoRegistro = new Producto();
-                    if (verificarExiste == null)
+                    var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, cultureFecha, out decimal valorUnitario);
+
+                    if (verificarExiste == null && convertir)
                     {
                         nuevoRegistro.descripcion = entidad.descripcion;
-                        nuevoRegistro.valorUnitario = entidad.valorUnitario;
+                        nuevoRegistro.valorUnitario = valorUnitario;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
@@ -123,7 +126,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     persona.id = data.id;
                     persona.descripcion = data.descripcion;
-                    persona.valorUnitario = data.valorUnitario;
+                    persona.valorUnitario = data.valorUnitario.ToString("N2",culture);
                     persona.estado = true;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
@@ -191,7 +194,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     {
                         id = x.id,
                         descripcion = x.descripcion,
-                        valorUnitario = x.valorUnitario,
+                        valorUnitario = x.valorUnitario.ToString("N2",culture),
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
