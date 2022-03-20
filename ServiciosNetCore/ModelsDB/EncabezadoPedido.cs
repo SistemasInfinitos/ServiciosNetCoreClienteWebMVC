@@ -18,7 +18,7 @@ namespace ServiciosNetCore.ModelsDB
         public decimal valorNeto { get; set; }
         public decimal valorIva { get; set; }
         public decimal valorTotal { get; set; }
-        public bool estado { get; set; }
+        public bool? estado { get; set; }
         public DateTime fechaCreacion { get; set; }
         public DateTime? fechaActualizacion { get; set; }
 

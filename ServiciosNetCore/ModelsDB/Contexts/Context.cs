@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using ServiciosNetCore.ModelsDB;
 
 #nullable disable
 
@@ -36,6 +39,10 @@ namespace ServiciosNetCore.ModelsDB.Contexts
             {
                 entity.Property(e => e.cantidad).HasColumnType("decimal(18, 4)");
 
+                entity.Property(e => e.estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.fechaActualizacion).HasColumnType("datetime");
 
                 entity.Property(e => e.fechaCreacion)
@@ -61,6 +68,10 @@ namespace ServiciosNetCore.ModelsDB.Contexts
 
             modelBuilder.Entity<EncabezadoPedido>(entity =>
             {
+                entity.Property(e => e.estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.fechaActualizacion).HasColumnType("datetime");
 
                 entity.Property(e => e.fechaCreacion)
@@ -80,6 +91,10 @@ namespace ServiciosNetCore.ModelsDB.Contexts
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.fechaActualizacion).HasColumnType("datetime");
 

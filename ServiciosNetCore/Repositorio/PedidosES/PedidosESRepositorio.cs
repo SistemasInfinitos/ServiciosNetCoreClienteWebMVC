@@ -171,9 +171,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
-                                cantidad = item.cantidad ?? 0,
-                                porcentajeIva = item.porcentajeIva ?? 0,
-                                valorUnitario = item.valorUnitario ?? 0,
+                                cantidad = item.cantidad,
+                                porcentajeIva = item.porcentajeIva,
+                                valorUnitario = item.valorUnitario,
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
                             });
                         };
@@ -391,9 +391,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
-                                cantidad = item.cantidad ?? 0,
-                                porcentajeIva = item.porcentajeIva ?? 0,
-                                valorUnitario = item.valorUnitario ?? 0,
+                                cantidad = item.cantidad,
+                                porcentajeIva = item.porcentajeIva,
+                                valorUnitario = item.valorUnitario,
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
                             });
                         };
