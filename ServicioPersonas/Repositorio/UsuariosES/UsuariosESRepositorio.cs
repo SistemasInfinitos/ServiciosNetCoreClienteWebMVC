@@ -123,6 +123,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                 {
                     persona.id = data.id;
                     persona.nombreUsuario = data.nombreUsuario;
+                    persona.personaId = data.personaId;
                     persona.estado = true;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
