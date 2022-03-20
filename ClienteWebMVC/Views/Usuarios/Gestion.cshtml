@@ -105,15 +105,20 @@
                     }
                 },
                 error: function (response) {
-                    debugger                  
-                    if (response.responseJSON != null && response.responseJSON.errors.nombreUsuario.length>0) {
+                    debugger
+                    if (response.responseJSON != null && response.responseJSON.errors!=null && response.responseJSON.errors.nombreUsuario != null && response.responseJSON.errors.nombreUsuario.length > 0) {
                         $(response.responseJSON.errors.nombreUsuario).each(function (i) {
-                            toastr.error(response.responseJSON.errors.nombreUsuario[i]," No pudimos completar tu solicitud! ");
+                            toastr.error(response.responseJSON.errors.nombreUsuario[i], response.responseJSON.title);
                         });
                      }
-                    if (response.responseJSON != null && response.responseJSON.errors.passwordHash.length > 0) {
+                    if (response.responseJSON != null && response.responseJSON.errors != null && response.responseJSON.errors.passwordHash != null  && response.responseJSON.errors.passwordHash.length > 0) {
                         $(response.responseJSON.errors.passwordHash).each(function (i) {
-                            toastr.error(response.responseJSON.errors.passwordHash[i], " No pudimos completar tu solicitud! ");
+                            toastr.error(response.responseJSON.errors.passwordHash[i], response.responseJSON.title);
+                        });
+                    }
+                    if (response.responseJSON != null && response.responseJSON.errors != null && response.responseJSON.errors.personaId != null && response.responseJSON.errors.personaId.length > 0) {
+                        $(response.responseJSON.errors.personaId).each(function (i) {
+                            toastr.error(response.responseJSON.errors.personaId[i], response.responseJSON.title);
                         });
                     }
                 }
