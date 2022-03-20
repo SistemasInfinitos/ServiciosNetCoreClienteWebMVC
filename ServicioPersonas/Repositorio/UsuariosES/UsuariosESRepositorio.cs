@@ -41,6 +41,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     {
                         actualizarRegistro.nombreUsuario = entidad.nombreUsuario;
                         actualizarRegistro.passwordHash = entidad.passwordHash;
+                        actualizarRegistro.personaId = entidad.personaId;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
                         actualizarRegistro.fechaActualizacion = null;
