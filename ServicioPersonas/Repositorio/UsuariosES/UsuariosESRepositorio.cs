@@ -78,6 +78,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     {
                         nuevoRegistro.nombreUsuario = entidad.nombreUsuario;
                         nuevoRegistro.passwordHash = entidad.passwordHash;
+                        nuevoRegistro.personaId = entidad.personaId;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
@@ -192,7 +193,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                         personaId=x.personaId,
-                        persona= x.persona.nombres +" "+ x.persona.apellidos
+                        persona= x.persona!=null?x.persona.nombres +" "+ x.persona.apellidos:""
                     }).ToList();
                 }
 
