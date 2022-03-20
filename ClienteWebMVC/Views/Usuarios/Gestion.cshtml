@@ -1,13 +1,11 @@
-﻿@model ClienteWebMVC.Models.Persona.PersonasModel
-
+﻿@model ClienteWebMVC.Models.Persona.UsuariosModel
 @{
     ViewData["Title"] = "Gestion";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
+        <a asp-action="Create">Create New</a>
+    </p>*@
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light" style="margin-top:67px;">
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -32,15 +30,19 @@
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="nombres"><span style="color:red">*</span>Nombres</label>
-                        @Html.EditorFor(Model => Model.nombres, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombres", @required = "required" } })
+                        @Html.EditorFor(Model => Model.nombreUsuario, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombres", @required = "required" } })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="apellidos">Apellidos</label>
-                        @Html.EditorFor(Model => Model.apellidos, new { htmlAttributes = new { @class = "form-control", @placeholder = "Apellidos", @required = "required" } })
+                        @Html.EditorFor(Model => Model.passwordHash, new { htmlAttributes = new { @class = "form-control", @placeholder = "Apellidos", @required = "required" } })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
+                        <label class="col-form-label" for="estado">Estado</label>
+                        @Html.DropDownList("personaId", null, "Seleccione Persona", htmlAttributes: new { @class = "form-control collapse-inner", @required = "required" })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="btnCrear">.</label>
@@ -60,7 +62,7 @@
 
     $(document).ready(function () {
         $(".collapse-inner").select2();
-        
+
         if (id != "") {
             update = true;
             $(".estado").show();
@@ -71,14 +73,14 @@
 
     $("#btnCrear").click(function () {
         //id = $("#id").val();
-        
+
         var entidad = {
             id: parseInt(id),
             nombres: $("#nombres").val(),
             apellidos: $("#apellidos").val(),
             estado: $("#estado").prop("checked"),
         }
-        
+        debugger
         if (update == false) {
             $.ajax({
                 url: `${apiServicioPersonas}/api/ServicioPersonas/CreatePersona`,
@@ -94,7 +96,7 @@
                     'Content-Type': 'application/json'
                 },
                 success: function (response) {
-                    
+
                     if (response.ok) {
                         toastr.success(response.mensaje);
                     } else {
@@ -102,7 +104,7 @@
                     }
                 },
                 error: function (data) {
-                    
+
                    toastr.error("No pudimos completar tu solicitud!");
                 }
             });
@@ -140,3 +142,4 @@
     });
 
 </script>
+

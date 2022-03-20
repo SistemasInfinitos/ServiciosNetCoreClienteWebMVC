@@ -1,6 +1,8 @@
 ﻿using ClienteWebMVC.Configuration;
+using ClienteWebMVC.Models.Comun;
 using ClienteWebMVC.Models.Persona;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -29,14 +31,16 @@ namespace ClienteWebMVC.Controllers.Persona
             List<JwtConfiguracionAPI> api = new List<JwtConfiguracionAPI>();
             api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
             UsuariosModel model = new UsuariosModel();
+            List<DropListModel> modelPerona = new List<DropListModel>();
+
             ViewBag.idString = "";
+            var apis = api.Where(x => x.servicio == "ServicioPersonas").FirstOrDefault();
 
             if (!string.IsNullOrWhiteSpace(id))
             {
                 ViewBag.idString = id;
                 string endpoint = "api/ServicioUsuario/GetUsuario";
                 string parmetro = id;
-                var apis = api.Where(x => x.servicio == "ServicioPersonas").FirstOrDefault();
                 string uri = apis.uri + "/" + endpoint + "?id=" + parmetro;
 
                 try
@@ -55,13 +59,25 @@ namespace ClienteWebMVC.Controllers.Persona
             }
             //si entra en el anterio bloque SelectList seleccionara el actual
             #region DropDownList
+            #region Personas
+            ViewBag.personaId = new SelectList(modelPerona, "id", "rangoEdades");
+            int param = model.personaId.Value;
+            //se estable la parsona para qu no traiga mas de uno ya que hay un buscar ajax dinamico
+            string uriCliente = apis.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
+            var cliente = await httpClient.GetAsync(uriCliente);
+            if (cliente.IsSuccessStatusCode)
+            {
+                modelPerona = JsonConvert.DeserializeObject<List<DropListModel>>(await cliente.Content.ReadAsStringAsync());
+                ViewBag.personaId = new SelectList(modelPerona, "id", "text", model.personaId);
+            }
+            #endregion
             #endregion
             return View(model);
         }
 
         [Route("[action]")]
         [HttpGet]
-        public ActionResult GetPersonas()
+        public ActionResult GetUsuarios()
         {
             return View();
         }
