@@ -191,6 +191,8 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                         nombreUsuario = x.nombreUsuario,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
+                        personaId=x.personaId,
+                        persona=x.
                     }).ToList();
                 }
 

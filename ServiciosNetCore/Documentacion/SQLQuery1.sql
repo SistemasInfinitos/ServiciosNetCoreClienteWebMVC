@@ -14,9 +14,9 @@ CREATE TABLE Usuarios
 	estado bit not null default 0,
 	fechaCreacion datetime not null default GETDATE(),
 	fechaActualizacion datetime null,
-	personaId int not null
+	personaId int  null
 )  
-
+alter table Usuarios personaId int  null
 --DROP TABLE Productos
 CREATE TABLE Productos
 (
@@ -50,9 +50,9 @@ CREATE TABLE DetallePedidos
 	id	int not null primary key identity(1,1),
 	encabezadoPedidosId	Int not null,
 	productoId	Int not null,
-	cantidad	decimal(18,4),
-	porcentajeIva	decimal(18,4),
-	valorUnitario decimal(18,4),
+	cantidad	decimal(18,4)not null,
+	porcentajeIva	decimal(18,4)not null,
+	valorUnitario decimal(18,4)not null,
 	estado bit not null default 0,
 	fechaCreacion datetime not null default GETDATE(),
 	fechaActualizacion datetime null,
@@ -70,7 +70,7 @@ CREATE TABLE Personas
 	fechaActualizacion datetime null,
 ) 
 
---ALTER TABLE Usuarios  WITH CHECK ADD  CONSTRAINT PersonasUsuariosId FOREIGN KEY(personaId)REFERENCES Personas (id)-- se omite por tiempos un usuario debe ser una persona
+ALTER TABLE Usuarios  WITH noCHECK ADD  CONSTRAINT PersonasUsuariosId FOREIGN KEY(personaId)REFERENCES Personas (id)--un usuario debe ser una persona
 --ALTER TABLE Usuarios drop PersonasUsuariosId
 ALTER TABLE Usuarios ADD  CONSTRAINT [UQ_Usuarios] UNIQUE NONCLUSTERED(nombreUsuario) /*garantiza que no se duplique elusuario*/
 ALTER TABLE EncabezadoPedidos  WITH CHECK ADD  CONSTRAINT EncabezadoPedidosUsuarioId FOREIGN KEY(usuarioId)REFERENCES Usuarios (id)

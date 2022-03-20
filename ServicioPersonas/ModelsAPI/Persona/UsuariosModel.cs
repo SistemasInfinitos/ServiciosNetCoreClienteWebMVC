@@ -21,5 +21,6 @@ namespace ServicioPersonas.ModelsAPI.Persona
         public string fechaCreacion { get; set; }
         public string fechaActualizacion { get; set; }
         public int? personaId { get; set; }
+        public string persona { get; set; }
     }
 }

@@ -18,8 +18,7 @@
                     <thead>
                         <tr>
                             <th style="text-align:center">Editar</th>
-                            <th style="text-align:center">Nombres</th>
-                            <th style="text-align:center">Apellidos</th>
+                            <th style="text-align:center">Usuario</th>
                             <th style="text-align:center">Estado</th>
                             <th style="text-align:center">Fecha Creacion</th>
                             <th style="text-align:center">Fecha Actualizacion</th>
@@ -37,9 +36,9 @@
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     $(document).ready(function () {
-        GetPersonas();
+        GetUsuarios();
     });
-    function GetPersonas() {
+    function GetUsuarios() {
         $('#tableDinamica').find('tbody').empty();
         $('#tableDinamica').dataTable().fnDestroy();
         DataTablePaginada = "";
@@ -58,7 +57,7 @@
             dom: "<''<'col-sm-4'><'col-sm-4 text-center'B><'col-sm-4'f>>t<'col-sm-4'li>p",
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             ajax: {
-                url: `${apiServicioPersonas}/api/ServicioPersonas/ListPersonas`,
+                url: `${apiServicioPersonas}/api/ServicioUsuario/ListUsuarios`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -84,8 +83,7 @@
                         return boton;
                     }
                 },
-                { "data": "nombres", "name": "nombres", "autoWidth": true, className: "align-right" },
-                { "data": "apellidos", "name": "apellidos", className: "align-right" },
+                { "data": "nombreUsuario", "name": "nombreUsuario", "autoWidth": true, className: "align-right" },
                 { "data": "estado", "name": "estado", className: "align-right" },
                 { "data": "fechaCreacion", "name": "fechaCreacion", className: "align-right" },
                 { "data": "fechaActualizacion", "name": "fechaActualizacion", className: "align-right" },
@@ -94,7 +92,7 @@
                     "bSortable": false,
                     "mRender": function (o) {
                         var boton = ``;
-                        boton = `<button type="button" class="btn btn-warning btn-xs" onclick="BorrarPersona(${o.id})"><i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;</button>`
+                        boton = `<button type="button" class="btn btn-warning btn-xs" onclick="BorrarUsuario(${o.id})"><i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;</button>`
                         return boton;
                     }
                 }
@@ -112,21 +110,19 @@
         }
     };
 
-    function BorrarPersona(id) {
-
+    function BorrarUsuario(id) {
         if (id > 0) {
             var parametro = '?' + $.param({ "id": id });
             $.ajax({
-                url: `${apiServicioPersonas}/api/ServicioPersonas/BorrarPersona${parametro}`,
+                url: `${apiServicioPersonas}/api/ServicioUsuario/BorrarUsuario${parametro}`,
                 type: 'DELETE',
                 success: function (response) {
-
                     if (response.ok) {
                         toastr.success(response.mensaje);
                     } else {
                         toastr.warning(response.mensaje);
                     };
-                    GetPersonas();
+                    GetUsuarios();
                 },
                 error: function (jQXHR) {
                     toastr.error('error, No pudimos procesar su Solicitud!');
