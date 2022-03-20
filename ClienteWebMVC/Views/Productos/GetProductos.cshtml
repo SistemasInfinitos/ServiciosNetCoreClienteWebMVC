@@ -6,11 +6,10 @@
 
 <br />
 <br />
-<div class="card mb-3" style="margin-top:57px;">
+<br />
+<h3>@ViewData["Title"] &emsp;</h3>
+<div @*class="card mb-3" style="margin-top:57px;"*@>
 
-    <div class="card-header">
-        <i class="fa fa-table"></i> @ViewData["Title"] &emsp;
-    </div>
     <div class="card-body">
         <div class="container">
             <br />
@@ -74,6 +73,22 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
+            },
+            scrollX: true,
+            pagingType: "full_numbers",
+            language: {
+                "search": "Buscar",
+                "lengthMenu": "Mostrar _MENU_ Registros",
+                "infoFiltered": "(Filtrado de _MAX_ Registros Totales)",
+                "infoEmpty": "Encontrados 0 de _MAX_ Entradas",
+                "zeroRecords": "No se Encontraron Registros!",
+                "info": "Página _PAGE_ de _PAGES_",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
             },
             "columns": [
                 {

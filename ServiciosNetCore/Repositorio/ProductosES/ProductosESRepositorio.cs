@@ -200,6 +200,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         descripcion = x.descripcion,
                         valorUnitario = x.valorUnitario.ToString("N2",culture),
                         iva = x.iva.ToString("N2",culture),
+                        estado=x.estado??false,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
