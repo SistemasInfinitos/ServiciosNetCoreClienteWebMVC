@@ -170,6 +170,33 @@
         }
     });
 
+    //busca una persona dinamicamente por coincidencia de nombres y apellidos max 10 dropList
+    $('#clientePersonaId').select2({
+        ajax: {
+            url: `${apiServicioPersonas}/api/ServicioPersonas/GetPersonasDropList`,
+            cache: false,
+            tags: "true",
+            placeholder: "Select an option",
+            allowClear: true,
+            width: 'resolve',
+            data: function (params) {
+                var query = {
+                    buscar: params.term,
+                    page: params.page || 1
+                }
+                return query;
+            },
+            processResults: function (data, params) {
+                return {
+                    "results": data,
+                    "pagination": {
+                        "more": false
+                    }
+                }
+            }
+        }
+    });
+
     var numero_miles = "";
 
     function formatNumber(n) {

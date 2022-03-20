@@ -60,7 +60,7 @@ namespace ClienteWebMVC.Controllers.Persona
             //si entra en el anterio bloque SelectList seleccionara el actual
             #region DropDownList
             #region Personas
-            ViewBag.personaId = new SelectList(modelPerona, "id", "rangoEdades");
+            ViewBag.personaId = new SelectList(modelPerona, "id", "text");
             if (model.personaId>0)
             {
                 int param = model != null && model.personaId != null ? model.personaId.Value : 0;

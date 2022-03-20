@@ -1,6 +1,8 @@
 ﻿using ClienteWebMVC.Configuration;
+using ClienteWebMVC.Models.Comun;
 using ClienteWebMVC.Models.Pedido;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -29,16 +31,17 @@ namespace ClienteWebMVC.Controllers.Pedido
             List<JwtConfiguracionAPI> api = new List<JwtConfiguracionAPI>();
             api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
             EncabezadoPedidosModel model = new EncabezadoPedidosModel();
+            List<DropListModel> modelPerona = new List<DropListModel>();
+
             ViewBag.idString = "";
+            var apis = api.Where(x => x.servicio == "ServiciosNetCore").FirstOrDefault();
 
             if (!string.IsNullOrWhiteSpace(id))
             {
                 ViewBag.idString = id;
                 string endpoint = "api/ServicioPedidos/GetPedido";
                 string parmetro = id;
-                var apis = api.Where(x => x.servicio == "ServiciosNetCore").FirstOrDefault();
                 string uri = apis.uri + "/" + endpoint + "?id=" + parmetro;
-
                 try
                 {
                     var response = await httpClient.GetAsync(uri);
@@ -53,6 +56,24 @@ namespace ClienteWebMVC.Controllers.Pedido
                     throw;
                 }
             }
+            //si entra en el anterio bloque SelectList seleccionara el actual
+            #region DropDownList
+            #region Personas
+            ViewBag.clientePersonaId = new SelectList(modelPerona, "id", "text");
+            if (model.clientePersonaId > 0)
+            {
+                int param = model.clientePersonaId;
+                //se establece la parsona para que no traiga mas de uno ya que hay un buscar ajax dinamico
+                string uriCliente = apis.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
+                var cliente = await httpClient.GetAsync(uriCliente);
+                if (cliente.IsSuccessStatusCode)
+                {
+                    modelPerona = JsonConvert.DeserializeObject<List<DropListModel>>(await cliente.Content.ReadAsStringAsync());
+                    ViewBag.clientePersonaId = new SelectList(modelPerona, "id", "text", model.clientePersonaId);
+                }
+            }
+            #endregion
+            #endregion
             return View(model);
         }
 
