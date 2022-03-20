@@ -25,26 +25,26 @@
             <form class="user" style="margin:2%">
                 <div class="form-group row">
 
-                    <div class="col-sm-3 mb-3 mb-sm-3" hidden>
+                    <div class="col-sm-3 mb-3 mb-lg-3" hidden>
                         @Html.Hidden("id")
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
+                    <div class="col-sm-3 mb-3 mb-lg-3">
                         <label class="col-form-label" for="nombres"><span style="color:red">*</span>Nombres</label>
                         @Html.EditorFor(Model => Model.nombreUsuario, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombres", @required = "required" } })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
+                    <div class="col-sm-3 mb-3 mb-lg-3">
                         <label class="col-form-label" for="apellidos">Pasword</label>
                         @Html.EditorFor(Model => Model.passwordHash, new { htmlAttributes = new { @class = "form-control", @placeholder = "Pasword", @required = "required" } })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
+                    <div class="col-sm-3 mb-3 mb-lg-3">
                         <label class="col-form-label" for="estado">Persona</label>
                         @Html.DropDownList("personaId", null, "Buscar Persona", htmlAttributes: new { @class = "js-example-responsive form-control", @required = "required", @style = "width: 100%;" })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
+                    <div class="col-sm-3 mb-3 mb-lg-3 estado" style="display:none">
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
+                    <div class="col-sm-3 mb-3 mb-lg-3">
                         <label class="col-form-label" for="btnCrear">.</label>
                         <button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>
                         <a class="fa fa-reply" asp-action="GetUsuarios">Back to List</a>

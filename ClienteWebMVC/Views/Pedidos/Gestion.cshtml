@@ -1,4 +1,5 @@
-﻿@model ClienteWebMVC.Models.Producto.ProductosModel
+﻿@model ClienteWebMVC.Models.Pedido.EncabezadoPedidosModel
+
 @{
     ViewData["Title"] = "Gestion";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -26,8 +27,12 @@
                         @Html.Hidden("id")
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
+                        <label class="col-form-label" for="estado">Persona</label>
+                        @Html.DropDownList("personaId", null, "Buscar Persona", htmlAttributes: new { @class = "js-example-responsive form-control", @required = "required", @style = "width: 100%;" })
+                    </div>
+                    <div class="col-sm-3 mb-3 mb-lg-3">
                         <label class="col-form-label" for="descripcion"><span style="color:red">*</span>Descripción Producto</label>
-                        @Html.EditorFor(Model => Model.descripcion, new { htmlAttributes = new { @class = "form-control", @placeholder = "Descripción Producto", @required = "required" } })
+                        @Html.EditorFor(Model => Model.usuarioId, new { htmlAttributes = new { @class = "form-control", @placeholder = "Descripción Producto", @required = "required" } })
                         @Html.ValidationMessageFor(Model => Model.descripcion)
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">

@@ -18,10 +18,12 @@
                     <thead>
                         <tr>
                             <th style="text-align:center">Editar</th>
-                            <th style="text-align:center">Descripcion Producto</th>
-                            <th style="text-align:center">Valor Unitario</th>
-                            <th style="text-align:center">Iva Configurado</th>
-                            <th style="text-align:center">Estado</th>
+                            <th style="text-align:center">usuarioId</th>
+                            <th style="text-align:center">clientePersonaId</th>
+                            <th style="text-align:center">valorNeto</th>
+                            <th style="text-align:center">valorIva</th>
+                            <th style="text-align:center">valorTotal</th>
+                            <th style="text-align:center">estado</th>
                             <th style="text-align:center">Fecha Creacion</th>
                             <th style="text-align:center">Fecha Actualizacion</th>
                             <th style="text-align:center">Acción</th>
@@ -59,7 +61,7 @@
             dom: "<''<'col-sm-4'><'col-sm-4 text-center'B><'col-sm-4'f>>t<'col-sm-4'li>p",
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             ajax: {
-                url: `${apiServiciosNetCore}/api/ServicioProductos/ListProductos`,
+                url: `${apiServiciosNetCore}/api/ServicioPedidos/ListPedidos`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -101,9 +103,11 @@
                         return boton;
                     }
                 },
-                { "data": "descripcion", "name": "descripcion", "autoWidth": true, className: "align-right" },
-                { "data": "valorUnitario", "name": "valorUnitario", className: "align-right" },
-                { "data": "iva", "name": "iva", className: "align-right" },
+                { "data": "usuarioId", "name": "usuarioId", "autoWidth": true, className: "align-right" },
+                { "data": "clientePersonaId", "name": "clientePersonaId", className: "align-right" },
+                { "data": "valorNeto", "name": "valorNeto", className: "align-right" },
+                { "data": "valorIva", "name": "valorIva", className: "align-right" },
+                { "data": "valorTotal", "name": "valorTotal", className: "align-right" },
                 { "data": "estado", "name": "estado", className: "align-right" },
                 { "data": "fechaCreacion", "name": "fechaCreacion", className: "align-right" },
                 { "data": "fechaActualizacion", "name": "fechaActualizacion", className: "align-right" },
@@ -112,7 +116,7 @@
                     "bSortable": false,
                     "mRender": function (o) {
                         var boton = ``;
-                        boton = `<button type="button" class="btn btn-warning btn-xs" onclick="BorrarProducto(${o.id})"><i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;</button>`
+                        boton = `<button type="button" class="btn btn-warning btn-xs" onclick="BorrarPedido(${o.id})"><i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;</button>`
                         return boton;
                     }
                 }
@@ -126,16 +130,16 @@
     function Gestion(id) {
         if (id != "" && id != undefined && id != NaN) {
             var url = '?' + $.param({ "id": id });
-            window.location.href = "/web/pro/Gestion" + url;
+            window.location.href = "/web/ped/Gestion" + url;
         }
     };
 
-    function BorrarProducto(id) {
+    function BorrarPedido(id) {
 
         if (id > 0) {
             var parametro = '?' + $.param({ "id": id });
             $.ajax({
-                url: `${apiServiciosNetCore}/api/ServicioProductos/DeleteProducto${parametro}`,
+                url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedido${parametro}`,
                 type: 'DELETE',
                 success: function (response) {
 
@@ -154,4 +158,5 @@
     };
 
 </script>
+
 
