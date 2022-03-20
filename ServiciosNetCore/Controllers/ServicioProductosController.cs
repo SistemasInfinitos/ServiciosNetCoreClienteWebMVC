@@ -34,7 +34,10 @@ namespace ServiciosNetCore.Controllers
             try
             {
                 data.ok = await Task.Run(() => _repositoryProductos.CrearProducto(entidad));
-                data.mensaje = "Transaccion exitosa!";
+                if (data.ok)
+                {
+                    data.mensaje = "Transaccion exitosa!";
+                }
                 return Ok(data);
             }
             catch (Exception x)
