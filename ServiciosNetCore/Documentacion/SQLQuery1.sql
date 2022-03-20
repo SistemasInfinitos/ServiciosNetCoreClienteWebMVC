@@ -23,11 +23,12 @@ CREATE TABLE Productos
 	id	int not null primary key identity(1,1),
 	descripcion	varchar(50)not null,
 	valorUnitario decimal(18,4) not null,
+	iva decimal(18,0) not null,
 	estado bit not null default 0,
 	fechaCreacion datetime not null default GETDATE(),
 	fechaActualizacion datetime null,
 )  
-
+--alter table Productos add iva decimal(18,0) not null default 0  // el iva no puede quedar a criterio del vendedor--
 /* se crea tabla adicional por correccion del modelo con el fin de garantizar el requerimiento principal del cliente */
 --DROP TABLE EncabezadoPedidos
 CREATE TABLE EncabezadoPedidos

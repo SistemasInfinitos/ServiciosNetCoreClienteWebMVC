@@ -102,6 +102,8 @@ namespace ServiciosNetCore.ModelsDB.Contexts
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.iva).HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.valorUnitario).HasColumnType("decimal(18, 4)");
             });
 

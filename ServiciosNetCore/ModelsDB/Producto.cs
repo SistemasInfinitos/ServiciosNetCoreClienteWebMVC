@@ -18,6 +18,7 @@ namespace ServiciosNetCore.ModelsDB
         public bool? estado { get; set; }
         public DateTime fechaCreacion { get; set; }
         public DateTime? fechaActualizacion { get; set; }
+        public decimal iva { get; set; }
 
         public virtual ICollection<DetallePedido> DetallePedidoes { get; set; }
     }

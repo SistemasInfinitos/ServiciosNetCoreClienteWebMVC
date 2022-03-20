@@ -16,6 +16,7 @@ namespace ServiciosNetCore.ModelsAPI.Productos
         public bool estado { get; set; }
         public string fechaCreacion { get; set; }
         public string fechaActualizacion { get; set; }
+        public string iva { get; set; }
 
     }
 }
