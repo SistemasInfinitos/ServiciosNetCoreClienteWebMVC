@@ -184,7 +184,7 @@ namespace ServicioPersonas.Repositorio.PersonasES
                 }
                 if (string.IsNullOrWhiteSpace(sortcolumn))
                 {
-                    sortcolumn = "PrimerNombre";
+                    sortcolumn = "nombres";
                 }
                 List<Persona> datos2 = new List<Persona>();
                 if (datos.recordsFiltered > 0)
@@ -195,6 +195,7 @@ namespace ServicioPersonas.Repositorio.PersonasES
                         id = x.id,
                         nombres = x.nombres,
                         apellidos = x.apellidos,
+                        estado = x.estado.Value,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
