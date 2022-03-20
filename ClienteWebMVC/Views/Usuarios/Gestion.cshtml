@@ -116,9 +116,10 @@
                             toastr.error(response.responseJSON.errors.passwordHash[i], response.responseJSON.title);
                         });
                     }
-                    if (response.responseJSON != null && response.responseJSON.errors != null && response.responseJSON.errors.personaId != null && response.responseJSON.errors.personaId.length > 0) {
-                        $(response.responseJSON.errors.personaId).each(function (i) {
-                            toastr.error(response.responseJSON.errors.personaId[i], response.responseJSON.title);
+
+                    if (response.responseJSON != null && response.responseJSON.errors != null && response.responseJSON.errors["$.personaId"].length > 0) {
+                        $(response.responseJSON.errors).each(function (i) {
+                            toastr.error(response.responseJSON.errors["$.personaId"], response.responseJSON.title);
                         });
                     }
                 }
