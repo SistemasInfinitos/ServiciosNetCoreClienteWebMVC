@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace ClienteWebMVC.Controllers.Persona
 {
-    [Route("web/per")]
-    public class PersonaController : Controller
+    [Route("web/us")]
+    public class UsuariosController : Controller
     {
         private readonly JwtConfiguracion _jwtConfig;
-        public PersonaController(IOptionsMonitor<JwtConfiguracion> optionsMonitor)
+        public UsuariosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor)
         {
             this._jwtConfig = optionsMonitor.CurrentValue;
         }
@@ -53,6 +53,9 @@ namespace ClienteWebMVC.Controllers.Persona
                     throw;
                 }
             }
+            //si entra en el anterio bloque SelectList seleccionara el actual
+            #region DropDownList
+            #endregion
             return View(model);
         }
 
