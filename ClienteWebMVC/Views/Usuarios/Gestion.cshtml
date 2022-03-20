@@ -55,6 +55,8 @@
     </div>
 </div>
 <script>
+    var apiServicioPedidos = localStorage.getItem("ServicioPedidos");
+    var apiServicioProductos = localStorage.getItem("ServicioProductos");
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     var update = false;
@@ -71,6 +73,7 @@
         }
     });
 
+    //crea o actualiza el usuario
     $("#btnCrear").click(function () {
         //id = $("#id").val();
 
@@ -157,6 +160,7 @@
         }
     });
 
+    //busca una persona dinamicamente por coincidencia de nombres y apellidos max 10 dropList
     $('#personaId').select2({
         ajax: {
             url: `${apiServicioPersonas}/api/ServicioPersonas/GetPersonasDropList`,
