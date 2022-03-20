@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Clientes</a>
+                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Usuarios</a>
             </li>
 
         </ul>
@@ -34,9 +34,9 @@
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="apellidos">Pasword</label>
-                        @Html.EditorFor(Model => Model.passwordHash, new { htmlAttributes = new { @class = "form-control", @placeholder = "Apellidos", @required = "required" } })
+                        @Html.EditorFor(Model => Model.passwordHash, new { htmlAttributes = new { @class = "form-control", @placeholder = "Pasword", @required = "required" } })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
+                    <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="estado">Persona</label>
                         @Html.DropDownList("personaId", null, "Buscar Persona", htmlAttributes: new { @class = "js-example-responsive form-control", @required = "required", @style = "width: 100%;" })
                     </div>
@@ -76,14 +76,15 @@
 
         var entidad = {
             id: parseInt(id),
-            nombres: $("#nombres").val(),
-            apellidos: $("#apellidos").val(),
+            nombreUsuario: $("#nombreUsuario").val(),
+            passwordHash: $("#passwordHash").val(),
+            personaId: $("#personaId").val(),
             estado: $("#estado").prop("checked"),
         }
         debugger
         if (update == false) {
             $.ajax({
-                url: `${apiServicioPersonas}/api/ServicioPersonas/CreatePersona`,
+                url: `${apiServicioPersonas}/api/ServicioUsuario/CreateUsuario`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -111,7 +112,7 @@
         }
         else if (id != "" && id != undefined && id != NaN) {
             $.ajax({
-                url: `${apiServicioPersonas}/api/ServicioPersonas/ActualizarPersona`,
+                url: `${apiServicioPersonas}/api/ServicioUsuario/ActualizarUsuario`,
                 type: 'PUT',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
