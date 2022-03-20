@@ -32,7 +32,7 @@ namespace ClienteWebMVC.Controllers.Persona
             if (!string.IsNullOrWhiteSpace(id))
             {
                 ViewBag.idString = id;
-                string endpoint = "api/Personas/GetPersona";
+                string endpoint = "api/ServicioPersonas/GetPersona";
                 string parmetro = id;
                 string uri = api[0]+ "/" + endpoint + "?id=" + parmetro;
 
