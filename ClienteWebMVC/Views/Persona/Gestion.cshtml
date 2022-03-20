@@ -70,10 +70,10 @@
         //id = $("#id").val();
         
         var entidad = {
-            id: parseInt(id),
+            id:0,// parseInt(id),
             nombres: $("#nombres").val(),
             apellidos: $("#apellidos").val(),
-            estado: $("#estado").val(),
+            estado: $("#estado").prop("checked"),
         }
         debugger
         if (update == false) {
