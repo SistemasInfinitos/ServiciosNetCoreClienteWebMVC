@@ -179,7 +179,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                 }
                 if (string.IsNullOrWhiteSpace(sortcolumn))
                 {
-                    sortcolumn = "PrimerNombre";
+                    sortcolumn = "nombreUsuario";
                 }
                 List<Usuario> datos2 = new List<Usuario>();
                 if (datos.recordsFiltered > 0)
@@ -192,7 +192,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                         personaId=x.personaId,
-                        persona=x.
+                        persona= x.persona.nombres +" "+ x.persona.apellidos
                     }).ToList();
                 }
 

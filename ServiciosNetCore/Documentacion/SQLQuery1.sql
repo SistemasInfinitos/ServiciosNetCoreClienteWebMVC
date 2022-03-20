@@ -16,7 +16,7 @@ CREATE TABLE Usuarios
 	fechaActualizacion datetime null,
 	personaId int  null
 )  
-alter table Usuarios personaId int  null
+--alter table Usuarios personaId int  null-- se pone null para controlar dependencia circular
 --DROP TABLE Productos
 CREATE TABLE Productos
 (

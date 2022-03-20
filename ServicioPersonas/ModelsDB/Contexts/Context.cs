@@ -75,6 +75,11 @@ namespace ServicioPersonas.ModelsDB.Contexts
                     .HasMaxLength(50);
 
                 entity.Property(e => e.passwordHash).IsRequired();
+
+                entity.HasOne(d => d.persona)
+                    .WithMany(p => p.Usuarios)
+                    .HasForeignKey(d => d.personaId)
+                    .HasConstraintName("PersonasUsuariosId");
             });
 
             OnModelCreatingPartial(modelBuilder);
