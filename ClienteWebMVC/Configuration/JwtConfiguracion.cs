@@ -1,7 +1,9 @@
-﻿namespace ClienteWebMVC.Configuration
+﻿using System.Collections.Generic;
+
+namespace ClienteWebMVC.Configuration
 {
     public class JwtConfiguracion
     {
-        public string api { get; set; }
+        public List<JwtConfiguracionAPI> api { get; set; }
     }
 }

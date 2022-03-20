@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -42,24 +43,25 @@ namespace ClienteWebMVC.Controllers
         public async Task<JsonResult> GetService()
         {
             bool ok = false;
-            string mensaje = "recurso inaccesible ";
-            string api = _jwtConfig.api;
-            var httpClient = new HttpClient();
-            string endpoint = "api/Comun/GetTest";
-            string uri = api + "/" + endpoint;
-            try
-            {
-                var response = await httpClient.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
-                {
-                    ok = true;
-                    mensaje = "Conectado!";
-                }
-            }
-            catch (Exception X)
-            {
-                mensaje += X.Message;
-            }
+            //string mensaje = "recurso inaccesible ";
+            string mensaje = "recurso accesible!";
+            List<JwtConfiguracionAPI> api = _jwtConfig.api;
+            //var httpClient = new HttpClient();
+            //string endpoint = "api/Comun/GetTest";
+            //string uri = api + "/" + endpoint;
+            //try
+            //{
+            //    var response = await httpClient.GetAsync(uri);
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        ok = true;
+            //        mensaje = "Conectado!";
+            //    }
+            //}
+            //catch (Exception X)
+            //{
+            //    mensaje += X.Message;
+            //}
             var data = new { api, ok, mensaje };
             return Json(data);
         }
