@@ -139,17 +139,24 @@
         }
     });
 
-
     var numero_miles = "";
 
     function formatNumber(n) {
-        n = String(n).replace(/\D/g, "");
-        return n === '' ? n : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+        const array_number = n.split(',');
+        var complemento = "";
+        n = String(array_number[0]).replace(/\D/g, "");
+        if (array_number.length > 1) {
+            m = String(array_number[1]).replace(/\D/g, "");
+            complemento = `,${m}`;
+        }
+        return n === '' ? n : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + complemento;
     }
 
     function miles(id) {
-        numero_miles = formatNumber($('#' + id + '').val());
-        $('#' + id + '').val(numero_miles);
+
+        numero_miles = formatNumber($(`#${id}`).val());
+        $(`#${id}`).val(numero_miles);
     }
 
     function addCommas(nStr) {
