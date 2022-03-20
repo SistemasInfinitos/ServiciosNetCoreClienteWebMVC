@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Clientes</a>
+                <a data-toggle="tab" class="nav-link" href="#home1">Gestión Productos</a>
             </li>
 
         </ul>
@@ -70,8 +70,6 @@
     });
 
     $("#btnCrear").click(function () {
-        //id = $("#id").val();
-
         var entidad = {
             id: parseInt(id),
             descripcion: $("#descripcion").val(),
@@ -81,7 +79,7 @@
 
         if (update == false) {
             $.ajax({
-                url: `${apiServicioPersonas}/api/ServicioPersonas/CreatePersona`,
+                url: `${apiServiciosNetCore}/api/ServicioProductos/CrearProducto`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -109,7 +107,7 @@
         }
         else if (id != "" && id != undefined && id != NaN) {
             $.ajax({
-                url: `${apiServicioPersonas}/api/ServicioPersonas/ActualizarPersona`,
+                url: `${apiServiciosNetCore}/api/ServicioProductos/ActualizarProducto`,
                 type: 'PUT',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
