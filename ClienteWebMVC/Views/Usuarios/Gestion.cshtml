@@ -41,8 +41,8 @@
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
-                        <label class="col-form-label" for="estado">Estado</label>
-                        @Html.DropDownList("personaId", null, "Seleccione Persona", htmlAttributes: new { @class = "form-control collapse-inner", @required = "required" })
+                        <label class="col-form-label" for="estado">Persona</label>
+                        @Html.DropDownList("personaId", null, "Buscar Persona", htmlAttributes: new { @class = "js-example-responsive form-control", @required = "required", @style = "width: 100%;" })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="btnCrear">.</label>
@@ -141,5 +141,30 @@
         }
     });
 
+    $('#personaId').select2({
+        ajax: {
+            url: `${apiServicioPersonas}/api/ServicioPersonas/GetPersonasDropList`,
+            cache: false,
+            tags: "true",
+            placeholder: "Select an option",
+            allowClear: true,
+            width: 'resolve',
+            data: function (params) {
+                var query = {
+                    buscar: params.term,
+                    page: params.page || 1
+                }
+                return query;
+            },
+            processResults: function (data, params) {
+                return {
+                    "results": data,
+                    "pagination": {
+                        "more": false
+                    }
+                }
+            }
+        }
+    });
 </script>
 
