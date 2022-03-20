@@ -38,7 +38,7 @@
                         <label class="col-form-label" for="apellidos">Apellidos</label>
                         @Html.EditorFor(Model => Model.apellidos, new { htmlAttributes = new { @class = "form-control", @placeholder = "Apellidos", @required = "required" } })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
+                    <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
@@ -63,6 +63,9 @@
         
         if (id != "") {
             update = true;
+            $(".estado").show();
+        } else {
+            $(".estado").hide();
         }
     });
 
@@ -70,7 +73,7 @@
         //id = $("#id").val();
         
         var entidad = {
-            id:0,// parseInt(id),
+            id: parseInt(id),
             nombres: $("#nombres").val(),
             apellidos: $("#apellidos").val(),
             estado: $("#estado").prop("checked"),

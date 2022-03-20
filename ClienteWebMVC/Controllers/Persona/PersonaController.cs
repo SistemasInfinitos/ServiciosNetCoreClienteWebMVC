@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -25,7 +26,8 @@ namespace ClienteWebMVC.Controllers.Persona
         {
             // esta es una forma de trabajar, aumenta la seguridad pero tanbien el tiempo de desarrollo
             var httpClient = new HttpClient();
-            List<JwtConfiguracionAPI>api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
+            List<JwtConfiguracionAPI> api = new List<JwtConfiguracionAPI>();
+            api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
             PersonasModel model = new PersonasModel();
             ViewBag.idString = "";
 
@@ -34,7 +36,8 @@ namespace ClienteWebMVC.Controllers.Persona
                 ViewBag.idString = id;
                 string endpoint = "api/ServicioPersonas/GetPersona";
                 string parmetro = id;
-                string uri = api[0]+ "/" + endpoint + "?id=" + parmetro;
+                var apis = api.Where(x => x.servicio == "ServicioPersonas").FirstOrDefault();
+                string uri = apis.uri + "/" + endpoint + "?id=" + parmetro;
 
                 //var data = new StringContent("objt_json", Encoding.UTF8, "application/json");
                 //var response =await  httpClient.PostAsync(uri, data);

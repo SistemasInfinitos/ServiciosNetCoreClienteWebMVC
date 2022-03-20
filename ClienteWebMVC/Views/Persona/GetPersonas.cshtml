@@ -18,11 +18,11 @@
                     <thead>
                         <tr>
                             <th style="text-align:center">Editar</th>
-                            <th style="text-align:center">NIU</th>
-                            <th style="text-align:center">Cliente</th>
-                            <th style="text-align:center">Tel-Cel</th>
-                            <th style="text-align:center">Correo</th>
-                            <th style="text-align:center">Rango Edad</th>
+                            <th style="text-align:center">Nombres</th>
+                            <th style="text-align:center">Apellidos</th>
+                            <th style="text-align:center">Estado</th>
+                            <th style="text-align:center">Fecha Creacion</th>
+                            <th style="text-align:center">Fecha Actualizacion</th>
                             <th style="text-align:center">Acción</th>
                         </tr>
                     </thead>
@@ -36,13 +36,11 @@
     DataTablePaginada = "";
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
-    //var api = localStorage.getItem("api");
     $(document).ready(function () {
         GetPersonas();
     });
     function GetPersonas() {
         $('#tableDinamica').find('tbody').empty();
-        //$('#tableDinamica').dataTable().fnClearTable();
         $('#tableDinamica').dataTable().fnDestroy();
         DataTablePaginada = "";
 
@@ -60,7 +58,7 @@
             dom: "<''<'col-sm-4'><'col-sm-4 text-center'B><'col-sm-4'f>>t<'col-sm-4'li>p",
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             ajax: {
-                url: `${apiServicioPersonas}/api/Personas/ListPersonas`,
+                url: `${apiServicioPersonas}/api/ServicioPersonas/ListPersonas`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -86,19 +84,11 @@
                         return boton;
                     }
                 },
-                { "data": "identificacion", "name": "identificacion", "autoWidth": true, className: "align-right" },
-                {
-                    "mData": null,
-                    "bSortable": false,
-                    "mRender": function (o) {
-                        var boton = ``;
-                        boton = `${o.primerNombre} ${o.segundoNombre} ${o.primerApellido} ${o.segundoNombre}`
-                        return boton;
-                    }
-                },
-                { "data": "telefono", "name": "telefono", className: "align-right" },
-                { "data": "correo", "name": "correo", className: "align-right" },
-                { "data": "edad", "name": "edad", className: "align-right" },
+                { "data": "nombres", "name": "nombres", "autoWidth": true, className: "align-right" },
+                { "data": "apellidos", "name": "apellidos", className: "align-right" },
+                { "data": "estado", "name": "estado", className: "align-right" },
+                { "data": "fechaCreacion", "name": "fechaCreacion", className: "align-right" },
+                { "data": "fechaActualizacion", "name": "fechaActualizacion", className: "align-right" },
                 {
                     "mData": null,
                     "bSortable": false,
@@ -127,7 +117,7 @@
         if (id > 0) {
             var parametro = '?' + $.param({ "id": id });
             $.ajax({
-                url: `${apiServicioPersonas}/api/Personas/BorrarPersona${parametro}`,
+                url: `${apiServicioPersonas}/api/ServicioPersonas/BorrarPersona${parametro}`,
                 type: 'DELETE',
                 success: function (response) {
 
