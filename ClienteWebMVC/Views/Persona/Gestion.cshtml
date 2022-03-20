@@ -109,7 +109,7 @@
         }
         else if (id != "" && id != undefined && id != NaN) {
             $.ajax({
-                url: `${apiServicioPersonas}/api/Personas/ActualizarPersona`,
+                url: `${apiServicioPersonas}/api/ServicioPersonas/ActualizarPersona`,
                 type: 'PUT',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -142,7 +142,7 @@
     function getPersona() {
         id= '@ViewBag.idString';
         if (id != "" && id != undefined && id != NaN) {
-            var uri = `${apiServicioPersonas}/api/Personas/GetPersona`;
+            var uri = `${apiServicioPersonas}/api/ServicioPersonas/GetPersona`;
             var url = uri + '?' + $.param({ "buscar": "","id": id });
             $.ajax({
                 url: url,
