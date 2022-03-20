@@ -32,62 +32,13 @@
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="primerNombre"><span style="color:red">*</span>Primer Nombre</label>
-                        @Html.EditorFor(Model => Model.primerNombre, new { htmlAttributes = new { @class = "form-control", @placeholder = "Primer Nombre", @required = "required" } })
+                        @Html.EditorFor(Model => Model.no, new { htmlAttributes = new { @class = "form-control", @placeholder = "Primer Nombre", @required = "required" } })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="segundoNombre">Segundo Nombre</label>
                         @Html.EditorFor(Model => Model.segundoNombre, new { htmlAttributes = new { @class = "form-control", @placeholder = "Segundo Nombre" } })
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="primerApellido"><span style="color:red">*</span>Primer Apellido</label>
-                        @Html.Editor("primerApellido", new { htmlAttributes = new { @class = "form-control", @placeholder = "Primer Apellido", @required = "required" } })
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="segundoApellido">Segundo Apellido</label>
-                        @Html.Editor("segundoApellido", new { htmlAttributes = new { @class = "form-control", @placeholder = "Segundo Apellido" } })
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="identificacion"><span style="color:red">*</span>Número Identificacion</label>
-                        @Html.Editor("identificacion", new { htmlAttributes = new { @class = "form-control", @placeholder = "Número Identificacion", @required= "required" } })
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="telefono"><span style="color:red">*</span>Telefono</label>
-                        @Html.Editor("telefono", new { htmlAttributes = new { @class = "form-control", @placeholder = "Telefono-Celular", @required = "required" } })
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="correo"><span style="color:red">*</span>Correo</label>
-                        @Html.Editor("correo", new { htmlAttributes = new { @class = "form-control", @placeholder = "Mail", @required = "required" } })
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="edad"><span style="color:red">*</span>Edad</label>
-                        @Html.DropDownList("edad",null, "Seleccione rango de Edad", htmlAttributes: new { @class = "form-control collapse-inner", @required = "required" } )
-                        @*<select id="edad" name="edad" class="form-control bg-white collapse-inner" required style="width:100%;color:blue;">
-                            <option value="" class="col-sm-3 mb-3 mb-sm-3">Seleccione Edad</option>
-                        </select>*@
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="pais">Pais</label>
-                        @Html.DropDownList("pais", null, "Seleccione el Pais", htmlAttributes: new { @class = "form-control collapse-inner" })
-                        @*<select id="pais" name="pais" class="form-control bg-white collapse-inner" required style="width:100%;color:blue;">
-                            <option value="" class="col-sm-3 mb-3 mb-sm-3">Seleccione el Pais </option>
-                        </select>*@
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="departamento">Departamento</label>
-                        @Html.DropDownList("departamento", null, "Seleccione el Departamento", htmlAttributes: new { @class = "form-control collapse-inner" })
 
-                        @*<select id="departamento" name="departamento" class="form-control bg-white collapse-inner" required style="width:100%;color:blue;">
-                            <option value="" class="col-sm-3 mb-3 mb-sm-3">Seleccione el Departamento </option>
-                        </select>*@
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-3">
-                        <label class="col-form-label" for="idCiudad"><span style="color:red">*</span>Ciudad</label>
-                        @Html.DropDownList("idCiudad", null, "Seleccione la Ciudad", htmlAttributes: new { @class = "form-control collapse-inner", @required = "required" })
-
-                        @*<select id="idCiudad" name="idCiudad" class="form-control bg-white collapse-inner" required style="width:100%;color:blue;">
-                            <option value="" class="col-sm-3 mb-3 mb-sm-3">Seleccione el Ciudad</option>
-                        </select>*@
-                    </div>
                     <div class="col-sm-3 mb-3 mb-sm-3">
                         <label class="col-form-label" for="btnCrear">.</label>
                         <button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>
