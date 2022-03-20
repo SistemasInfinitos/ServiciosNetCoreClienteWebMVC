@@ -36,9 +36,9 @@
                         @Html.ValidationMessageFor(Model => Model.valorUnitario)
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:block">
+                        @*el iva deberia ser configurable ya que exiten varios poscentajes dependiendo del producto o modelo de negocio*@
                         <label class="col-form-label" for="estado">IVA Venta</label>
-                        <input class="form-control" value="19" readonly placeholder="un producto debe definir si aplica iva pero depende de las reglas de negocio"/>
-                        @*@Html.CheckBoxFor(Model => Model.iva, new { @class = "form-control check", @checked = Model.estado })*@
+                        @Html.EditorFor(Model => Model.iva, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Pocentaje Iva", @required = "required" } })
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-3 estado" style="display:none">
                         <label class="col-form-label" for="estado">Estado</label>

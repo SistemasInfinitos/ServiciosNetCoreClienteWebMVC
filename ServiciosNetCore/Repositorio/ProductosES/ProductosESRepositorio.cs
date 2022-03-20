@@ -130,6 +130,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     persona.id = data.id;
                     persona.descripcion = data.descripcion;
                     persona.valorUnitario = data.valorUnitario.ToString("N2",culture);
+                    persona.iva = data.iva.ToString("N2",culture);
                     persona.estado = true;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
@@ -198,6 +199,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         id = x.id,
                         descripcion = x.descripcion,
                         valorUnitario = x.valorUnitario.ToString("N2",culture),
+                        iva = x.iva.ToString("N2",culture),
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
