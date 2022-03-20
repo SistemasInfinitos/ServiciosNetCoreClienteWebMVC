@@ -44,7 +44,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         actualizarRegistro.descripcion = entidad.descripcion;
                         actualizarRegistro.valorUnitario = valorUnitario;
                         actualizarRegistro.iva = iva;
-                        actualizarRegistro.estado = true;
+                        actualizarRegistro.estado = entidad.estado;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
                         actualizarRegistro.fechaActualizacion = null;
 
