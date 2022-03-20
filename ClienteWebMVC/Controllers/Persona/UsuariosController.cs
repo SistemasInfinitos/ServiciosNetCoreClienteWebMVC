@@ -61,7 +61,7 @@ namespace ClienteWebMVC.Controllers.Persona
             #region DropDownList
             #region Personas
             ViewBag.personaId = new SelectList(modelPerona, "id", "rangoEdades");
-            int param = model.personaId.Value;
+            int param = model!=null && model.personaId !=null? model.personaId.Value:0;
             //se estable la parsona para qu no traiga mas de uno ya que hay un buscar ajax dinamico
             string uriCliente = apis.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
             var cliente = await httpClient.GetAsync(uriCliente);
