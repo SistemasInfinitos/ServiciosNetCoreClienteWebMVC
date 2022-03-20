@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using ServicioPersonas.ModelsDB;
 
 #nullable disable
 
@@ -37,6 +40,10 @@ namespace ServicioPersonas.ModelsDB.Contexts
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.fechaActualizacion).HasColumnType("datetime");
 
                 entity.Property(e => e.fechaCreacion)
@@ -52,6 +59,10 @@ namespace ServicioPersonas.ModelsDB.Contexts
             {
                 entity.HasIndex(e => e.nombreUsuario, "UQ_Usuarios")
                     .IsUnique();
+
+                entity.Property(e => e.estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.fechaActualizacion).HasColumnType("datetime");
 
