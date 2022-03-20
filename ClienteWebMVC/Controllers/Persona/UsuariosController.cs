@@ -61,14 +61,17 @@ namespace ClienteWebMVC.Controllers.Persona
             #region DropDownList
             #region Personas
             ViewBag.personaId = new SelectList(modelPerona, "id", "rangoEdades");
-            int param = model!=null && model.personaId !=null? model.personaId.Value:0;
-            //se estable la parsona para qu no traiga mas de uno ya que hay un buscar ajax dinamico
-            string uriCliente = apis.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
-            var cliente = await httpClient.GetAsync(uriCliente);
-            if (cliente.IsSuccessStatusCode)
+            if (model.personaId>0)
             {
-                modelPerona = JsonConvert.DeserializeObject<List<DropListModel>>(await cliente.Content.ReadAsStringAsync());
-                ViewBag.personaId = new SelectList(modelPerona, "id", "text", model.personaId);
+                int param = model != null && model.personaId != null ? model.personaId.Value : 0;
+                //se establece la parsona para que no traiga mas de uno ya que hay un buscar ajax dinamico
+                string uriCliente = apis.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
+                var cliente = await httpClient.GetAsync(uriCliente);
+                if (cliente.IsSuccessStatusCode)
+                {
+                    modelPerona = JsonConvert.DeserializeObject<List<DropListModel>>(await cliente.Content.ReadAsStringAsync());
+                    ViewBag.personaId = new SelectList(modelPerona, "id", "text", model.personaId);
+                }
             }
             #endregion
             #endregion
