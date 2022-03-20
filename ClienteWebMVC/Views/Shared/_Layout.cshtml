@@ -127,6 +127,7 @@
             Test();
         });
         function Test() {
+            debugger
             $.ajax({
                 url: "@Url.Action("GetService", "Home")",
                 type: 'get',
@@ -136,7 +137,9 @@
                 success: function (response) {
                     if (response.ok) {
                         toastr.success(response.mensaje);
-                        localStorage.setItem("api", response.api);
+                        $(response.api).each(function (i) {
+                            localStorage.setItem(response.api[i].servicio, response.api[i].uri);
+                        });
                     } else {
                         toastr.warning(response.mensaje);
                     };

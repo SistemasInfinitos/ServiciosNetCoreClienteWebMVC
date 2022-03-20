@@ -53,7 +53,8 @@
     </div>
 </div>
 <script>
-    var api = localStorage.getItem("api");
+    var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
+    var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     var update = false;
     var id = '@ViewBag.idString';
     var pais = "";
@@ -90,7 +91,7 @@
         
         if (update == false) {
             $.ajax({
-                url: `${api}/api/Personas/CreatePersona`,
+                url: `${apiServicioPersonas}/api/Personas/CreatePersona`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -118,7 +119,7 @@
         }
         else if (id != "" && id != undefined && id != NaN) {
             $.ajax({
-                url: `${api}/api/Personas/ActualizarPersona`,
+                url: `${apiServicioPersonas}/api/Personas/ActualizarPersona`,
                 type: 'PUT',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -151,7 +152,7 @@
     function getPersona() {
         id= '@ViewBag.idString';
         if (id != "" && id != undefined && id != NaN) {
-            var uri = `${api}/api/Personas/GetPersona`;
+            var uri = `${apiServicioPersonas}/api/Personas/GetPersona`;
             var url = uri + '?' + $.param({ "buscar": "","id": id });
             $.ajax({
                 url: url,
@@ -200,7 +201,7 @@
 
     function DropListPais() {
         $.ajax({
-            url: `${api}/api/Comun/GetDropListPaises`,
+            url: `${apiServicioPersonas}/api/Comun/GetDropListPaises`,
             data: {},
             method: 'get',
             traditional: true,
@@ -258,7 +259,7 @@
 
         if (pais != "" && pais != undefined) {
             $.ajax({
-                url: `${api}/api/Comun/GetDropListDepartamentos`,
+                url: `${apiServicioPersonas}/api/Comun/GetDropListDepartamentos`,
                 data:
                 {
                     buscar: "",
@@ -308,7 +309,7 @@
 
         if (departamento != "" && departamento != undefined) {
             $.ajax({
-                url: `${api}/api/Comun/GetDropListCiudades`,
+                url: `${apiServicioPersonas}/api/Comun/GetDropListCiudades`,
                 data:
                 {
                     buscar: "",
@@ -356,7 +357,7 @@
     function DropListEdades() {
 
         $.ajax({
-            url: `${api}/api/Comun/GetDropListRangoEades`,
+            url: `${apiServicioPersonas}/api/Comun/GetDropListRangoEades`,
             data: {},
             method: 'get',
             traditional: true,

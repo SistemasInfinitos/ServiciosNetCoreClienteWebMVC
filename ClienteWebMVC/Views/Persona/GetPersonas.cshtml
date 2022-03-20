@@ -34,7 +34,9 @@
 <script type="text/javascript">
 
     DataTablePaginada = "";
-    var api = localStorage.getItem("api");
+    var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
+    var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
+    //var api = localStorage.getItem("api");
     $(document).ready(function () {
         GetPersonas();
     });
@@ -58,7 +60,7 @@
             dom: "<''<'col-sm-4'><'col-sm-4 text-center'B><'col-sm-4'f>>t<'col-sm-4'li>p",
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             ajax: {
-                url: `${api}/api/Personas/ListPersonas`,
+                url: `${apiServicioPersonas}/api/Personas/ListPersonas`,
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
@@ -125,7 +127,7 @@
         if (id > 0) {
             var parametro = '?' + $.param({ "id": id });
             $.ajax({
-                url: `${api}/api/Personas/BorrarPersona${parametro}`,
+                url: `${apiServicioPersonas}/api/Personas/BorrarPersona${parametro}`,
                 type: 'DELETE',
                 success: function (response) {
 

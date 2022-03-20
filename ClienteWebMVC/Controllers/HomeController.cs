@@ -42,7 +42,7 @@ namespace ClienteWebMVC.Controllers
         [HttpGet]
         public async Task<JsonResult> GetService()
         {
-            bool ok = false;
+            bool ok = true;
             //string mensaje = "recurso inaccesible ";
             string mensaje = "recurso accesible!";
             List<JwtConfiguracionAPI> api = _jwtConfig.api;
