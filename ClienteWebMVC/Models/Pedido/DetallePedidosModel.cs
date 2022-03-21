@@ -5,6 +5,7 @@
         public int? id { get; set; }
         public int? encabezadoPedidosId { get; set; }
         public int productoId { get; set; }
+        public virtual string producto { get; set; }
         public string cantidad { get; set; }
         public string porcentajeIva { get; set; }
         public string valorUnitario { get; set; }
