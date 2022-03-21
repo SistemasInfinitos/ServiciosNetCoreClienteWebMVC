@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ServerTokenJwt.ModelsDB.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace ServerTokenJwt
                     builder.WithOrigins(audience).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((host) => true).AllowCredentials();
                 });
             });
-            //services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
             services.AddSwaggerGen(c =>
             {
