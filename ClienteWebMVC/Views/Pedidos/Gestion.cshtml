@@ -43,19 +43,19 @@
                             <div class="form-group">
                                 <div class="col-sm-12 mb-12 mb-lg-12 row">
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
-                                        <select id="productoId" name="productoId" class="form-control form-select js-example-responsive" style = "width: 100%;">
+                                        <select id="productoId" name="productoId" class="form-control form-select js-example-responsive" style="width: 100%;">
                                             <option selected>Buscar Producto...</option>
                                         </select>
                                     </div>&nbsp;
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
-                                        <input id="porcentajeIva" name="porcentajeIva" type="text" class="form-control" placeholder="Iva" readonly onkeyUp = "return miles(this.id)"/>
+                                        <input id="porcentajeIva" name="porcentajeIva" type="text" class="form-control" placeholder="Iva" readonly onkeyUp="return miles(this.id)" />
                                     </div>&nbsp;
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
-                                        <input id="valorUnitario" name="valorUnitario" type="text" class="form-control" placeholder="Valor Unitatio" onkeyup = "return miles(this.id)"/>
+                                        <input id="valorUnitario" name="valorUnitario" type="text" class="form-control" placeholder="Valor Unitatio" onkeyup="return miles(this.id)" />
                                     </div>
                                     <div class="col-sm-3 mb-3 mb-lg-3">
                                         <div class="input-group">
-                                            <input id="cantidad" type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad" onkeyup = "return miles(this.id)">
+                                            <input id="cantidad" type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad" onkeyup="return miles(this.id)">
                                             <button class="btn btn-sm btn-outline-secondary border-danger" type="button" id="btnCrear">Agregar</button>
                                         </div>
                                     </div>
@@ -64,42 +64,37 @@
                         </div>
                     </div>
                     <br />
-                    <br />
-                    <div class="card">
-                        <div class="card-body col-sm-12 mb-12 mb-lg-12">
-                            <div class="container">
-                                <br />
-                                <div style="width:99%; margin:0 auto;">
-                                    <table id="tableDetalle" class="table table-striped table-bordered table-hover dt-responsive nowrap display compact" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align:left">Id Codigo</th>
-                                                <th style="text-align:left">Producto</th>
-                                                <th style="text-align:left">Cantidad</th>
-                                                <th style="text-align:right">Valor Unitario</th>
-                                                <th style="text-align:right">% Descuento</th>
-                                                <th style="text-align:right">% Iva</th>
-                                                <th style="text-align:center">Acción</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th style="text-align:center" colspan="3">Totales</th>
-                                                <th style="text-align:right" colspan="3">Total Neto</th>
-                                                @*<th style="text-align:right">Total Descuento</th>*@
-                                                @*<th style="text-align:right">Total Gravado</th>*@
-                                                <th style="text-align:right">Total Iva</th>
-                                                <th style="text-align:right" colspan="2">Total</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                    <div style="width:99.5%; margin:0 auto;">
+                        <table id="tableDetalle" class="table table-bordered table-hover table-responsive-sm table-condensed nowrap display compact" width="100%">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left">Id Codigo</th>
+                                    <th style="text-align:left">Producto</th>
+                                    <th style="text-align:left">Cantidad</th>
+                                    <th style="text-align:right">% Iva</th>
+                                    <th style="text-align:right">Valor Unitario</th>
+                                    <th style="text-align: center; max-width: 100px">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td style="text-align:center" colspan="4">Totales</td>
+                                    <td style="text-align:center;max-width:100px" >
+                                        <h5 type="text">Total Neto</h5><br />
+                                        <h5 type="text">Total Iva</h5><br />
+                                        <h5 type="text">Total</h5>
+                                    </td>
+                                    <td style="text-align: right; max-width: 100px ">
+                                        <input type="text" class="form-control" id="valorNeto" readonly style="text-align:right"/><br />
+                                        <input type="text" class="form-control" id="valorIva" readonly style="text-align:right"/><br />
+                                        <input type="text" class="form-control" id="valorTotal" readonly style="text-align:right"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
-                        @*<label class="col-form-label" for="btnCrear">.</label>*@
-                        @*<button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>*@
                         <a class="fa fa-reply" asp-action="GetPedidos">Back to List</a>
                     </div>
                 </div>
@@ -234,7 +229,6 @@
 
     function getPedidoConDetalle(id) {
         if (id > 0) {
-            debugger
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/GetPedido`,
                 type: 'get',
@@ -251,8 +245,7 @@
                 success: function (data) {
                     debugger
                     if (true) {
-                        $('#tableDetalle').DataTable().clear();
-                        $('#tableDetalle').DataTable().destroy();
+                        //$('#tableDetalle').dataTable().destroy();
                         $('#tableDetalle').find('tbody').empty();
                         for (var i = 0; i < data.detallePedidos.length; i++) {
                             $('#tableDetalle').find('tbody').append(
@@ -260,23 +253,18 @@
                                     <td align="center">${data.detallePedidos[i].productoId}</td>
                                     <td align="center">${data.detallePedidos[i].productoId}</td>
                                     <td align="center">${data.detallePedidos[i].cantidad}</td>
-                                    <td align="center">${data.detallePedidos[i].valorUnitario}</td>
                                     <td align="center">${data.detallePedidos[i].porcentajeIva}</td>
-                                    <td align="center">
-                                        <button type="button" class="btn btn-warning btn-xs" onclick="BorrarPedido(${o.id})">
+                                    <td align="center">${data.detallePedidos[i].valorUnitario}</td>
+                                    <td align="center;max-width: 100px">
+                                        <button type="button" class="btn btn-warning btn-xs" onclick="BorrarPedido(${data.detallePedidos[i].id})">
                                          <i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;
                                         </button>
                                     </td>
                                 </tr >`);
                         }
-                        $('#tableDetalle').find('tfoot').empty();
-                        $('#tableDetalle').find('tfoot').append(
-                            `<tr>
-                                <td align="center">${data.valorNeto}</td>
-                                <td align="center">${data.valorIva}</td>
-                                <td align="center">${data.valorTotal}</td>
-
-                            </tr >`);
+                        $('#valorNeto').val(data.valorNeto);
+                        $('#valorIva').val(data.valorIva);
+                        $('#valorTotal').val(data.valorTotal);
                     }
                 },
                 error: function (data) {
