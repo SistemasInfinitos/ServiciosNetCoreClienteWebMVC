@@ -77,6 +77,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             using (var DbTran = _context.Database.BeginTransaction())
             {
                 decimal valorNeto =0;
+                decimal valorNetoLinea = 0;
                 decimal valorIva = 0;
                 decimal valorTotal =0;
                 try
@@ -91,8 +92,10 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                             var convertir2 = decimal.TryParse(item.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
                             var convertir3 = decimal.TryParse(item.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
            
+                            valorNetoLinea = 0;
                             valorNeto += (valorUnitario * cantidad);
-                            valorIva += (valorNeto * porcentajeIva) / 100;
+                            valorNetoLinea = (valorUnitario * cantidad);
+                            valorIva += (valorNetoLinea * porcentajeIva) / 100;
                             valorTotal += (valorNeto + valorIva);
                         }
                         detalle = true;
@@ -101,7 +104,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     {
                         //tiene que existir al menos una linea o detalle y debe ser un pedido nuevo
                         DbTran.Rollback();
-                        return await Task.Run(() => ok);
+                        return await Task.Run(() => result);
                     }
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (detalle == true)
@@ -118,6 +121,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         _context.EncabezadoPedidos.Add(nuevoRegistro);
                         await _context.SaveChangesAsync();
                         result = nuevoRegistro.id;
+
                         foreach (var item in entidad.detallePedidos)
                         {
                             var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad2);
@@ -358,6 +362,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         {
             bool ok = false;
             decimal valorNeto = 0;
+            decimal valorNetoLinea = 0;
             decimal valorIva = 0;
             decimal valorTotal = 0;
             using (var DbTran = _context.Database.BeginTransaction())
@@ -381,13 +386,15 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     {
                         foreach (var item in detallePedidos)
                         {
+                            valorNetoLinea = 0;
                             valorNeto += (item.valorUnitario * item.cantidad);
-                            valorIva += (valorNeto * item.porcentajeIva) / 100;
+                            valorNetoLinea = (item.valorUnitario * item.cantidad);
+                            valorIva += (valorNetoLinea * item.porcentajeIva) / 100;
                             valorTotal += (valorNeto + valorIva);
                         }
                     }
                     var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == deleteDetalle.encabezadoPedidosId).FirstOrDefaultAsync();
-                    if (encabezadoPedidos!=null && detallePedidos != null && detallePedidos.Count() > 0)
+                    if (encabezadoPedidos!=null)
                     {
                         encabezadoPedidos.valorNeto =Math.Round(valorNeto,2);
                         encabezadoPedidos.valorIva = Math.Round(valorIva,2);
@@ -418,6 +425,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         {
             bool ok = false;
             decimal valorNeto = 0;
+            decimal valorNetoLinea = 0;
             decimal valorIva = 0;
             decimal valorTotal = 0;
             var convertir1 = decimal.TryParse(entidad.cantidad, NumberStyles.Number, culture, out decimal cantidad);
@@ -449,17 +457,21 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         {
                             foreach (var item in detallePedidos)
                             {
+                                valorNetoLinea = 0;
                                 valorNeto += (item.valorUnitario * item.cantidad);
-                                valorIva += (valorNeto * item.porcentajeIva) / 100;
+                                valorNetoLinea = (item.valorUnitario * item.cantidad);
+                                valorIva += (valorNetoLinea * item.porcentajeIva) / 100;
                                 valorTotal += (valorNeto + valorIva);
                             }
+
+                            var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == entidad.encabezadoPedidosId.Value).FirstOrDefaultAsync();
+                            encabezadoPedidos.valorNeto = valorNeto;
+                            encabezadoPedidos.valorIva = valorIva;
+                            encabezadoPedidos.valorTotal = valorTotal;
+                            _context.Entry(encabezadoPedidos).State = EntityState.Modified;
+                            ok = await _context.SaveChangesAsync() > 0;
                         }
-                        var encabezadoPedidos =await _context.EncabezadoPedidos.Where(x => x.id == entidad.encabezadoPedidosId.Value).FirstOrDefaultAsync();
-                        encabezadoPedidos.valorNeto = valorNeto;
-                        encabezadoPedidos.valorIva = valorIva;
-                        encabezadoPedidos.valorTotal = valorTotal;
-                        _context.Entry(encabezadoPedidos).State = EntityState.Modified;
-                        ok = await _context.SaveChangesAsync() > 0;
+
                         if (ok)
                         {
                             DbTran.Commit();
