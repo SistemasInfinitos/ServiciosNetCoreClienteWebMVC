@@ -38,13 +38,13 @@
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
-                    <div class="card">
+                    <div class="card buscarProducto" style="display:none">
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="col-sm-12 mb-12 mb-lg-12 row">
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
                                         <select id="productoId" name="productoId" class="form-control form-select js-example-responsive" style = "width: 100%;">
-                                            <option selected>Choose...</option>
+                                            <option selected>Buscar Producto...</option>
                                         </select>
                                     </div>&nbsp;
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
@@ -56,7 +56,7 @@
                                     <div class="col-sm-3 mb-3 mb-lg-3">
                                         <div class="input-group">
                                             <input id="cantidad" type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad">
-                                            <button class="btn btn-sm btn-outline-secondary bg-danger" type="button" id="Limpiar">Agregar</button>
+                                            <button class="btn btn-sm btn-outline-secondary border-danger" type="button" id="Limpiar">Agregar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -123,6 +123,16 @@
             $(".estado").show();
         } else {
             $(".estado").hide();
+        }
+    });
+
+    $("#clientePersonaId").change(function () {
+        debugger
+        var cliente = parseInt($("#clientePersonaId").val());
+        if (cliente > 0) {
+            $(".buscarProducto").show();
+        } else {
+            $(".buscarProducto").hide();
         }
     });
 
