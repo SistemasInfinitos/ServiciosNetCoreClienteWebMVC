@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using ServerTokenJwt.ModelsDB;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
