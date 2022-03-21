@@ -256,25 +256,30 @@
                 toastr.warning("la Cantidad debe ser superior a 0!"); return;
             }
             if (productoId > 0) { } else { toastr.warning("Debes seleccionar un producto!"); return; }
-            listDetallePedidos = [];
-            b = { encabezadoPedidosId:id, productoId: productoId, cantidad: cantidad, porcentajeIva: porcentajeIva, valorUnitario: valorUnitario };
-            listDetallePedidos.push(b);
+            debugger
+            var entidad = {
+                encabezadoPedidosId: id,
+                productoId: productoId,
+                cantidad: cantidad,
+                porcentajeIva: porcentajeIva,
+                valorUnitario: valorUnitario
+            };
             debugger
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/AgregarDetallePedido`,
-                type: 'PUT',
+                type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
                 cache: false,
                 traditional: true,
                 async: true,
-                data: JSON.stringify(listDetallePedidos),
+                data: JSON.stringify(entidad),
                 header: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 success: function (response) {
-                    getPedidoConDetalle();
+                    getPedidoConDetalle(id);
                     if (response.ok) {
                         toastr.success(response.mensaje);
                     } else {
