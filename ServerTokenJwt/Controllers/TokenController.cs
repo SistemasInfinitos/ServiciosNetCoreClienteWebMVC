@@ -83,7 +83,6 @@ namespace ServerTokenJwt.Controllers
             });
         }
 
-        [HttpPost]
         private string GenerateJwtToken(UsuarioModel user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
