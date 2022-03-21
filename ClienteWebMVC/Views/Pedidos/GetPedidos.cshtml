@@ -37,6 +37,7 @@
 <script type="text/javascript">
 
     DataTablePaginada = "";
+    var accessToken = localStorage.getItem("accessToken");
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     $(document).ready(function () {
@@ -63,23 +64,20 @@
             ajax: {
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/ListPedidos`,
                 type: 'POST',
-                data: function (datatParms) {
-                    return JSON.stringify(datatParms);
-                },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'JSON',
                 cache: false,
                 traditional: true,
                 async: true,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                headers: {
-                    'Authorization': 'Bearer '
-                        + localStorage.getItem("accessToken")
+                data: function (datatParms) {
+                    return JSON.stringify(datatParms);
                 },
-                error: function (x, y) {
-                    console.log(x);
-                },
-                complete: function (response) {
-                }
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+                //,
+                //header: {
+                //    'Accept': 'application/json',
+                //    'Content-Type': 'application/json'
+                //}
             },
             scrollX: true,
             pagingType: "full_numbers",
@@ -146,10 +144,6 @@
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedido${parametro}`,
                 type: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer '
-                        + localStorage.getItem("accessToken")
-                },
                 success: function (response) {
                     debugger
                     if (response.ok) {
