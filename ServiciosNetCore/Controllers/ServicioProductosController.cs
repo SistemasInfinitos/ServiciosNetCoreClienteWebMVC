@@ -15,7 +15,8 @@ using System.Threading.Tasks;
 namespace ServiciosNetCore.Controllers
 {
     //[Authorize(Roles = "Administrador")]
-    [Authorize]
+    //[Authorize]
+    [Authorize(Policy = "UserPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class ServicioProductosController : ControllerBase

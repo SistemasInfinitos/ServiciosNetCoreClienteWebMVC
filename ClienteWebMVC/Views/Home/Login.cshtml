@@ -61,46 +61,50 @@
     <script type="text/javascript">
         var apiServicioPersonas = localStorage.getItem("ServerTokenJwt");
         $(document).ready(function () {
-            $("#accessTokenRefres").click(function () {
-                $('#LoadingInfinito').show();
-                $.ajax({
-                    url: `${apiServicioPersonas}/api/Token/Login`,
-                    method: "POST",
-                    contentType: "application/json",
-                    data: {
-                        usuario: $('#txtUsername').val(),
-                        pasword: $('#txtPassword').val(),
-                    },
-                    success: function (response) {
-                        debugger
-                        localStorage.setItem("accessToken", response.access_token);
-                       // localStorage.setItem("FullName", response.FullName);
-                       // localStorage.setItem("expiresToken", response.expires);
-
-                        if (true) {
-                            window.location.href = "/Home/Index";
-                        }
-
-                    },
-                    error: function (error) {
-                        debugger
-                        if (error.status===500) {
-                            $('#divErrorText').text("Ups! error de conexión !");
-                            $('#divError').show('fade');
-                        }
-                        else if (error.status === 400){
-                            $('#divErrorText').text(error.responseJSON.error_description);
-                            $('#divError').show('fade');
-                        }
-                        else {
-                            $('#divErrorText').text(error.responseText);
-                            $('#divError').show('fade');
-                        }
-                    },
-                    complete: function (jqXHR) {
-                        //$('#LoadingInfinito').hide();
+            
+        });
+        $("#accessTokenRefres").click(function ()
+        {
+            debugger
+            var entidad = {
+                usuario: $('#txtUsername').val(),
+                pasword: $('#txtPassword').val(),
+            };
+            $.ajax({
+                url: `${apiServicioPersonas}/api/Token/Login`,
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(entidad),
+                success: function (response) {
+                    debugger
+                    if (response.success) {
+                        localStorage.setItem("accessToken", response.token);
+                        window.location.href = "/Home/Index";
+                    } else {
+                        for (var i = 0; i < response.errors.length; i++)
+                        {
+                            $('#divErrorText').text(response.errors[i])
+                        }                       
                     }
-                });
+                },
+                error: function (error) {
+                    debugger
+                    if (error.status === 500) {
+                        $('#divErrorText').text("Ups! error de conexión !");
+                        $('#divError').show('fade');
+                    }
+                    else if (error.status === 400) {
+                        $('#divErrorText').text(error.responseJSON.error_description);
+                        $('#divError').show('fade');
+                    }
+                    else {
+                        $('#divErrorText').text(error.responseText);
+                        $('#divError').show('fade');
+                    }
+                },
+                complete: function (jqXHR) {
+                    //$('#LoadingInfinito').hide();
+                }
             });
         });
     </script>

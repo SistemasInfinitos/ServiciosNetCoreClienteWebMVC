@@ -102,23 +102,25 @@ namespace ServerTokenJwt.Controllers
                     new Claim("Id", user.id.ToString()),
                     new Claim("FullName", user.fullName),
                     new Claim(JwtRegisteredClaimNames.UniqueName, user.usuario),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, "bello90033@gmail.com"),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 NotBefore = DateTime.UtcNow,
                 IssuedAt = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddMinutes(90),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+               // Issuer = Issuer,
             };
 
-            foreach (var item in multiAudience)
-            {
-                tokenDescriptor.Subject.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, item));
-            }
+            //foreach (var item in multiAudience)
+            //{
+            //    tokenDescriptor.Subject.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, item));
+            //}
 
-            foreach (var item in roles)
-            {
-                tokenDescriptor.Subject.AddClaim(new Claim("Role", item));
-            }
+            //foreach (var item in roles)
+            //{
+            //    tokenDescriptor.Subject.AddClaim(new Claim("Role", item));
+            //}
 
             var token = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
             var jwtToken = jwtTokenHandler.WriteToken(token);

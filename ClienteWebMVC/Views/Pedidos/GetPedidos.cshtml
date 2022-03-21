@@ -71,10 +71,14 @@
                 data: function (datatParms) {
                     return JSON.stringify(datatParms);
                 },
-                header: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                headers: {
+                    'Authorization': 'Bearer '
+                        + localStorage.getItem("accessToken")
+                },
+                //header: {
+                //    'Accept': 'application/json',
+                //    'Content-Type': 'application/json'
+                //}
             },
             scrollX: true,
             pagingType: "full_numbers",
@@ -141,6 +145,10 @@
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedido${parametro}`,
                 type: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer '
+                        + localStorage.getItem("accessToken")
+                },
                 success: function (response) {
                     debugger
                     if (response.ok) {

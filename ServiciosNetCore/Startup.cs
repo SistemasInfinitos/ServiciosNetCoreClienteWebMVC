@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ServiciosNetCore.Configuration.Policy;
 using ServiciosNetCore.ModelsDB.Contexts;
 using System;
 using System.Text;
@@ -48,13 +50,21 @@ namespace ServiciosNetCore
                         //ValidIssuer = Issuer,
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
-                        ClockSkew = TimeSpan.Zero,
                         ValidateLifetime = true,
-                        NameClaimType = "name",
+                        ValidateIssuerSigningKey = true,
+                        //ValidIssuers = new List<string>() { Issuer },
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("UserPolicy", policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new PersonaRequireClaim());
+                });
+            });
+            services.AddScoped<IAuthorizationHandler, PoliciesAuthorizationHandler>();
 
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
@@ -68,7 +78,6 @@ namespace ServiciosNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseAuthentication();
             app.UseCors("AudienciaPolicy");
             if (env.IsDevelopment())
             {
@@ -80,7 +89,7 @@ namespace ServiciosNetCore
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
