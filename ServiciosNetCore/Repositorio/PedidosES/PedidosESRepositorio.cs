@@ -105,7 +105,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (detalle == true)
                     {
-                        nuevoRegistro.usuarioId = entidad.usuarioId.Value;
+                        nuevoRegistro.usuarioId = 1;//entidad.usuarioId.Value; Aqui deb ir el usuario del claims jwt
                         nuevoRegistro.clientePersonaId = entidad.clientePersonaId;
                         nuevoRegistro.valorNeto =Math.Round(valorNeto,2);
                         nuevoRegistro.valorIva = Math.Round(valorIva,2);
