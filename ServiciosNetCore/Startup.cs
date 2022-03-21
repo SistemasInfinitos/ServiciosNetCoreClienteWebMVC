@@ -22,8 +22,8 @@ namespace ServiciosNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string[] audience = Configuration["JwtConfig:Audience"].ToString().Split(",");
-            string connectionString = Configuration["JwtConfig:connectionString"];
+            string[] audience = Configuration["JwtConfiguracion:Audience"].ToString().Split(",");
+            string connectionString = Configuration["JwtConfiguracion:connectionString"];
 
             services.AddCors(options =>
             {

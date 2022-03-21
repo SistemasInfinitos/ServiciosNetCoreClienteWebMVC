@@ -48,5 +48,12 @@ namespace ServicioPersonas.Repositorio.UsuariosES
         /// </summary>
         /// <returns></returns>
         Task<DataTableResponseUsuario> GetUsuariosDataTable(DataTableParameter dtParameters);
+
+        /// <summary>
+        /// Encripta una cadena de texto (en una direecion ->)
+        /// </summary>
+        /// <param name="contrasena"></param>
+        /// <returns></returns>
+        Task<string> EncriptarContrasena(string contrasena);
     }
 }

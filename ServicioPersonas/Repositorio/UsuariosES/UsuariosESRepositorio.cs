@@ -40,7 +40,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     if (actualizarRegistro != null)
                     {
                         actualizarRegistro.nombreUsuario = entidad.nombreUsuario;
-                        actualizarRegistro.passwordHash = entidad.passwordHash; // requiere encriptacion -- no lo encripto porque es una prueba
+                        actualizarRegistro.passwordHash =await EncriptarContrasena(entidad.passwordHash); // requiere encriptacion -- no lo encripto porque es una prueba
                         actualizarRegistro.personaId = entidad.personaId;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
@@ -78,7 +78,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     if (verificarExiste == null)
                     {
                         nuevoRegistro.nombreUsuario = entidad.nombreUsuario;
-                        nuevoRegistro.passwordHash = entidad.passwordHash;// requiere encriptacion -- no lo encripto porque es una prueba
+                        nuevoRegistro.passwordHash = await EncriptarContrasena(entidad.passwordHash);
                         nuevoRegistro.personaId = entidad.personaId;
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
@@ -266,6 +266,11 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                 throw ex;
             }
             return await Task.Run(() => datos);
+        }
+
+        public Task<string> EncriptarContrasena(string contrasena)
+        {
+            throw new NotImplementedException();
         }
     }
 }

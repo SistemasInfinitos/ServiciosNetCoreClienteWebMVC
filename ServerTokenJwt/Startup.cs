@@ -30,8 +30,8 @@ namespace ServerTokenJwt
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string[] audience = Configuration["JwtConfig:Audience"].ToString().Split(",");
-            string connectionString = Configuration["JwtConfig:connectionString"];
+            string[] audience = Configuration["JwtConfiguracion:audience"].ToString().Split(",");
+            string connectionString = Configuration["JwtConfiguracion:connectionString"];
 
             services.AddCors(options =>
             {
