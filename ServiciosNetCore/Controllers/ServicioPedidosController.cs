@@ -35,7 +35,10 @@ namespace ServiciosNetCore.Controllers
             try
             {
                 data.resul = await Task.Run(() => _repositoryPedido.CrearPedido(entidad));
-                data.mensaje = "Transaccion exitosa!";
+                if (data.resul>0)
+                {
+                    data.mensaje = "Transaccion exitosa!";
+                }
                 return Ok(data);
             }
             catch (Exception x)
@@ -57,7 +60,10 @@ namespace ServiciosNetCore.Controllers
             try
             {
                 data.ok = await Task.Run(() => _repositoryPedido.AgregarDetallePedido(entidad));
-                data.mensaje = "Transaccion exitosa!";
+                if (data.ok)
+                {
+                    data.mensaje = "Transaccion exitosa!";
+                }
                 return Ok(data);
             }
             catch (Exception x)
@@ -107,7 +113,10 @@ namespace ServiciosNetCore.Controllers
                 try
                 {
                     data.ok = await Task.Run(() => _repositoryPedido.DeletePedido(id.Value));
-                    data.mensaje = "Transaccion exitosa!";
+                    if (data.ok)
+                    {
+                        data.mensaje = "Transaccion exitosa!";
+                    }
                     return Ok(data);
                 }
                 catch (Exception x)
@@ -133,7 +142,10 @@ namespace ServiciosNetCore.Controllers
                 try
                 {
                     data.ok = await Task.Run(() => _repositoryPedido.DeletePedidoDetalle(id.Value));
-                    data.mensaje = "Transaccion exitosa!";
+                    if (data.ok)
+                    {
+                        data.mensaje = "Transaccion exitosa!";
+                    }
                     return Ok(data);
                 }
                 catch (Exception x)

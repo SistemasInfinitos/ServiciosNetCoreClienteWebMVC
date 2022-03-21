@@ -93,3 +93,14 @@ if EXISTS(select COUNT(id)cantidad from DetallePedidos where id=@id)
 else 
 	select respuesta=@@ROWCOUNT
 end
+
+Create view viewEncabezadoPedidos as
+select p.id,p.usuarioId,p.clientePersonaId,p.valorNeto,p.valorIva
+,p. valorTotal,p.estado
+,CONVERT(varchar,FORMAT(p.fechaCreacion, 'yyyy/MM/dd HH:mm','en-US'))fechaCreacion
+,ISNULL(CONVERT(varchar,FORMAT(p.fechaActualizacion, 'yyyy/MM/dd HH:mm','en-US')),'') fechaActualizacion
+,u.nombreUsuario
+,concat(pp.nombres,' ',pp.apellidos)cliente
+ from EncabezadoPedidos p
+join Personas pp on pp.id=p.clientePersonaId
+join Usuarios u on u.id=p.usuarioId

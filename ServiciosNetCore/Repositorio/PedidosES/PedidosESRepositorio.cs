@@ -253,7 +253,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     predicado = predicado.And(predicado2);
                 }
 
-                datos.recordsFiltered = _context.EncabezadoPedidos.Where(predicado).ToList().Count();
+                datos.recordsFiltered = await _context.EncabezadoPedidos.Where(predicado).CountAsync();
                 datos.recordsTotal = datos.recordsFiltered;
                 datos.draw = dtParameters.draw;
 
@@ -273,7 +273,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 List<EncabezadoPedido> datos2 = new List<EncabezadoPedido>();
                 if (datos.recordsFiltered > 0)
                 {
-                    datos2 = _context.EncabezadoPedidos.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToList();
+                    datos2 = await _context.EncabezadoPedidos.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToListAsync();
                     datos.data = datos2.Select(x => new EncabezadoPedidosModel
                     {
                         id = x.id,
@@ -281,7 +281,6 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
                 }
-
 
                 return await Task.Run(() => datos);
             }
