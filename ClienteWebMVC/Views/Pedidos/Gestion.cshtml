@@ -209,7 +209,7 @@
                     'Content-Type': 'application/json'
                 },
                 success: function (data) {
-                    
+                    debugger
                     if (true) {
                         //$('#tableDetalle').dataTable().destroy();
                         $('#tableDetalle').find('tbody').empty();
@@ -222,7 +222,7 @@
                                     <td align="right">${data.detallePedidos[i].porcentajeIva}</td>
                                     <td align="right">${data.detallePedidos[i].valorUnitario}</td>
                                     <td style="text-align: center; max-width: 100px">
-                                        <button type="button" class="btn btn-warning btn-sm" onclick="BorrarPedido(${data.detallePedidos[i].id})">
+                                        <button type="button" class="btn btn-warning btn-sm" onclick="BorrarDetallePedido(${data.detallePedidos[i].id})">
                                          <i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;
                                         </button>
                                     </td>
@@ -292,6 +292,31 @@
             });
         }
     }
+
+    function BorrarDetallePedido(idDetalle) {
+
+        if (id > 0) {
+            var parametro = '?' + $.param({ "id": idDetalle });
+            $.ajax({
+                url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedidoDetalle${parametro}`,
+                type: 'DELETE',
+                success: function (response) {
+
+                    if (response.ok) {
+                        toastr.success(response.mensaje);
+
+                    } else {
+                        toastr.warning(response.mensaje);
+                    };
+                    debugger
+                    getPedidoConDetalle(id);
+                },
+                error: function (jQXHR) {
+                    toastr.error('error, No pudimos procesar su Solicitud!');
+                }
+            });
+        }
+    };
 
     //busca una persona dinamicamente por coincidencia de nombres y apellidos max 10 dropList
     $('#clientePersonaId').select2({

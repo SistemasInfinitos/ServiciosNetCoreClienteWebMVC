@@ -47,7 +47,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         //actualizarRegistro.valorNeto = entidad.valorNeto;
                         //actualizarRegistro.valorIva = entidad.valorIva;
                         //actualizarRegistro.valorTotal = entidad.valorTotal;
-                        actualizarRegistro.estado = entidad.estado.Value;
+                        actualizarRegistro.estado = entidad.estado;
                         actualizarRegistro.fechaActualizacion = DateTime.Now;
 
                         _context.Entry(actualizarRegistro).State = EntityState.Modified;
@@ -70,7 +70,8 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         public async Task<int> CrearPedido(EncabezadoPedidosModel entidad)
         {
             /* Este metodo permite agregar un detalle o varios- depende del frond-end*/
-            int ok = 0;
+            bool ok = false;
+            int result = 0;
             bool detalle = false;
 
             using (var DbTran = _context.Database.BeginTransaction())
@@ -116,7 +117,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
                         _context.EncabezadoPedidos.Add(nuevoRegistro);
                         await _context.SaveChangesAsync();
-
+                        result = nuevoRegistro.id;
                         foreach (var item in entidad.detallePedidos)
                         {
                             var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad2);
@@ -137,7 +138,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                     fechaActualizacion = null
                                 };
                                 _context.DetallePedidos.Add(nuevoDetalle);
-                                ok = await _context.SaveChangesAsync();
+                                ok = await _context.SaveChangesAsync()>0;
                             }
                             else
                             {
@@ -146,7 +147,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         }
                     }
 
-                    if (ok>0)
+                    if (ok)
                     {
                         DbTran.Commit();
                     }
@@ -156,7 +157,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     DbTran.Rollback();
                 }
             }
-            return await Task.Run(() => ok);
+            return await Task.Run(() => result);
         }
 
         public async Task<EncabezadoPedidosModel> GetPedido(string buscar, int? Id)
@@ -183,9 +184,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     entidad.id = data.id;
                     entidad.usuarioId = data.usuarioId;
                     entidad.clientePersonaId = data.clientePersonaId;
-                    entidad.valorNeto = data.valorNeto;
-                    entidad.valorIva = data.valorIva;
-                    entidad.valorTotal = data.valorTotal;
+                    entidad.valorNeto = data.valorNeto.ToString("N2",culture);
+                    entidad.valorIva = data.valorIva.ToString("N2", culture);
+                    entidad.valorTotal = data.valorTotal.ToString("N2", culture);
                     entidad.estado = true;
                     entidad.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     entidad.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
@@ -363,9 +364,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             {
                 try
                 {
-                    var deleteDetalle = await _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).FirstOrDefaultAsync();
+                    var deleteDetalle = await _context.DetallePedidos.Where(x => x.id == id).FirstOrDefaultAsync();
                     _context.Entry(deleteDetalle).State = EntityState.Deleted;
-                    ok = await _context.SaveChangesAsync() > 0;
+                     await _context.SaveChangesAsync();
 
                     //string sp = "SpDeleteDetallePedido";
                     //List<SqlParameter> parametros = new List<SqlParameter>();
@@ -388,9 +389,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == deleteDetalle.encabezadoPedidosId).FirstOrDefaultAsync();
                     if (encabezadoPedidos!=null && detallePedidos != null && detallePedidos.Count() > 0)
                     {
-                        encabezadoPedidos.valorNeto = valorNeto;
-                        encabezadoPedidos.valorIva = valorIva;
-                        encabezadoPedidos.valorTotal = valorTotal;
+                        encabezadoPedidos.valorNeto =Math.Round(valorNeto,2);
+                        encabezadoPedidos.valorIva = Math.Round(valorIva,2);
+                        encabezadoPedidos.valorTotal = Math.Round(valorTotal,2);
                         _context.Entry(encabezadoPedidos).State = EntityState.Modified;
                         ok = await _context.SaveChangesAsync() > 0;
                     }
