@@ -72,8 +72,8 @@
                                         <th style="text-align:center">Id Codigo</th>
                                         <th style="text-align:center">Producto</th>
                                         <th style="text-align:center">Cantidad</th>
-                                        <th style="text-align:right">% Iva</th>
                                         <th style="text-align:right">Valor Unitario</th>
+                                        <th style="text-align:right">% Iva</th>
                                         <th style="text-align: center; max-width: 100px">Acción</th>
                                     </tr>
                                 </thead>
@@ -221,8 +221,8 @@
                                     <td align="center">${data.detallePedidos[i].productoId}</td>
                                     <td align="center">${data.detallePedidos[i].productoId}</td>
                                     <td align="center">${data.detallePedidos[i].cantidad}</td>
-                                    <td align="right">${data.detallePedidos[i].porcentajeIva}</td>
                                     <td align="right">${data.detallePedidos[i].valorUnitario}</td>
+                                    <td align="right">${data.detallePedidos[i].porcentajeIva}</td>                                    
                                     <td style="text-align: center; max-width: 100px">
                                         <button type="button" class="btn btn-warning btn-sm" onclick="BorrarDetallePedido(${data.detallePedidos[i].id})">
                                          <i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;
