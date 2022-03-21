@@ -207,6 +207,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
                             });
                         };
+                        entidad.detallePedidos = lisDetalle;
                     }
                 }
             }
