@@ -109,7 +109,8 @@ namespace ServerTokenJwt.Controllers
                 IssuedAt = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddMinutes(90),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-               // Issuer = Issuer,
+                Issuer = multiAudience[0],
+                Audience=multiAudience[0],
             };
 
             //foreach (var item in multiAudience)
@@ -117,10 +118,10 @@ namespace ServerTokenJwt.Controllers
             //    tokenDescriptor.Subject.AddClaim(new Claim(JwtRegisteredClaimNames.Aud, item));
             //}
 
-            //foreach (var item in roles)
-            //{
-            //    tokenDescriptor.Subject.AddClaim(new Claim("Role", item));
-            //}
+            foreach (var item in roles)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim("Role", item));
+            }
 
             var token = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
             var jwtToken = jwtTokenHandler.WriteToken(token);

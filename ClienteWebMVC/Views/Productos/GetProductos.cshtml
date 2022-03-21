@@ -35,6 +35,7 @@
 <script type="text/javascript">
 
     DataTablePaginada = "";
+    var accessToken = localStorage.getItem("accessToken");
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     $(document).ready(function () {
@@ -69,10 +70,11 @@
                 data: function (datatParms) {
                     return JSON.stringify(datatParms);
                 },
-                header: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                "headers": { 'Authorization': `Bearer ${accessToken}` }
+                //header: {
+                //    'Accept': 'application/json',
+                //    'Content-Type': 'application/json'
+                //}
             },
             scrollX: true,
             pagingType: "full_numbers",
