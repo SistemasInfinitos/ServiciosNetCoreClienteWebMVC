@@ -62,9 +62,10 @@ namespace ClienteWebMVC.Controllers.Pedido
             ViewBag.clientePersonaId = new SelectList(modelPerona, "id", "text");
             if (model.clientePersonaId > 0)
             {
+                var apis2 = api.Where(x => x.servicio == "ServicioPersonas").FirstOrDefault();
                 int param = model.clientePersonaId;
                 //se establece la parsona para que no traiga mas de uno ya que hay un buscar ajax dinamico
-                string uriCliente = apis.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
+                string uriCliente = apis2.uri + "/api/ServicioPersonas/GetPersonasDropList" + "?id=" + param;
                 var cliente = await httpClient.GetAsync(uriCliente);
                 if (cliente.IsSuccessStatusCode)
                 {

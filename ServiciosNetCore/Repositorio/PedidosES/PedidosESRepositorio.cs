@@ -191,7 +191,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     entidad.valorNeto = data.valorNeto.ToString("N2",culture);
                     entidad.valorIva = data.valorIva.ToString("N2", culture);
                     entidad.valorTotal = data.valorTotal.ToString("N2", culture);
-                    entidad.estado = true;
+                    entidad.estado = data.estado.Value;
                     entidad.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     entidad.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
 

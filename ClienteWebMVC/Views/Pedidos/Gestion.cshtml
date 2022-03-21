@@ -116,6 +116,8 @@
         if (id != "") {
             update = true;
             $(".estado").show();
+            getPedidoConDetalle(id);
+            $(".buscarProducto").show();
         } else {
             $(".estado").hide();
         }
@@ -294,7 +296,6 @@
     }
 
     function BorrarDetallePedido(idDetalle) {
-
         if (id > 0) {
             var parametro = '?' + $.param({ "id": idDetalle });
             $.ajax({
@@ -380,7 +381,6 @@
         $('#valorUnitario').val(data[0].valor).trigger("change");
     })
 
-
     function updateEncabezado() {
         if (id != "" && id != undefined) {
             var entidad = {
@@ -420,7 +420,6 @@
             toastr.warning("selecciona una accion!");
         }
     }
-
 
     var numero_miles = "";
 
