@@ -21,6 +21,7 @@ namespace ServiciosNetCore.ModelsDB.Contexts
         public virtual DbSet<DetallePedido> DetallePedidos { get; set; }
         public virtual DbSet<EncabezadoPedido> EncabezadoPedidos { get; set; }
         public virtual DbSet<Producto> Productos { get; set; }
+        public virtual DbSet<viewEncabezadoPedido> viewEncabezadoPedidos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -105,6 +106,36 @@ namespace ServiciosNetCore.ModelsDB.Contexts
                 entity.Property(e => e.iva).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.valorUnitario).HasColumnType("decimal(18, 4)");
+            });
+
+            modelBuilder.Entity<viewEncabezadoPedido>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("viewEncabezadoPedidos");
+
+                entity.Property(e => e.cliente)
+                    .IsRequired()
+                    .HasMaxLength(101);
+
+                entity.Property(e => e.fechaActualizacion)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.fechaCreacion)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.nombreUsuario)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.valorIva).HasColumnType("decimal(18, 4)");
+
+                entity.Property(e => e.valorNeto).HasColumnType("decimal(18, 4)");
+
+                entity.Property(e => e.valorTotal).HasColumnType("decimal(18, 4)");
             });
 
             OnModelCreatingPartial(modelBuilder);
