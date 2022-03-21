@@ -104,3 +104,9 @@ select p.id,p.usuarioId,p.clientePersonaId,p.valorNeto,p.valorIva
  from EncabezadoPedidos p
 join Personas pp on pp.id=p.clientePersonaId
 join Usuarios u on u.id=p.usuarioId
+
+/*CREDENCIALES*/
+select* from Usuarios
+
+-- admin   MauricioBello12345
+-- bello   MauricioBello0715

@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ServicioPersonas.Repositorio.UsuariosES
@@ -268,9 +270,29 @@ namespace ServicioPersonas.Repositorio.UsuariosES
             return await Task.Run(() => datos);
         }
 
-        public Task<string> EncriptarContrasena(string contrasena)
+        public async Task<string> EncriptarContrasena(string contrasena)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var key = _jwtConfig.key;
+                string iv = _jwtConfig.iv;
+                byte[] plainttext = ASCIIEncoding.ASCII.GetBytes(contrasena);
+                AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
+                aes.BlockSize = 128;
+                aes.KeySize = 256;
+                aes.Key = ASCIIEncoding.ASCII.GetBytes(key);
+                aes.IV = ASCIIEncoding.ASCII.GetBytes(iv);
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Mode = CipherMode.CBC;
+                ICryptoTransform crypto = aes.CreateEncryptor(aes.Key, aes.IV);
+                byte[] encryptedtext = crypto.TransformFinalBlock(plainttext, 0, plainttext.Length);
+                return await Task.Run(() => Convert.ToBase64String(encryptedtext));
+            }
+            catch (Exception ex)
+            {
+                var debug = ex.Message;
+                return null;
+            }
         }
     }
 }
