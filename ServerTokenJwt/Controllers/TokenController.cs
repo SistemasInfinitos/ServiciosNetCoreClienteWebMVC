@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using ServerTokenJwt.Configuration;
 using ServerTokenJwt.ModelsAPI;
 using ServerTokenJwt.ModelsDB.Contexts;
+using ServerTokenJwt.Repositorio;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,12 +21,12 @@ namespace ServerTokenJwt.Controllers
     public class TokenController : ControllerBase
     {
         private readonly JwtConfiguracion _jwtConfig;
-        //private readonly ITokenJWTESRepositorio _repositorySeguridad;
+        private readonly ITokenJWTESRepositorio _repositorySeguridad;
 
         public TokenController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
-           // _repositorySeguridad = new TokenJWTESRepositorio(optionsMonitor, context);
+            _repositorySeguridad = new TokenJWTESRepositorio(optionsMonitor, context);
         }
 
         [HttpGet]
