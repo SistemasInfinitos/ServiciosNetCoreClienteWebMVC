@@ -40,7 +40,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                     if (actualizarRegistro != null)
                     {
                         actualizarRegistro.nombreUsuario = entidad.nombreUsuario;
-                        actualizarRegistro.passwordHash =await EncriptarContrasena(entidad.passwordHash); // requiere encriptacion -- no lo encripto porque es una prueba
+                        actualizarRegistro.passwordHash = await EncriptarContrasena(entidad.passwordHash); // requiere encriptacion -- no lo encripto porque es una prueba
                         actualizarRegistro.personaId = entidad.personaId;
                         actualizarRegistro.estado = true;
                         actualizarRegistro.fechaCreacion = DateTime.Now;
