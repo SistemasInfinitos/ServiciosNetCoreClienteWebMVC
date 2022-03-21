@@ -1,12 +1,16 @@
 using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ServiciosNetCore.ModelsDB.Contexts;
+using System;
+using System.Text;
 
 namespace ServiciosNetCore
 {
@@ -24,6 +28,7 @@ namespace ServiciosNetCore
         {
             string[] audience = Configuration["JwtConfiguracion:Audience"].ToString().Split(",");
             string connectionString = Configuration["JwtConfiguracion:connectionString"];
+            string secret = Configuration["JwtConfiguracion:secret"];
 
             services.AddCors(options =>
             {
@@ -32,6 +37,25 @@ namespace ServiciosNetCore
                     builder.WithOrigins(audience).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((host) => true).AllowCredentials();
                 });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+
+                        //ValidAudience = Audience,
+                        //ValidIssuer = Issuer,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret)),
+                        ClockSkew = TimeSpan.Zero,
+                        ValidateLifetime = true,
+                        NameClaimType = "name",
+                    };
+                });
+
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
             services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
             services.AddControllers();
@@ -44,6 +68,7 @@ namespace ServiciosNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseAuthentication();
             app.UseCors("AudienciaPolicy");
             if (env.IsDevelopment())
             {

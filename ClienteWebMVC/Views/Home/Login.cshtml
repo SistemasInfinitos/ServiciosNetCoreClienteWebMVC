@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Iniciar Sesion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<body class="bg-gradient-primary">
+    <div class="container" style="position:center; margin-top:10px">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <br />
+                                Cualquier cosa...
+                                @*<img src="~/css/Imagenes/looad.gif" style="height:380px; width:380px;" />*@
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user col-12" id="txtUsername" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user col-12" id="txtPassword" placeholder="Password">
+                                        </div>
+                                        <a class="btn btn-primary btn-user btn-block text-white" id="accessTokenRefres">
+                                            Iniciar
+                                        </a>
+                                        <!--Bootstrap alert to display error message if the login fails-->
+                                        <br />
+                                        <div id="divError" class="alert alert-danger collapse">
+                                            <a id="linkClose" href="#" class="close">&times;</a>
+                                            <div id="divErrorText"></div>
+                                        </div>
+                                        <hr>
+                                    </form>
+                                    <div class="text-center">
+                                        @*<a class="small" href="@Url.Action("RecuperarCredenciales", "Cuenta", new {id = 1})">Forgot Password?</a>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var apiServicioPersonas = localStorage.getItem("ServerTokenJwt");
+        $(document).ready(function () {
+            $("#accessTokenRefres").click(function () {
+                $('#LoadingInfinito').show();
+                $.ajax({
+                    url: `${apiServicioPersonas}/api/Token/Login`,
+                    method: "POST",
+                    contentType: "application/json",
+                    data: {
+                        usuario: $('#txtUsername').val(),
+                        pasword: $('#txtPassword').val(),
+                    },
+                    success: function (response) {
+                        debugger
+                        localStorage.setItem("accessToken", response.access_token);
+                       // localStorage.setItem("FullName", response.FullName);
+                       // localStorage.setItem("expiresToken", response.expires);
+
+                        if (true) {
+                            window.location.href = "/Home/Index";
+                        }
+
+                    },
+                    error: function (error) {
+                        debugger
+                        if (error.status===500) {
+                            $('#divErrorText').text("Ups! error de conexión !");
+                            $('#divError').show('fade');
+                        }
+                        else if (error.status === 400){
+                            $('#divErrorText').text(error.responseJSON.error_description);
+                            $('#divError').show('fade');
+                        }
+                        else {
+                            $('#divErrorText').text(error.responseText);
+                            $('#divError').show('fade');
+                        }
+                    },
+                    complete: function (jqXHR) {
+                        //$('#LoadingInfinito').hide();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

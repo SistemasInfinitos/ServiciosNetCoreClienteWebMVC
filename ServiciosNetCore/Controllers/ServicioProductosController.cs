@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace ServiciosNetCore.Controllers
 {
+    //[Authorize(Roles = "Administrador")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ServicioProductosController : ControllerBase
