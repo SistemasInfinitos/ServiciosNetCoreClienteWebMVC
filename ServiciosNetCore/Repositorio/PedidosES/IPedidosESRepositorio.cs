@@ -37,11 +37,11 @@ namespace ServiciosNetCore.Repositorio.PedidosES
         Task<bool> ActualizarPedidoEncabezado(EncabezadoPedidosModel entidad);
 
         /// <summary>
-        /// Crea una nuevo pedido en la base de datos con su detalle
+        /// Crea una nuevo pedido en la base de datos con su detalle y retorna su id
         /// </summary>
         /// <param name="entidad"></param>
         /// <returns></returns>
-        Task<bool> CrearPedido(EncabezadoPedidosModel entidad);
+        Task<int> CrearPedido(EncabezadoPedidosModel entidad);
 
         /// <summary>
         /// trae un pedido segun su id de la base de datos

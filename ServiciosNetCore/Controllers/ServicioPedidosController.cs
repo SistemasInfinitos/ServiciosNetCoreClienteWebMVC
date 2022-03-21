@@ -34,7 +34,7 @@ namespace ServiciosNetCore.Controllers
             };
             try
             {
-                data.ok = await Task.Run(() => _repositoryPedido.CrearPedido(entidad));
+                data.resul = await Task.Run(() => _repositoryPedido.CrearPedido(entidad));
                 data.mensaje = "Transaccion exitosa!";
                 return Ok(data);
             }

@@ -176,50 +176,62 @@
                         'Content-Type': 'application/json'
                     },
                     success: function (response) {
-
-                        if (response.ok) {
+                        debugger
+                        if (response.resul > 0) {
+                            id = response.resul;
+                            $("#id").val(response.resul);
+                            update = true;
                             toastr.success(response.mensaje);
                         } else {
                             toastr.warning(response.mensaje);
                         }
                     },
                     error: function (data) {
-
                         toastr.error("No pudimos completar tu solicitud!");
                     }
                 });
             }           
         }
-        else if (id != "" && id != undefined && id != NaN) {
-            $.ajax({
-                url: `${apiServiciosNetCore}/api/ServicioPedidos/ActualizarPedidoEncabezado`,
-                type: 'PUT',
-                contentType: "application/json; charset=utf-8",
-                dataType: 'JSON',
-                cache: false,
-                traditional: true,
-                async: true,
-                data: JSON.stringify(entidad),
-                header: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function (ok) {
-
-                    if (ok) {
-                        toastr.success("success");
-                    } else {
-                        toastr.warning(ok.mensaje);
-                    }
-                },
-                error: function (data) {
-                    toastr.error("No pudimos completar tu solicitud!");
+        else
+            if (id != "" && id != undefined && id != NaN)
+            {
+                var entidad = {
+                    clientePersonaId: clientePersonaId,
+                    detallePedidos: listDetallePedidos,
+                    estado: estado,
                 }
-            });
-        }
-        else {
+                if (true) {
+                    $.ajax({
+                        url: `${apiServiciosNetCore}/api/ServicioPedidos/ActualizarPedidoEncabezado`,
+                        type: 'PUT',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'JSON',
+                        cache: false,
+                        traditional: true,
+                        async: true,
+                        data: JSON.stringify(entidad),
+                        header: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        success: function (ok) {
+
+                            if (ok) {
+                                toastr.success(ok.mensaje);
+                            } else {
+                                toastr.warning(ok.mensaje);
+                            }
+                        },
+                        error: function (data) {
+                            toastr.error("No pudimos completar tu solicitud!");
+                        }
+                    });
+                }
+            }
+            else
+            {
             toastr.warning("selecciona una accion!");
-        }
+            }
     });
 
     //busca una persona dinamicamente por coincidencia de nombres y apellidos max 10 dropList

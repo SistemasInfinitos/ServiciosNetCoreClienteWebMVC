@@ -67,10 +67,10 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             return await Task.Run(() => ok);
         }
 
-        public async Task<bool> CrearPedido(EncabezadoPedidosModel entidad)
+        public async Task<int> CrearPedido(EncabezadoPedidosModel entidad)
         {
             /* Este metodo permite agregar un detalle o varios- depende del frond-end*/
-            bool ok = false;
+            int ok = 0;
             bool detalle = false;
 
             using (var DbTran = _context.Database.BeginTransaction())
@@ -137,7 +137,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                     fechaActualizacion = null
                                 };
                                 _context.DetallePedidos.Add(nuevoDetalle);
-                                ok = await _context.SaveChangesAsync() > 0;
+                                ok = await _context.SaveChangesAsync();
                             }
                             else
                             {
@@ -146,7 +146,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         }
                     }
 
-                    if (ok)
+                    if (ok>0)
                     {
                         DbTran.Commit();
                     }
