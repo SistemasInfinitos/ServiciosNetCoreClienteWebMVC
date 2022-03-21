@@ -96,7 +96,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                             valorNeto += (valorUnitario * cantidad);
                             valorNetoLinea = (valorUnitario * cantidad);
                             valorIva += (valorNetoLinea * porcentajeIva) / 100;
-                            valorTotal += (valorNeto + valorIva);
+                            valorTotal = (valorNeto + valorIva);
                         }
                         detalle = true;
                     }
@@ -390,7 +390,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                             valorNeto += (item.valorUnitario * item.cantidad);
                             valorNetoLinea = (item.valorUnitario * item.cantidad);
                             valorIva += (valorNetoLinea * item.porcentajeIva) / 100;
-                            valorTotal += (valorNeto + valorIva);
+                            valorTotal = (valorNeto + valorIva);
                         }
                     }
                     var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == deleteDetalle.encabezadoPedidosId).FirstOrDefaultAsync();
@@ -461,13 +461,13 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 valorNeto += (item.valorUnitario * item.cantidad);
                                 valorNetoLinea = (item.valorUnitario * item.cantidad);
                                 valorIva += (valorNetoLinea * item.porcentajeIva) / 100;
-                                valorTotal += (valorNeto + valorIva);
+                                valorTotal = (valorNeto + valorIva);
                             }
 
                             var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == entidad.encabezadoPedidosId.Value).FirstOrDefaultAsync();
-                            encabezadoPedidos.valorNeto = valorNeto;
-                            encabezadoPedidos.valorIva = valorIva;
-                            encabezadoPedidos.valorTotal = valorTotal;
+                            encabezadoPedidos.valorNeto = Math.Round(valorNeto,2);
+                            encabezadoPedidos.valorIva = Math.Round(valorIva,2);
+                            encabezadoPedidos.valorTotal = Math.Round(valorTotal,2);
                             _context.Entry(encabezadoPedidos).State = EntityState.Modified;
                             ok = await _context.SaveChangesAsync() > 0;
                         }
