@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -76,22 +75,22 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
             using (var DbTran = _context.Database.BeginTransaction())
             {
-                decimal valorNeto =0;
+                decimal valorNeto = 0;
                 decimal valorNetoLinea = 0;
                 decimal valorIva = 0;
-                decimal valorTotal =0;
+                decimal valorTotal = 0;
                 try
                 {
                     var verificarExiste = _context.EncabezadoPedidos.Where(x => x.id == entidad.id).FirstOrDefault();
 
-                    if (entidad.detallePedidos != null && entidad.detallePedidos.Count() > 0 && verificarExiste == null) 
+                    if (entidad.detallePedidos != null && entidad.detallePedidos.Count() > 0 && verificarExiste == null)
                     {
                         foreach (var item in entidad.detallePedidos)
                         {
                             var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad);
                             var convertir2 = decimal.TryParse(item.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
                             var convertir3 = decimal.TryParse(item.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
-           
+
                             valorNetoLinea = 0;
                             valorNeto += (valorUnitario * cantidad);
                             valorNetoLinea = (valorUnitario * cantidad);
@@ -111,9 +110,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     {
                         nuevoRegistro.usuarioId = 1;//entidad.usuarioId.Value; Aqui deb ir el usuario del claims jwt
                         nuevoRegistro.clientePersonaId = entidad.clientePersonaId;
-                        nuevoRegistro.valorNeto =Math.Round(valorNeto,2);
-                        nuevoRegistro.valorIva = Math.Round(valorIva,2);
-                        nuevoRegistro.valorTotal = Math.Round(valorTotal,2);
+                        nuevoRegistro.valorNeto = Math.Round(valorNeto, 2);
+                        nuevoRegistro.valorIva = Math.Round(valorIva, 2);
+                        nuevoRegistro.valorTotal = Math.Round(valorTotal, 2);
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
@@ -142,7 +141,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                     fechaActualizacion = null
                                 };
                                 _context.DetallePedidos.Add(nuevoDetalle);
-                                ok = await _context.SaveChangesAsync()>0;
+                                ok = await _context.SaveChangesAsync() > 0;
                             }
                             else
                             {
@@ -188,7 +187,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     entidad.id = data.id;
                     entidad.usuarioId = data.usuarioId;
                     entidad.clientePersonaId = data.clientePersonaId;
-                    entidad.valorNeto = data.valorNeto.ToString("N2",culture);
+                    entidad.valorNeto = data.valorNeto.ToString("N2", culture);
                     entidad.valorIva = data.valorIva.ToString("N2", culture);
                     entidad.valorTotal = data.valorTotal.ToString("N2", culture);
                     entidad.estado = data.estado.Value;
@@ -206,7 +205,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
-                                cantidad = item.cantidad.ToString("N2",culture),
+                                cantidad = item.cantidad.ToString("N2", culture),
                                 porcentajeIva = item.porcentajeIva.ToString("N2", culture),
                                 valorUnitario = item.valorUnitario.ToString("N2", culture),
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
@@ -279,13 +278,13 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     datos.data = datos2.Select(x => new viewEncabezadoPedidoModel
                     {
                         id = x.id,
-                        usuarioId=x.usuarioId,
-                        nombreUsuario=x.nombreUsuario,
-                        clientePersonaId=x.clientePersonaId,
-                        cliente=x.cliente,
-                        valorIva=x.valorIva.ToString("N2",culture),
-                        valorNeto=x.valorNeto.ToString("N2",culture),
-                        valorTotal=x.valorTotal.ToString("N2",culture),
+                        usuarioId = x.usuarioId,
+                        nombreUsuario = x.nombreUsuario,
+                        clientePersonaId = x.clientePersonaId,
+                        cliente = x.cliente,
+                        valorIva = x.valorIva.ToString("N2", culture),
+                        valorNeto = x.valorNeto.ToString("N2", culture),
+                        valorTotal = x.valorTotal.ToString("N2", culture),
                         fechaActualizacion = x.fechaActualizacion,
                         fechaCreacion = x.fechaCreacion,
                     }).ToList();
@@ -379,7 +378,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     var deleteDetalle = await _context.DetallePedidos.Where(x => x.id == id).FirstOrDefaultAsync();
                     _context.Entry(deleteDetalle).State = EntityState.Deleted;
-                     await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
 
                     //string sp = "SpDeleteDetallePedido";
                     //List<SqlParameter> parametros = new List<SqlParameter>();
@@ -402,15 +401,15 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         }
                     }
                     var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == deleteDetalle.encabezadoPedidosId).FirstOrDefaultAsync();
-                    if (encabezadoPedidos!=null)
+                    if (encabezadoPedidos != null)
                     {
-                        encabezadoPedidos.valorNeto =Math.Round(valorNeto,2);
-                        encabezadoPedidos.valorIva = Math.Round(valorIva,2);
-                        encabezadoPedidos.valorTotal = Math.Round(valorTotal,2);
+                        encabezadoPedidos.valorNeto = Math.Round(valorNeto, 2);
+                        encabezadoPedidos.valorIva = Math.Round(valorIva, 2);
+                        encabezadoPedidos.valorTotal = Math.Round(valorTotal, 2);
                         _context.Entry(encabezadoPedidos).State = EntityState.Modified;
                         ok = await _context.SaveChangesAsync() > 0;
                     }
-                    else if (encabezadoPedidos != null &&(detallePedidos == null || detallePedidos.Count() == 0))
+                    else if (encabezadoPedidos != null && (detallePedidos == null || detallePedidos.Count() == 0))
                     {
                         //podria eliminar el pedido si ya no tiene detalle
                         //_context.Entry(encabezadoPedidos).State = EntityState.Deleted;
@@ -459,7 +458,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         _context.DetallePedidos.Add(nuevoDetalle);
                         await _context.SaveChangesAsync();
 
-                        var detallePedidos =await _context.DetallePedidos.Where(x => x.encabezadoPedidosId == entidad.encabezadoPedidosId.Value).ToListAsync();
+                        var detallePedidos = await _context.DetallePedidos.Where(x => x.encabezadoPedidosId == entidad.encabezadoPedidosId.Value).ToListAsync();
 
                         if (detallePedidos != null && detallePedidos.Count() > 0)
                         {
@@ -473,9 +472,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                             }
 
                             var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == entidad.encabezadoPedidosId.Value).FirstOrDefaultAsync();
-                            encabezadoPedidos.valorNeto = Math.Round(valorNeto,2);
-                            encabezadoPedidos.valorIva = Math.Round(valorIva,2);
-                            encabezadoPedidos.valorTotal = Math.Round(valorTotal,2);
+                            encabezadoPedidos.valorNeto = Math.Round(valorNeto, 2);
+                            encabezadoPedidos.valorIva = Math.Round(valorIva, 2);
+                            encabezadoPedidos.valorTotal = Math.Round(valorTotal, 2);
                             _context.Entry(encabezadoPedidos).State = EntityState.Modified;
                             ok = await _context.SaveChangesAsync() > 0;
                         }

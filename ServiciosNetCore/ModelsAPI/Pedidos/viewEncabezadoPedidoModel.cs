@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ServiciosNetCore.ModelsAPI.Pedidos
+﻿namespace ServiciosNetCore.ModelsAPI.Pedidos
 {
     public class viewEncabezadoPedidoModel
     {

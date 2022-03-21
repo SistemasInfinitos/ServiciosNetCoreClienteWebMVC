@@ -194,7 +194,7 @@ namespace ServicioPersonas.Repositorio.UsuariosES
                         nombreUsuario = x.nombreUsuario,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
-                        personaId=x.personaId,
+                        personaId = x.personaId,
                         //persona= x.persona!=null?x.persona.nombres +" "+ x.persona.apellidos:"" esto deberia tener una vista para traer todo los datos y por rendimiento
                     }).ToList();
                 }

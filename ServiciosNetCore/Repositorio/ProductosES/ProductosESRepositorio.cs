@@ -39,7 +39,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     Producto actualizarRegistro = _context.Productos.Where(x => x.id == entidad.id).FirstOrDefault();
                     var convertir = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
                     var convertirIva = decimal.TryParse(entidad.iva, NumberStyles.Number, culture, out decimal iva);
-                    if (actualizarRegistro != null&& convertir)
+                    if (actualizarRegistro != null && convertir)
                     {
                         actualizarRegistro.descripcion = entidad.descripcion;
                         actualizarRegistro.valorUnitario = valorUnitario;
@@ -129,9 +129,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     persona.id = data.id;
                     persona.descripcion = data.descripcion;
-                    persona.valorUnitario = data.valorUnitario.ToString("N2",culture);
-                    persona.iva = data.iva.ToString("N2",culture);
-                    persona.estado = data.estado??false;
+                    persona.valorUnitario = data.valorUnitario.ToString("N2", culture);
+                    persona.iva = data.iva.ToString("N2", culture);
+                    persona.estado = data.estado ?? false;
                     persona.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     persona.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
                 }
@@ -198,9 +198,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     {
                         id = x.id,
                         descripcion = x.descripcion,
-                        valorUnitario = x.valorUnitario.ToString("N2",culture),
-                        iva = x.iva.ToString("N2",culture),
-                        estado=x.estado??false,
+                        valorUnitario = x.valorUnitario.ToString("N2", culture),
+                        iva = x.iva.ToString("N2", culture),
+                        estado = x.estado ?? false,
                         fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
                         fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
                     }).ToList();
@@ -266,8 +266,8 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.descripcion ,
-                    iva = x.iva.ToString("N2",culture),
+                    text = x.descripcion,
+                    iva = x.iva.ToString("N2", culture),
                     valor = x.valorUnitario.ToString("N2", culture),
                 }).ToList();
             }

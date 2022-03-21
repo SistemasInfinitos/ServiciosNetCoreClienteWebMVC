@@ -35,7 +35,7 @@ namespace ServiciosNetCore.Controllers
             try
             {
                 data.resul = await Task.Run(() => _repositoryPedido.CrearPedido(entidad));
-                if (data.resul>0)
+                if (data.resul > 0)
                 {
                     data.mensaje = "Transaccion exitosa!";
                 }

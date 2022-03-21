@@ -35,7 +35,7 @@
                         @Html.EditorFor(Model => Model.valorUnitario, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Valor Unitario", @required = "required" } })
                         @Html.ValidationMessageFor(Model => Model.valorUnitario)
                     </div>
-                    <div class="col-sm-3 mb-3 mb-lg-3 estado" style="display:block">
+                    <div class="col-sm-3 mb-3 mb-lg-3">
                         @*el iva deberia ser configurable ya que exiten varios poscentajes dependiendo del producto o modelo de negocio*@
                         <label class="col-form-label" for="estado">IVA Venta</label>
                         @Html.EditorFor(Model => Model.iva, new { htmlAttributes = new { @onkeyUp = "return miles(this.id)", @class = "form-control", @placeholder = "Pocentaje Iva", @required = "required" } })
