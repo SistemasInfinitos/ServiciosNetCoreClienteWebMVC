@@ -73,23 +73,21 @@
                                     <table id="tableDetalle" class="table table-striped table-bordered table-hover dt-responsive nowrap display compact" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th style="text-align:center">Editar</th>
                                                 <th style="text-align:left">Id Codigo</th>
                                                 <th style="text-align:left">Producto</th>
+                                                <th style="text-align:left">Cantidad</th>
                                                 <th style="text-align:right">Valor Unitario</th>
                                                 <th style="text-align:right">% Descuento</th>
-                                                <th style="text-align:right">Gravado</th>
                                                 <th style="text-align:right">% Iva</th>
-                                                <th style="text-align:right">Sub-Total</th>
                                                 <th style="text-align:center">Acción</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th style="text-align:center" colspan="3">Totales</th>
-                                                <th style="text-align:right">Total Bruto</th>
-                                                <th style="text-align:right">Total Descuento</th>
-                                                <th style="text-align:right">Total Gravado</th>
+                                                <th style="text-align:right" colspan="3">Total Neto</th>
+                                                @*<th style="text-align:right">Total Descuento</th>*@
+                                                @*<th style="text-align:right">Total Gravado</th>*@
                                                 <th style="text-align:right">Total Iva</th>
                                                 <th style="text-align:right" colspan="2">Total</th>
                                             </tr>
@@ -250,20 +248,35 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                success: function (response) {
+                success: function (data) {
                     debugger
                     if (true) {
                         $('#tableDetalle').DataTable().clear();
                         $('#tableDetalle').DataTable().destroy();
                         $('#tableDetalle').find('tbody').empty();
-                        for (var i = 0; i < data.listResultados.length; i++) {
+                        for (var i = 0; i < data.detallePedidos.length; i++) {
                             $('#tableDetalle').find('tbody').append(
-                                `<tr id="">
-                                    <td align="center">${data.listResultados[i].idEquipo}</td>
-                                    <td align="center">${data.listResultados[i].idDeportista}</td>
-                                    <td align="center">${data.listResultados[i].goles}</td>
+                                `<tr>
+                                    <td align="center">${data.detallePedidos[i].productoId}</td>
+                                    <td align="center">${data.detallePedidos[i].productoId}</td>
+                                    <td align="center">${data.detallePedidos[i].cantidad}</td>
+                                    <td align="center">${data.detallePedidos[i].valorUnitario}</td>
+                                    <td align="center">${data.detallePedidos[i].porcentajeIva}</td>
+                                    <td align="center">
+                                        <button type="button" class="btn btn-warning btn-xs" onclick="BorrarPedido(${o.id})">
+                                         <i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;
+                                        </button>
+                                    </td>
                                 </tr >`);
                         }
+                        $('#tableDetalle').find('tfoot').empty();
+                        $('#tableDetalle').find('tfoot').append(
+                            `<tr>
+                                <td align="center">${data.valorNeto}</td>
+                                <td align="center">${data.valorIva}</td>
+                                <td align="center">${data.valorTotal}</td>
+
+                            </tr >`);
                     }
                 },
                 error: function (data) {
