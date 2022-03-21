@@ -95,19 +95,30 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         {
                             foreach (var item in entidad.detallePedidos)
                             {
-                                DetallePedido nuevoDetalle = new DetallePedido
+                                var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad);
+                                var convertir2 = decimal.TryParse(item.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
+                                var convertir3 = decimal.TryParse(item.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+
+                                if (convertir1 && convertir2 && convertir3)
                                 {
-                                    encabezadoPedidosId = nuevoRegistro.id,
-                                    productoId = item.productoId,
-                                    cantidad = item.cantidad,
-                                    porcentajeIva = item.porcentajeIva,
-                                    valorUnitario = item.valorUnitario,
-                                    estado = true,
-                                    fechaCreacion = DateTime.Now,
-                                    fechaActualizacion = null
-                                };
-                                _context.DetallePedidos.Add(nuevoDetalle);
-                                ok = await _context.SaveChangesAsync() > 0;
+                                    DetallePedido nuevoDetalle = new DetallePedido
+                                    {
+                                        encabezadoPedidosId = nuevoRegistro.id,
+                                        productoId = item.productoId,
+                                        cantidad = cantidad,
+                                        porcentajeIva = porcentajeIva,
+                                        valorUnitario = valorUnitario,
+                                        estado = true,
+                                        fechaCreacion = DateTime.Now,
+                                        fechaActualizacion = null
+                                    };
+                                    _context.DetallePedidos.Add(nuevoDetalle);
+                                    ok = await _context.SaveChangesAsync() > 0;
+                                }
+                                else
+                                {
+                                    DbTran.Rollback();
+                                }
                             }
                         }
                         else
@@ -171,9 +182,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
-                                cantidad = item.cantidad,
-                                porcentajeIva = item.porcentajeIva,
-                                valorUnitario = item.valorUnitario,
+                                cantidad = item.cantidad.ToString("N2",culture),
+                                porcentajeIva = item.porcentajeIva.ToString("N2", culture),
+                                valorUnitario = item.valorUnitario.ToString("N2", culture),
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
                             });
                         };
@@ -350,15 +361,19 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             bool ok = false;
             try
             {
-                if (entidad.cantidad > 0 && entidad.valorUnitario > 0)
+                var convertir1 = decimal.TryParse(entidad.cantidad, NumberStyles.Number, culture, out decimal cantidad);
+                var convertir2 = decimal.TryParse(entidad.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
+                var convertir3 = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+
+                if (convertir1 && convertir2 && convertir3)
                 {
                     DetallePedido nuevoDetalle = new DetallePedido
                     {
                         encabezadoPedidosId = entidad.encabezadoPedidosId.Value,
                         productoId = entidad.productoId,
-                        cantidad = entidad.cantidad,
-                        porcentajeIva = entidad.porcentajeIva,
-                        valorUnitario = entidad.valorUnitario,
+                        cantidad = cantidad,
+                        porcentajeIva = porcentajeIva,
+                        valorUnitario = valorUnitario,
                         estado = true,
                         fechaCreacion = DateTime.Now,
                         fechaActualizacion = null
@@ -391,9 +406,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
-                                cantidad = item.cantidad,
-                                porcentajeIva = item.porcentajeIva,
-                                valorUnitario = item.valorUnitario,
+                                cantidad = item.cantidad.ToString("N2", culture),
+                                porcentajeIva = item.porcentajeIva.ToString("N2", culture),
+                                valorUnitario = item.valorUnitario.ToString("N2", culture),
                                 fechaCreacion = item.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha),
                             });
                         };

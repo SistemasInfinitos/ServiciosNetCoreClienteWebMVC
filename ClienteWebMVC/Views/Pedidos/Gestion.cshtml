@@ -55,8 +55,8 @@
                                     </div>
                                     <div class="col-sm-3 mb-3 mb-lg-3">
                                         <div class="input-group">
-                                            <input id="cantidad" type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad">
-                                            <button class="btn btn-sm btn-outline-secondary border-danger" type="button" id="Limpiar">Agregar</button>
+                                            <input id="cantidad" type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad" onkeyup = "return miles(this.id)">
+                                            <button class="btn btn-sm btn-outline-secondary border-danger" type="button" id="btnCrear">Agregar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -100,8 +100,8 @@
                         </div>
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
-                        <label class="col-form-label" for="btnCrear">.</label>
-                        <button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>
+                        @*<label class="col-form-label" for="btnCrear">.</label>*@
+                        @*<button type="button" class="form-control btn-secondary" id="btnCrear" placeholder="Guardar" style="background: #4e73df;font-size:15px;color:white;">Guardar</button>*@
                         <a class="fa fa-reply" asp-action="GetPedidos">Back to List</a>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     var update = false;
     var id = '@ViewBag.idString';
-
+    var listDetallePedidos = [];
     $(document).ready(function () {
         $(".collapse-inner").select2();
 
@@ -137,41 +137,51 @@
     });
 
     $("#btnCrear").click(function () {
-        var entidad = {
-            id: parseInt(id),
-            descripcion: $("#descripcion").val(),
-            valorUnitario: $("#valorUnitario").val(),
-            iva: $("#iva").val(),
-            estado: $("#estado").prop("checked"),
-        }
 
         if (update == false) {
-            $.ajax({
-                url: `${apiServiciosNetCore}/api/ServicioProductos/CrearProducto`,
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                dataType: 'JSON',
-                cache: false,
-                traditional: true,
-                async: true,
-                data: JSON.stringify(entidad),
-                header: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function (response) {
+            var productoId = parseInt($('#productoId').val());
+            var cantidad = $('#cantidad').val();
+            var porcentajeIva = $('#porcentajeIva').val();
+            var valorUnitario = $('#valorUnitario').val();
+            var clientePersonaId = parseInt($("#clientePersonaId").val()),
+            var estado = $("#estado").prop("checked"),
 
-                    if (response.ok) {
-                        toastr.success(response.mensaje);
-                    } else {
-                        toastr.warning(response.mensaje);
+            b = { productoId: productoId, cantidad: cantidad, porcentajeIva: porcentajeIva, valorUnitario: valorUnitario };
+            listDetallePedidos.push(b);
+
+            var entidad = {
+                clientePersonaId: clientePersonaId,
+                detallePedidos: listDetallePedidos,
+                estado: estado,
+            }
+            if (cantidad != "" && cantidad != undefined && productoId > 0 && clientePersonaId>0) {
+                $.ajax({
+                    url: `${apiServiciosNetCore}/api/ServicioProductos/CrearProducto`,
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'JSON',
+                    cache: false,
+                    traditional: true,
+                    async: true,
+                    data: JSON.stringify(entidad),
+                    header: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (response) {
+
+                        if (response.ok) {
+                            toastr.success(response.mensaje);
+                        } else {
+                            toastr.warning(response.mensaje);
+                        }
+                    },
+                    error: function (data) {
+
+                        toastr.error("No pudimos completar tu solicitud!");
                     }
-                },
-                error: function (data) {
-
-                   toastr.error("No pudimos completar tu solicitud!");
-                }
-            });
+                });
+            }           
         }
         else if (id != "" && id != undefined && id != NaN) {
             $.ajax({
