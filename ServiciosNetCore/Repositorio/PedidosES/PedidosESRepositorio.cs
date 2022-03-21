@@ -194,7 +194,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     entidad.fechaCreacion = data.fechaCreacion.ToString("yyyy/MM/dd", cultureFecha);
                     entidad.fechaActualizacion = data.fechaActualizacion != null ? data.fechaActualizacion.Value.ToString("yyyy/MM/dd", cultureFecha) : "";
 
-                    var dataDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == data.id).ToList();
+                    var dataDetalle = _context.DetallePedidos.Include(i=>i.producto).Where(x => x.encabezadoPedidosId == data.id).ToList();
                     if (dataDetalle != null)
                     {
                         List<DetallePedidosModel> lisDetalle = new List<DetallePedidosModel>();
@@ -205,6 +205,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
+                                producto=item.producto.descripcion,
                                 cantidad = item.cantidad.ToString("N2", culture),
                                 porcentajeIva = item.porcentajeIva.ToString("N2", culture),
                                 valorUnitario = item.valorUnitario.ToString("N2", culture),
@@ -501,7 +502,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
             {
                 if (id > 0)
                 {
-                    var dataDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).ToList();
+                    var dataDetalle = _context.DetallePedidos.Include(i=>i.producto).Where(x => x.encabezadoPedidosId == id).ToList();
                     if (dataDetalle != null)
                     {
                         foreach (var item in dataDetalle)
@@ -511,6 +512,7 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                                 id = item.id,
                                 encabezadoPedidosId = item.encabezadoPedidosId,
                                 productoId = item.productoId,
+                                producto=item.producto.descripcion,
                                 cantidad = item.cantidad.ToString("N2", culture),
                                 porcentajeIva = item.porcentajeIva.ToString("N2", culture),
                                 valorUnitario = item.valorUnitario.ToString("N2", culture),

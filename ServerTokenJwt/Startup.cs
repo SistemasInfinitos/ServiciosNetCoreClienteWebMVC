@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +29,18 @@ namespace ServerTokenJwt
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            string[] audience = Configuration["JwtConfig:Audience"].ToString().Split(",");
+            string connectionString = Configuration["JwtConfig:connectionString"];
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AudienciaPolicy", builder =>
+                {
+                    builder.WithOrigins(audience).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((host) => true).AllowCredentials();
+                });
+            });
+            //services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
+            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerTokenJwt", Version = "v1" });
@@ -37,6 +50,7 @@ namespace ServerTokenJwt
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AudienciaPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
