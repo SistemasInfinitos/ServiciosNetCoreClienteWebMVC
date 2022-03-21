@@ -243,17 +243,19 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 }
                 string sortcolumn = dtParameters.columns[dtParameters.order[0].column].name;
 
-                var predicado = PredicateBuilder.True<EncabezadoPedido>();
-                var predicado2 = PredicateBuilder.False<EncabezadoPedido>();
+                var predicado = PredicateBuilder.True<viewEncabezadoPedido>();
+                var predicado2 = PredicateBuilder.False<viewEncabezadoPedido>();
                 predicado = predicado.And(d => d.estado == true);
 
                 if (!string.IsNullOrWhiteSpace(dtParameters.search.value))
                 {
-                    predicado2 = predicado2.Or(d => 1 == 1 && d.clientePersonaId.ToString().Contains(dtParameters.search.value));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.cliente.Contains(dtParameters.search.value));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.nombreUsuario.Contains(dtParameters.search.value));
+                    predicado2 = predicado2.Or(d => 1 == 1 && d.id.ToString().Contains(dtParameters.search.value));
                     predicado = predicado.And(predicado2);
                 }
 
-                datos.recordsFiltered = await _context.EncabezadoPedidos.Where(predicado).CountAsync();
+                datos.recordsFiltered = await _context.viewEncabezadoPedidos.Where(predicado).CountAsync();
                 datos.recordsTotal = datos.recordsFiltered;
                 datos.draw = dtParameters.draw;
 
@@ -270,15 +272,22 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     sortcolumn = "PrimerNombre";
                 }
-                List<EncabezadoPedido> datos2 = new List<EncabezadoPedido>();
+                List<viewEncabezadoPedido> datos2 = new List<viewEncabezadoPedido>();
                 if (datos.recordsFiltered > 0)
                 {
-                    datos2 = await _context.EncabezadoPedidos.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToListAsync();
-                    datos.data = datos2.Select(x => new EncabezadoPedidosModel
+                    datos2 = await _context.viewEncabezadoPedidos.Where(predicado).OrderBy2(sortcolumn, order).Skip(dtParameters.start).Take(dtParameters.length).ToListAsync();
+                    datos.data = datos2.Select(x => new viewEncabezadoPedidoModel
                     {
                         id = x.id,
-                        fechaActualizacion = x.fechaActualizacion != null ? x.fechaActualizacion.Value.ToString("yyyy/MM/dd", culture) : "",
-                        fechaCreacion = x.fechaCreacion.ToString("yyyy/MM/dd", culture),
+                        usuarioId=x.usuarioId,
+                        nombreUsuario=x.nombreUsuario,
+                        clientePersonaId=x.clientePersonaId,
+                        cliente=x.cliente,
+                        valorIva=x.valorIva.ToString("N2",culture),
+                        valorNeto=x.valorNeto.ToString("N2",culture),
+                        valorTotal=x.valorTotal.ToString("N2",culture),
+                        fechaActualizacion = x.fechaActualizacion,
+                        fechaCreacion = x.fechaCreacion,
                     }).ToList();
                 }
 

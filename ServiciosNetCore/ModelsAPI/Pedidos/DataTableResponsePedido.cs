@@ -7,6 +7,6 @@ namespace ServiciosNetCore.ModelsAPI.Pedidos
         public int draw;
         public int recordsTotal;
         public int recordsFiltered;
-        public List<EncabezadoPedidosModel> data;
+        public List<viewEncabezadoPedidoModel> data;
     }
 }
