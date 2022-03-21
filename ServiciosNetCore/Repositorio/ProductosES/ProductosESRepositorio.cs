@@ -266,7 +266,9 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 datos = data.Select(x => new DropListModel
                 {
                     id = x.id,
-                    text = x.descripcion + " " + x.descripcion
+                    text = x.descripcion ,
+                    iva = x.iva,
+                    valor = x.valorUnitario,
                 }).ToList();
             }
             catch (Exception ex)

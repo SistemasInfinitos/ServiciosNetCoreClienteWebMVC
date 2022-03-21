@@ -48,10 +48,10 @@
                                         </select>
                                     </div>&nbsp;
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
-                                        <input id="porcentajeIva" name="porcentajeIva" type="text" class="form-control" placeholder="Iva" readonly />
+                                        <input id="porcentajeIva" name="porcentajeIva" type="text" class="form-control" placeholder="Iva" readonly onkeyUp = "return miles(this.id)"/>
                                     </div>&nbsp;
                                     <div class="col-sm-3 mb-3 mb-lg-3 row">
-                                        <input id="valorUnitario" name="valorUnitario" type="text" class="form-control" placeholder="Valor Unitatio" />
+                                        <input id="valorUnitario" name="valorUnitario" type="text" class="form-control" placeholder="Valor Unitatio" onkeyup = "return miles(this.id)"/>
                                     </div>
                                     <div class="col-sm-3 mb-3 mb-lg-3">
                                         <div class="input-group">
@@ -238,6 +238,7 @@
                 return query;
             },
             processResults: function (data, params) {
+                debugger
                 return {
                     "results": data,
                     "pagination": {
@@ -247,6 +248,14 @@
             }
         }
     });
+
+    $('#productoId').on("change", function (e) {
+        debugger
+        //$('#porcentajeIva').val(e.val).trigger("change");
+        var data = $(this).select2('data');
+        $('#porcentajeIva').val(data[0].iva).trigger("change");
+        $('#valorUnitario').val(data[0].valor).trigger("change");
+    })
 
     var numero_miles = "";
 
