@@ -69,21 +69,47 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
         public async Task<bool> CrearPedido(EncabezadoPedidosModel entidad)
         {
+            /* Este metodo permite agregar un detalle o varios- depende del frond-end*/
             bool ok = false;
+            bool detalle = false;
 
             using (var DbTran = _context.Database.BeginTransaction())
             {
+                decimal valorNeto =0;
+                decimal valorIva = 0;
+                decimal valorTotal =0;
                 try
                 {
                     var verificarExiste = _context.EncabezadoPedidos.Where(x => x.id == entidad.id).FirstOrDefault();
+
+                    if (entidad.detallePedidos != null && entidad.detallePedidos.Count() > 0 && verificarExiste == null) 
+                    {
+                        foreach (var item in entidad.detallePedidos)
+                        {
+                            var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad);
+                            var convertir2 = decimal.TryParse(item.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
+                            var convertir3 = decimal.TryParse(item.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+           
+                            valorNeto += (valorUnitario * cantidad);
+                            valorIva += (valorNeto * porcentajeIva) / 100;
+                            valorTotal += (valorNeto + valorIva);
+                        }
+                        detalle = true;
+                    }
+                    else
+                    {
+                        //tiene que existir al menos una linea o detalle y debe ser un pedido nuevo
+                        DbTran.Rollback();
+                        return await Task.Run(() => ok);
+                    }
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
-                    if (verificarExiste == null)
+                    if (detalle == true)
                     {
                         nuevoRegistro.usuarioId = entidad.usuarioId.Value;
                         nuevoRegistro.clientePersonaId = entidad.clientePersonaId;
-                        nuevoRegistro.valorNeto = entidad.valorNeto;
-                        nuevoRegistro.valorIva = entidad.valorIva;
-                        nuevoRegistro.valorTotal = entidad.valorTotal;
+                        nuevoRegistro.valorNeto =Math.Round(valorNeto,2);
+                        nuevoRegistro.valorIva = Math.Round(valorIva,2);
+                        nuevoRegistro.valorTotal = Math.Round(valorTotal,2);
                         nuevoRegistro.estado = true;
                         nuevoRegistro.fechaCreacion = DateTime.Now;
                         nuevoRegistro.fechaActualizacion = null;
@@ -91,39 +117,32 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         _context.EncabezadoPedidos.Add(nuevoRegistro);
                         await _context.SaveChangesAsync();
 
-                        if (entidad.detallePedidos != null && entidad.detallePedidos.Count() > 0)
+                        foreach (var item in entidad.detallePedidos)
                         {
-                            foreach (var item in entidad.detallePedidos)
-                            {
-                                var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad);
-                                var convertir2 = decimal.TryParse(item.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
-                                var convertir3 = decimal.TryParse(item.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+                            var convertir1 = decimal.TryParse(item.cantidad, NumberStyles.Number, culture, out decimal cantidad2);
+                            var convertir2 = decimal.TryParse(item.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva2);
+                            var convertir3 = decimal.TryParse(item.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario2);
 
-                                if (convertir1 && convertir2 && convertir3)
+                            if (convertir1 && convertir2 && convertir3)
+                            {
+                                DetallePedido nuevoDetalle = new DetallePedido
                                 {
-                                    DetallePedido nuevoDetalle = new DetallePedido
-                                    {
-                                        encabezadoPedidosId = nuevoRegistro.id,
-                                        productoId = item.productoId,
-                                        cantidad = cantidad,
-                                        porcentajeIva = porcentajeIva,
-                                        valorUnitario = valorUnitario,
-                                        estado = true,
-                                        fechaCreacion = DateTime.Now,
-                                        fechaActualizacion = null
-                                    };
-                                    _context.DetallePedidos.Add(nuevoDetalle);
-                                    ok = await _context.SaveChangesAsync() > 0;
-                                }
-                                else
-                                {
-                                    DbTran.Rollback();
-                                }
+                                    encabezadoPedidosId = nuevoRegistro.id,
+                                    productoId = item.productoId,
+                                    cantidad = cantidad2,
+                                    porcentajeIva = porcentajeIva2,
+                                    valorUnitario = valorUnitario2,
+                                    estado = true,
+                                    fechaCreacion = DateTime.Now,
+                                    fechaActualizacion = null
+                                };
+                                _context.DetallePedidos.Add(nuevoDetalle);
+                                ok = await _context.SaveChangesAsync() > 0;
                             }
-                        }
-                        else
-                        {
-                            DbTran.Rollback();
+                            else
+                            {
+                                DbTran.Rollback();
+                            }
                         }
                     }
 

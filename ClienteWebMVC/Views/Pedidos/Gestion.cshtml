@@ -137,15 +137,21 @@
     });
 
     $("#btnCrear").click(function () {
-
+        debugger
         if (update == false) {
+            debugger
             var productoId = parseInt($('#productoId').val());
             var cantidad = $('#cantidad').val();
             var porcentajeIva = $('#porcentajeIva').val();
             var valorUnitario = $('#valorUnitario').val();
-            var clientePersonaId = parseInt($("#clientePersonaId").val()),
-            var estado = $("#estado").prop("checked"),
+            var clientePersonaId = parseInt($("#clientePersonaId").val());
+            var estado = $("#estado").prop("checked");
 
+            if (cantidad == "" || cantidad == undefined) {
+                toastr.warning("la Cantidad debe ser superior a 0!"); return;
+            }
+            if (productoId > 0) { } else { toastr.warning("Debes seleccionar un producto!"); return;}
+            listDetallePedidos = [];
             b = { productoId: productoId, cantidad: cantidad, porcentajeIva: porcentajeIva, valorUnitario: valorUnitario };
             listDetallePedidos.push(b);
 
@@ -154,9 +160,10 @@
                 detallePedidos: listDetallePedidos,
                 estado: estado,
             }
-            if (cantidad != "" && cantidad != undefined && productoId > 0 && clientePersonaId>0) {
+            if (cantidad != "" && cantidad != undefined && productoId > 0 && clientePersonaId > 0) {
+                debugger
                 $.ajax({
-                    url: `${apiServiciosNetCore}/api/ServicioProductos/CrearProducto`,
+                    url: `${apiServiciosNetCore}/api/ServicioPedidos/CrearPedido`,
                     type: 'POST',
                     contentType: "application/json; charset=utf-8",
                     dataType: 'JSON',
@@ -185,7 +192,7 @@
         }
         else if (id != "" && id != undefined && id != NaN) {
             $.ajax({
-                url: `${apiServiciosNetCore}/api/ServicioProductos/ActualizarProducto`,
+                url: `${apiServiciosNetCore}/api/ServicioPedidos/ActualizarPedidoEncabezado`,
                 type: 'PUT',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'JSON',
