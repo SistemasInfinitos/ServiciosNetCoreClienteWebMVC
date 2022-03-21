@@ -40,9 +40,9 @@
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     $(document).ready(function () {
-        GetPersonas();
+        GetPedidos();
     });
-    function GetPersonas() {
+    function GetPedidos() {
         $('#tableDinamica').find('tbody').empty();
         $('#tableDinamica').dataTable().fnDestroy();
         DataTablePaginada = "";
@@ -142,13 +142,13 @@
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedido${parametro}`,
                 type: 'DELETE',
                 success: function (response) {
-
+                    debugger
                     if (response.ok) {
                         toastr.success(response.mensaje);
                     } else {
                         toastr.warning(response.mensaje);
                     };
-                    GetPersonas();
+                    GetPedidos();
                 },
                 error: function (jQXHR) {
                     toastr.error('error, No pudimos procesar su Solicitud!');
