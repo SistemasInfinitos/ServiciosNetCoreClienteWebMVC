@@ -267,8 +267,8 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                 {
                     id = x.id,
                     text = x.descripcion ,
-                    iva = x.iva,
-                    valor = x.valorUnitario,
+                    iva = x.iva.ToString("N2",culture),
+                    valor = x.valorUnitario.ToString("N2", culture),
                 }).ToList();
             }
             catch (Exception ex)

@@ -42,11 +42,11 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
                     if (actualizarRegistro != null)
                     {
-                        actualizarRegistro.usuarioId = entidad.usuarioId.Value;
+                        //actualizarRegistro.usuarioId = entidad.usuarioId.Value;
                         actualizarRegistro.clientePersonaId = entidad.clientePersonaId;
-                        actualizarRegistro.valorNeto = entidad.valorNeto;
-                        actualizarRegistro.valorIva = entidad.valorIva;
-                        actualizarRegistro.valorTotal = entidad.valorTotal;
+                        //actualizarRegistro.valorNeto = entidad.valorNeto;
+                        //actualizarRegistro.valorIva = entidad.valorIva;
+                        //actualizarRegistro.valorTotal = entidad.valorTotal;
                         actualizarRegistro.estado = entidad.estado.Value;
                         actualizarRegistro.fechaActualizacion = DateTime.Now;
 
@@ -355,22 +355,59 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         public async Task<bool> DeletePedidoDetalle(int id)
         {
             bool ok = false;
-            try
+            decimal valorNeto = 0;
+            decimal valorIva = 0;
+            decimal valorTotal = 0;
+            using (var DbTran = _context.Database.BeginTransaction())
             {
-                //var deleteDetalle = _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).FirstOrDefaultAsync();
-                //_context.Entry(deleteDetalle).State = EntityState.Deleted;
-                //ok = await _context.SaveChangesAsync() > 0;
+                try
+                {
+                    var deleteDetalle = await _context.DetallePedidos.Where(x => x.encabezadoPedidosId == id).FirstOrDefaultAsync();
+                    _context.Entry(deleteDetalle).State = EntityState.Deleted;
+                    ok = await _context.SaveChangesAsync() > 0;
 
-                string sp = "SpDeleteDetallePedido";
-                List<SqlParameter> parametros = new List<SqlParameter>();
-                parametros.Add(new SqlParameter() { ParameterName = "@id", Value = id, SqlDbType = SqlDbType.Int });
-                var param = parametros.ToArray();
-                //ok = await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC {sp} @id={id}") > 0;
-                ok = await _context.Database.ExecuteSqlRawAsync($"EXEC {sp} @id", param) > 0;
-            }
-            catch (Exception e)
-            {
-                throw;
+                    //string sp = "SpDeleteDetallePedido";
+                    //List<SqlParameter> parametros = new List<SqlParameter>();
+                    //parametros.Add(new SqlParameter() { ParameterName = "@id", Value = id, SqlDbType = SqlDbType.Int });
+                    //var param = parametros.ToArray();
+                    ////ok = await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC {sp} @id={id}") > 0;
+                    // await _context.Database.ExecuteSqlRawAsync($"EXEC {sp} @id", param);
+
+                    var detallePedidos = await _context.DetallePedidos.Where(x => x.encabezadoPedidosId == deleteDetalle.encabezadoPedidosId).ToListAsync();
+
+                    if (detallePedidos != null && detallePedidos.Count() > 0)
+                    {
+                        foreach (var item in detallePedidos)
+                        {
+                            valorNeto += (item.valorUnitario * item.cantidad);
+                            valorIva += (valorNeto * item.porcentajeIva) / 100;
+                            valorTotal += (valorNeto + valorIva);
+                        }
+                    }
+                    var encabezadoPedidos = await _context.EncabezadoPedidos.Where(x => x.id == deleteDetalle.encabezadoPedidosId).FirstOrDefaultAsync();
+                    if (encabezadoPedidos!=null && detallePedidos != null && detallePedidos.Count() > 0)
+                    {
+                        encabezadoPedidos.valorNeto = valorNeto;
+                        encabezadoPedidos.valorIva = valorIva;
+                        encabezadoPedidos.valorTotal = valorTotal;
+                        _context.Entry(encabezadoPedidos).State = EntityState.Modified;
+                        ok = await _context.SaveChangesAsync() > 0;
+                    }
+                    else if (encabezadoPedidos != null &&(detallePedidos == null || detallePedidos.Count() == 0))
+                    {
+                        //podria eliminar el pedido si ya no tiene detalle
+                        //_context.Entry(encabezadoPedidos).State = EntityState.Deleted;
+                        //ok = await _context.SaveChangesAsync() > 0;
+                    }
+                    if (ok)
+                    {
+                        DbTran.Commit();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
             }
             return await Task.Run(() => ok);
         }
@@ -378,32 +415,60 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         public async Task<bool> AgregarDetallePedido(DetallePedidosModel entidad)
         {
             bool ok = false;
-            try
+            decimal valorNeto = 0;
+            decimal valorIva = 0;
+            decimal valorTotal = 0;
+            var convertir1 = decimal.TryParse(entidad.cantidad, NumberStyles.Number, culture, out decimal cantidad);
+            var convertir2 = decimal.TryParse(entidad.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
+            var convertir3 = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
+            using (var DbTran = _context.Database.BeginTransaction())
             {
-                var convertir1 = decimal.TryParse(entidad.cantidad, NumberStyles.Number, culture, out decimal cantidad);
-                var convertir2 = decimal.TryParse(entidad.porcentajeIva, NumberStyles.Number, culture, out decimal porcentajeIva);
-                var convertir3 = decimal.TryParse(entidad.valorUnitario, NumberStyles.Number, culture, out decimal valorUnitario);
-
-                if (convertir1 && convertir2 && convertir3)
+                try
                 {
-                    DetallePedido nuevoDetalle = new DetallePedido
+                    if (convertir1 && convertir2 && convertir3)
                     {
-                        encabezadoPedidosId = entidad.encabezadoPedidosId.Value,
-                        productoId = entidad.productoId,
-                        cantidad = cantidad,
-                        porcentajeIva = porcentajeIva,
-                        valorUnitario = valorUnitario,
-                        estado = true,
-                        fechaCreacion = DateTime.Now,
-                        fechaActualizacion = null
-                    };
-                    _context.DetallePedidos.Add(nuevoDetalle);
-                    ok = await _context.SaveChangesAsync() > 0;
+                        DetallePedido nuevoDetalle = new DetallePedido
+                        {
+                            encabezadoPedidosId = entidad.encabezadoPedidosId.Value,
+                            productoId = entidad.productoId,
+                            cantidad = cantidad,
+                            porcentajeIva = porcentajeIva,
+                            valorUnitario = valorUnitario,
+                            estado = true,
+                            fechaCreacion = DateTime.Now,
+                            fechaActualizacion = null
+                        };
+                        _context.DetallePedidos.Add(nuevoDetalle);
+                        await _context.SaveChangesAsync();
+
+                        var detallePedidos =await _context.DetallePedidos.Where(x => x.encabezadoPedidosId == entidad.encabezadoPedidosId.Value).ToListAsync();
+
+                        if (detallePedidos != null && detallePedidos.Count() > 0)
+                        {
+                            foreach (var item in detallePedidos)
+                            {
+                                valorNeto += (item.valorUnitario * item.cantidad);
+                                valorIva += (valorNeto * item.porcentajeIva) / 100;
+                                valorTotal += (valorNeto + valorIva);
+                            }
+                        }
+                        var encabezadoPedidos =await _context.EncabezadoPedidos.Where(x => x.id == entidad.encabezadoPedidosId.Value).FirstOrDefaultAsync();
+                        encabezadoPedidos.valorNeto = valorNeto;
+                        encabezadoPedidos.valorIva = valorIva;
+                        encabezadoPedidos.valorTotal = valorTotal;
+                        _context.Entry(encabezadoPedidos).State = EntityState.Modified;
+                        ok = await _context.SaveChangesAsync() > 0;
+                        if (ok)
+                        {
+                            DbTran.Commit();
+                        }
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                throw;
+                catch (Exception)
+                {
+                    DbTran.Rollback();
+                    throw;
+                }
             }
             return await Task.Run(() => ok);
         }
