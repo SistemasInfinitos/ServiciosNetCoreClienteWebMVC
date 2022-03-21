@@ -32,13 +32,7 @@ namespace ServiciosNetCore
             string connectionString = Configuration["JwtConfiguracion:connectionString"];
             string secret = Configuration["JwtConfiguracion:secret"];
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "AudienciaPolicy", builder =>
-                {
-                    builder.WithOrigins(audience).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((host) => true).AllowCredentials();
-                });
-            });
+            services.AddControllers();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -57,6 +51,7 @@ namespace ServiciosNetCore
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
             services.AddAuthorization(config =>
             {
                 config.AddPolicy("UserPolicy", policyBuilder =>
@@ -66,9 +61,17 @@ namespace ServiciosNetCore
             });
             services.AddScoped<IAuthorizationHandler, PoliciesAuthorizationHandler>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AudienciaPolicy", builder =>
+                {
+                    builder.WithOrigins(audience).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed((host) => true).AllowCredentials();
+                });
+            });
+
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
-            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
-            services.AddControllers();
+            //services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiciosNetCore", Version = "v1" });

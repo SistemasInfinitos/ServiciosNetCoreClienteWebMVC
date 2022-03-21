@@ -16,7 +16,7 @@ namespace ServiciosNetCore.Controllers
 {
     //[Authorize(Roles = "Administrador")]
     //[Authorize]
-    [Authorize(Policy = "UserPolicy")]
+    //[Authorize(Policy = "UserPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class ServicioProductosController : ControllerBase

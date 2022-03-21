@@ -63,22 +63,23 @@
             ajax: {
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/ListPedidos`,
                 type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                dataType: 'JSON',
-                cache: false,
-                traditional: true,
-                async: true,
                 data: function (datatParms) {
                     return JSON.stringify(datatParms);
                 },
+                cache: false,
+                traditional: true,
+                async: true,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
                 headers: {
                     'Authorization': 'Bearer '
                         + localStorage.getItem("accessToken")
                 },
-                //header: {
-                //    'Accept': 'application/json',
-                //    'Content-Type': 'application/json'
-                //}
+                error: function (x, y) {
+                    console.log(x);
+                },
+                complete: function (response) {
+                }
             },
             scrollX: true,
             pagingType: "full_numbers",
