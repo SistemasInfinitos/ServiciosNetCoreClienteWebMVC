@@ -38,7 +38,7 @@
                         <label class="col-form-label" for="estado">Estado</label>
                         @Html.CheckBoxFor(Model => Model.estado, new { @class = "form-control check", @checked = Model.estado })
                     </div>
-                    <div class="card buscarProducto" style="display:none">
+                    <div class="card col-sm-12 mb-12 mb-lg-12 buscarProducto" style="display:none">
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="col-sm-12 mb-12 mb-lg-12 row">
@@ -64,35 +64,37 @@
                         </div>
                     </div>
                     <br />
-                    <div style="width:99.5%; margin:0 auto;">
-                        <table id="tableDetalle" class="table table-bordered table-hover table-responsive-sm table-condensed nowrap display compact" width="100%">
-                            <thead>
-                                <tr>
-                                    <th style="text-align:left">Id Codigo</th>
-                                    <th style="text-align:left">Producto</th>
-                                    <th style="text-align:left">Cantidad</th>
-                                    <th style="text-align:right">% Iva</th>
-                                    <th style="text-align:right">Valor Unitario</th>
-                                    <th style="text-align: center; max-width: 100px">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td style="text-align:center" colspan="4">Totales</td>
-                                    <td style="text-align:center;max-width:100px" >
-                                        <h6 type="text">Total Neto</h6><br />
-                                        <h6 type="text">Total Iva</h6><br />
-                                        <h6 type="text">Total</h6>
-                                    </td>
-                                    <td style="text-align: right; max-width: 100px ">
-                                        <input type="text" class="form-control" id="valorNeto" readonly style="text-align:right"/><br />
-                                        <input type="text" class="form-control" id="valorIva" readonly style="text-align:right"/><br />
-                                        <input type="text" class="form-control" id="valorTotal" readonly style="text-align:right"/>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                    <div @*style="width:99.5%; margin:0 auto;"*@ class="card col-sm-12 mb-12 mb-lg-12">
+                        <div class="card-body ">
+                            <table id="tableDetalle" class="table-bordered table-hover display compact" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:center">Id Codigo</th>
+                                        <th style="text-align:center">Producto</th>
+                                        <th style="text-align:center">Cantidad</th>
+                                        <th style="text-align:right">% Iva</th>
+                                        <th style="text-align:right">Valor Unitario</th>
+                                        <th style="text-align: center; max-width: 100px">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td style="text-align:center" colspan="4">Totales</td>
+                                        <td style="text-align:center;max-width:100px">
+                                            <h6 type="text">Total Neto: $</h6><br />
+                                            <h6 type="text">Total Iva: $</h6><br />
+                                            <h6 type="text">Total: $</h6>
+                                        </td>
+                                        <td style="text-align: right; max-width: 100px ">
+                                            <input type="text" class="form-control" id="valorNeto" readonly style="text-align:right" /><br />
+                                            <input type="text" class="form-control" id="valorIva" readonly style="text-align:right" /><br />
+                                            <input type="text" class="form-control" id="valorTotal" readonly style="text-align:right" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                     <div class="col-sm-3 mb-3 mb-lg-3">
                         <a class="fa fa-reply" asp-action="GetPedidos">Back to List</a>
@@ -253,8 +255,8 @@
                                     <td align="center">${data.detallePedidos[i].productoId}</td>
                                     <td align="center">${data.detallePedidos[i].productoId}</td>
                                     <td align="center">${data.detallePedidos[i].cantidad}</td>
-                                    <td align="center">${data.detallePedidos[i].porcentajeIva}</td>
-                                    <td align="center">${data.detallePedidos[i].valorUnitario}</td>
+                                    <td align="right">${data.detallePedidos[i].porcentajeIva}</td>
+                                    <td align="right">${data.detallePedidos[i].valorUnitario}</td>
                                     <td align="center;max-width: 100px">
                                         <button type="button" class="btn btn-warning btn-xs" onclick="BorrarPedido(${data.detallePedidos[i].id})">
                                          <i class="fa fa-trash"></i>&nbsp;Borrar&nbsp;&nbsp;
