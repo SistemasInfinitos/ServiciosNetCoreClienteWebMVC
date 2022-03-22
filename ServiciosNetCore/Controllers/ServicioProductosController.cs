@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace ServiciosNetCore.Controllers
 {
     //[Authorize(Roles = "Administrador")]
-    //[Authorize]
+    [Authorize]
     [Authorize(Policy = "UserPolicy")]
     [Route("api/[controller]")]
     [ApiController]
@@ -63,7 +63,10 @@ namespace ServiciosNetCore.Controllers
             try
             {
                 data.ok = await Task.Run(() => _repositoryProductos.ActualizarProducto(entidad));
-                data.mensaje = "Transaccion exitosa!";
+                if (data.ok)
+                {
+                    data.mensaje = "Transaccion exitosa!";
+                }
                 return Ok(data);
             }
             catch (Exception x)
@@ -88,7 +91,10 @@ namespace ServiciosNetCore.Controllers
                 try
                 {
                     data.ok = await Task.Run(() => _repositoryProductos.DeleteProducto(id.Value));
-                    data.mensaje = "Transaccion exitosa!";
+                    if (data.ok)
+                    {
+                        data.mensaje = "Transaccion exitosa!";
+                    }
                     return Ok(data);
                 }
                 catch (Exception x)

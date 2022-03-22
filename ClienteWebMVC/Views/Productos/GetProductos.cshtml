@@ -70,7 +70,7 @@
                 data: function (datatParms) {
                     return JSON.stringify(datatParms);
                 },
-                "headers": { 'Authorization': `Bearer ${accessToken}` }
+                "headers": {'Authorization': `Bearer ${accessToken}`}
                 //header: {
                 //    'Accept': 'application/json',
                 //    'Content-Type': 'application/json'
@@ -127,7 +127,7 @@
 
     function Gestion(id) {
         if (id != "" && id != undefined && id != NaN) {
-            var url = '?' + $.param({ "id": id });
+            var url = '?' + $.param({ "id": id, "accessToken": accessToken});
             window.location.href = "/web/pro/Gestion" + url;
         }
     };
@@ -139,6 +139,7 @@
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioProductos/DeleteProducto${parametro}`,
                 type: 'DELETE',
+                "headers": { 'Authorization': `Bearer ${accessToken}` },
                 success: function (response) {
 
                     if (response.ok) {
