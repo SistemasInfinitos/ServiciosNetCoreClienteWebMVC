@@ -16,7 +16,8 @@ namespace ServiciosNetCore.Controllers
 {
     //[Authorize(Roles = "Administrador")]
     [Authorize]
-    [Authorize(Policy = "UserPolicy")]// esta politica no se implementa, solo se establese como ejemplo.
+    // esta politica no se implementa, solo se establese como ejemplo.
+    [Authorize(Policy = "UserPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class ServicioProductosController : ControllerBase

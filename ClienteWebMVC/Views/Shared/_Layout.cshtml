@@ -160,7 +160,7 @@
                 dataType: "json",
                 success: function (response) {
                     if (response.ok) {
-                        toastr.success(response.mensaje);
+                        //toastr.success(response.mensaje);
                         $(response.api).each(function (i) {
                             localStorage.setItem(response.api[i].servicio, response.api[i].uri);
                         });
