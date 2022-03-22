@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using ServiciosNetCore.ModelsAPI.Comun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +11,25 @@ namespace ServiciosNetCore.Configuration.Policy
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PersonaRequireClaim requirement)
         {
-            bool ok = false;
+            /*Aqui podriamos agregas las politicas, actualmente solo valida IsAuthenticated el cual ya fue validado por [Authorize] */
+            ResponseApp data = new ResponseApp()
+            {
+                mensaje = "Ups!. Tu solicitud no pudo ser autorizada, verifica tus credenciales!",
+                ok = false
+            };
             if (context.User == null || !context.User.Identity.IsAuthenticated)
             {
                 context.Fail();
-                return Task.FromResult(0);
+                return Task.FromResult(data);
             }
             else
             {
+                data.ok = true;
+                data.mensaje= "Succeed";
                 context.Succeed(requirement);
             }
 
-            return Task.FromResult(0);
+            return Task.FromResult(data);
         }
     }
 }

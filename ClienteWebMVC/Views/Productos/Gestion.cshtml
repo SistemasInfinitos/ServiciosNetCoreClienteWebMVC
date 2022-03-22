@@ -122,6 +122,7 @@
                 traditional: true,
                 async: true,
                 data: JSON.stringify(entidad),
+                //"headers": { 'Authorization': `Bearer ${accessToken}` },
                 header: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -135,7 +136,8 @@
                     }
                 },
                 error: function (data) {
-                    toastr.error("No pudimos completar tu solicitud!");
+                    debugger
+                    toastr.error(data.statusText,"No pudimos completar tu solicitud!");
                 }
             });
         }

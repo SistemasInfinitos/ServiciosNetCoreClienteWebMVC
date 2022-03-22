@@ -27,8 +27,6 @@ namespace ClienteWebMVC.Controllers.Producto
         {
             // esta es una forma de trabajar, aumenta la seguridad pero tanbien el tiempo de desarrollo
             var httpClient = new HttpClient();
-            //httpClient.DefaultRequestHeaders.Accept.Clear();
-            //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
 
