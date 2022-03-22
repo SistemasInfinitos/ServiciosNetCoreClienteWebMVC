@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -18,9 +19,9 @@ namespace ServiciosNetCore.Controllers
     public class ServicioPedidosController : ControllerBase
     {
         private readonly IPedidosESRepositorio _repositoryPedido;
-        public ServicioPedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
+        public ServicioPedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
         {
-            _repositoryPedido = new PedidosESRepositorio(optionsMonitor, context);
+            _repositoryPedido = new PedidosESRepositorio(optionsMonitor, context, HandlerContext);
         }
 
         [Route("[action]")]

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ServiciosNetCore.Repositorio.ProcuctosES
@@ -20,11 +22,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
     {
         private readonly JwtConfiguracion _jwtConfig;
         private readonly Context _context;
-
-        public PedidosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
+        private readonly AuthorizationHandlerContext _HandlerContext;
+        public PedidosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _context = context;
+            _HandlerContext = HandlerContext;
         }
 
         private readonly CultureInfo culture = new CultureInfo("is-IS");
@@ -105,6 +108,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         DbTran.Rollback();
                         return await Task.Run(() => result);
                     }
+                    var user = _HandlerContext.User.Identity.Name;
+                    var claims = (ClaimsIdentity)_HandlerContext.User.Identity;
+                    string NombreUsuario = claims.Name;
+                    string userId = claims.Claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
+
+
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (detalle == true)
                     {

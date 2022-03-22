@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
 using ServiciosNetCore.ModelsAPI.Comun;
@@ -19,11 +20,13 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
     {
         private readonly JwtConfiguracion _jwtConfig;
         private readonly Context _context;
+        private readonly AuthorizationHandlerContext _HandlerContext;
 
-        public ProductosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
+        public ProductosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _context = context;
+            _HandlerContext = HandlerContext;
         }
 
         private readonly CultureInfo culture = new CultureInfo("is-IS");

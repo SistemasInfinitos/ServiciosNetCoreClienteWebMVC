@@ -23,9 +23,9 @@ namespace ServiciosNetCore.Controllers
     public class ServicioProductosController : ControllerBase
     {
         private readonly IProductosESRepositorio _repositoryProductos;
-        public ServicioProductosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
+        public ServicioProductosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
         {
-            _repositoryProductos = new ProductosESRepositorio(optionsMonitor, context);
+            _repositoryProductos = new ProductosESRepositorio(optionsMonitor, context, HandlerContext);
         }
         [Route("[action]")]
         [HttpPost]
