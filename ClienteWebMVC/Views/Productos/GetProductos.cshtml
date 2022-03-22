@@ -39,9 +39,9 @@
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     $(document).ready(function () {
-        GetPersonas();
+        GetProducto();
     });
-    function GetPersonas() {
+    function GetProducto() {
         $('#tableDinamica').find('tbody').empty();
         $('#tableDinamica').dataTable().fnDestroy();
         DataTablePaginada = "";
@@ -147,10 +147,10 @@
                     } else {
                         toastr.warning(response.mensaje);
                     };
-                    GetPersonas();
+                    GetProducto();
                 },
                 error: function (jQXHR) {
-                    toastr.error('error, No pudimos procesar su Solicitud!');
+                    toastr.error(data.statusText, "No pudimos completar tu solicitud!");
                 }
             });
         }

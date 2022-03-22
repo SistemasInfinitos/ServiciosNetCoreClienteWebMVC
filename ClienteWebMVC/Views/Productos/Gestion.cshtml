@@ -55,6 +55,7 @@
     </div>
 </div>
 <script>    
+    var accessToken = localStorage.getItem("accessToken");
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     var update = false;
@@ -94,10 +95,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                headers: {
-                    'Authorization': 'Bearer '
-                        + localStorage.getItem("accessToken")
-                },
+                "headers": { 'Authorization': `Bearer ${accessToken}` },
                 success: function (response) {
 
                     if (response.ok) {
@@ -107,8 +105,7 @@
                     }
                 },
                 error: function (data) {
-
-                   toastr.error("No pudimos completar tu solicitud!");
+                    toastr.error(data.statusText, "No pudimos completar tu solicitud!");
                 }
             });
         }
@@ -128,7 +125,6 @@
                     'Content-Type': 'application/json'
                 },
                 success: function (ok) {
-
                     if (ok) {
                         toastr.success("success");
                     } else {
@@ -136,7 +132,7 @@
                     }
                 },
                 error: function (data) {
-                    //console.log(data)
+                    console.log(data)
                     toastr.error(data.statusText,"No pudimos completar tu solicitud!");
                 }
             });
