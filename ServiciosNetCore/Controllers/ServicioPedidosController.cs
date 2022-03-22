@@ -9,7 +9,10 @@ using ServiciosNetCore.ModelsDB.Contexts;
 using ServiciosNetCore.Repositorio.PedidosES;
 using ServiciosNetCore.Repositorio.ProcuctosES;
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServiciosNetCore.Controllers
@@ -204,6 +207,9 @@ namespace ServiciosNetCore.Controllers
         [Route("[action]")]
         public async Task<IActionResult> ListPedidos([FromBody] DataTableParameter datatParms)
         {
+
+            var Identity = (ClaimsIdentity)User.Identity;           
+
             DataTableResponsePedido res = await Task.Run(() => _repositoryPedido.GetPedidosDataTable(datatParms));
             res.draw = datatParms.draw;
 

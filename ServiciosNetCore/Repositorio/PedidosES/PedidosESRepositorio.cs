@@ -14,6 +14,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServiciosNetCore.Repositorio.ProcuctosES
@@ -22,17 +23,10 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
     {
         private readonly JwtConfiguracion _jwtConfig;
         private readonly Context _context;
-        private readonly AuthorizationHandlerContext _HandlerContext;
         public PedidosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _context = context;
-        }
-
-        public PedidosESRepositorio( AuthorizationHandlerContext HandlerContext)
-        {
-
-            _HandlerContext = HandlerContext;
         }
 
         private readonly CultureInfo culture = new CultureInfo("is-IS");
@@ -113,11 +107,6 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                         DbTran.Rollback();
                         return await Task.Run(() => result);
                     }
-                    var user = _HandlerContext.User.Identity.Name;
-                    var claims = (ClaimsIdentity)_HandlerContext.User.Identity;
-                    string NombreUsuario = claims.Name;
-                    string userId = claims.Claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
-
 
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (detalle == true)
