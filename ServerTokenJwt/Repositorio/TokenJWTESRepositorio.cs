@@ -2,17 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServerTokenJwt.Configuration;
-using ServerTokenJwt.ModelsDB;
+using ServerTokenJwt.ModelsAPI;
 using ServerTokenJwt.ModelsDB.Contexts;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
-using ServerTokenJwt.ModelsAPI;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ServerTokenJwt.Repositorio
 {
@@ -60,15 +58,15 @@ namespace ServerTokenJwt.Repositorio
         {
             try
             {
-                 string password = await EncriptarContrasena(User.pasword);
-                 var Usuario = await Task.Run(() => _context.Usuarios.Include(i=>i.persona).Where(b => b.nombreUsuario == User.usuario && b.passwordHash == password).Select(x =>
-                 new UsuarioModel
-                 {
-                     id = x.id,
-                     roles = "Admin,Asesor",// los quemo porque es una prueba 
-                     usuario= x.nombreUsuario,
-                     fullName=(x.persona.nombres+""+ x.persona.apellidos)
-                 }).FirstOrDefault());
+                string password = await EncriptarContrasena(User.pasword);
+                var Usuario = await Task.Run(() => _context.Usuarios.Include(i => i.persona).Where(b => b.nombreUsuario == User.usuario && b.passwordHash == password).Select(x =>
+                  new UsuarioModel
+                  {
+                      id = x.id,
+                      roles = "Admin,Asesor",// los quemo porque es una prueba 
+                      usuario = x.nombreUsuario,
+                      fullName = (x.persona.nombres + "" + x.persona.apellidos)
+                  }).FirstOrDefault());
 
                 return await Task.Run(() => Usuario);
             }
@@ -76,7 +74,7 @@ namespace ServerTokenJwt.Repositorio
             {
                 var debug = ex.Message;
                 return null;
-            }            
+            }
         }
     }
 }

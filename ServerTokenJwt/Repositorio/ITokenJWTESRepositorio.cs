@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using ServerTokenJwt.ModelsAPI;
+﻿using ServerTokenJwt.ModelsAPI;
+using System.Threading.Tasks;
 
 namespace ServerTokenJwt.Repositorio
 {

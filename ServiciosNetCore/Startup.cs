@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -71,7 +70,7 @@ namespace ServiciosNetCore
 
             services.AddDbContext<Context>(options => options.UseSqlServer(connectionString));
             //services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiciosNetCore", Version = "v1" });

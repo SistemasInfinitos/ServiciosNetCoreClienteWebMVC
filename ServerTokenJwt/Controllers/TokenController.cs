@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ServerTokenJwt.Configuration;
@@ -9,7 +8,6 @@ using ServerTokenJwt.Repositorio;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,7 +108,7 @@ namespace ServerTokenJwt.Controllers
                 Expires = DateTime.UtcNow.AddMinutes(90),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = multiAudience[0],
-                Audience=multiAudience[0],
+                Audience = multiAudience[0],
             };
 
             //foreach (var item in multiAudience)

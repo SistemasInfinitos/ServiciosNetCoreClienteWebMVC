@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using ServiciosNetCore.ModelsAPI.Comun;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiciosNetCore.Configuration.Policy
@@ -25,7 +22,7 @@ namespace ServiciosNetCore.Configuration.Policy
             else
             {
                 data.ok = true;
-                data.mensaje= "Succeed";
+                data.mensaje = "Succeed";
                 context.Succeed(requirement);
             }
 
