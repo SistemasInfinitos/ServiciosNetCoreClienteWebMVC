@@ -23,10 +23,15 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         private readonly JwtConfiguracion _jwtConfig;
         private readonly Context _context;
         private readonly AuthorizationHandlerContext _HandlerContext;
-        public PedidosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
+        public PedidosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _context = context;
+        }
+
+        public PedidosESRepositorio( AuthorizationHandlerContext HandlerContext)
+        {
+
             _HandlerContext = HandlerContext;
         }
 

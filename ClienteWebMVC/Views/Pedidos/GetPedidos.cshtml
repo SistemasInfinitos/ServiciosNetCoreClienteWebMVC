@@ -37,6 +37,7 @@
 <script type="text/javascript">
 
     DataTablePaginada = "";
+    var accessToken = localStorage.getItem("accessToken");
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     $(document).ready(function () {
@@ -71,9 +72,10 @@
                 data: function (datatParms) {
                     return JSON.stringify(datatParms);
                 },
-                header: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                "headers": { 'Authorization': `Bearer ${accessToken}`},
+                error: function (data) {
+                    console.log(data)
+                    toastr.error(data.statusText, "No pudimos completar tu solicitud!");
                 }
             },
             scrollX: true,
@@ -129,7 +131,7 @@
 
     function Gestion(id) {
         if (id != "" && id != undefined && id != NaN) {
-            var url = '?' + $.param({ "id": id });
+            var url = '?' + $.param({ "id": id, "accessToken": accessToken });
             window.location.href = "/web/ped/Gestion" + url;
         }
     };
@@ -141,6 +143,7 @@
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedido${parametro}`,
                 type: 'DELETE',
+                "headers": { 'Authorization': `Bearer ${accessToken}` },
                 success: function (response) {
                     debugger
                     if (response.ok) {

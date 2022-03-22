@@ -105,6 +105,7 @@
     </div>
 </div>
 <script>
+    var accessToken = localStorage.getItem("accessToken");
     var apiServicioPersonas = localStorage.getItem("ServicioPersonas");
     var apiServiciosNetCore = localStorage.getItem("ServiciosNetCore");
     var update = false;
@@ -167,12 +168,12 @@
                     traditional: true,
                     async: true,
                     data: JSON.stringify(entidad),
+                    "headers": { 'Authorization': `Bearer ${accessToken}` },
                     header: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     success: function (response) {
-                        
                         if (response.resul > 0) {
                             id = response.resul;
                             $("#id").val(response.resul);
@@ -205,7 +206,8 @@
                 cache: false,
                 traditional: true,
                 async: true,
-                data: {id:id},
+                data: { id: id },
+                "headers": { 'Authorization': `Bearer ${accessToken}` },
                 header: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -276,6 +278,7 @@
                 traditional: true,
                 async: true,
                 data: JSON.stringify(entidad),
+                "headers": { 'Authorization': `Bearer ${accessToken}` },
                 header: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -301,6 +304,7 @@
             $.ajax({
                 url: `${apiServiciosNetCore}/api/ServicioPedidos/DeletePedidoDetalle${parametro}`,
                 type: 'DELETE',
+                "headers": { 'Authorization': `Bearer ${accessToken}` },
                 success: function (response) {
 
                     if (response.ok) {
@@ -325,6 +329,7 @@
             url: `${apiServicioPersonas}/api/ServicioPersonas/GetPersonasDropList`,
             cache: false,
             tags: "true",
+            "headers": { 'Authorization': `Bearer ${accessToken}` },
             placeholder: "Select an option",
             allowClear: true,
             width: 'resolve',
@@ -354,6 +359,7 @@
             placeholder: "Select an option",
             allowClear: true,
             width: 'resolve',
+            "headers": { 'Authorization': `Bearer ${accessToken}` },
             data: function (params) {
                 var query = {
                     buscar: params.term,
@@ -398,6 +404,7 @@
                     traditional: true,
                     async: true,
                     data: JSON.stringify(entidad),
+                    "headers": { 'Authorization': `Bearer ${accessToken}` },
                     header: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'

@@ -22,12 +22,16 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
         private readonly Context _context;
         private readonly AuthorizationHandlerContext _HandlerContext;
 
-        public ProductosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
+        public ProductosESRepositorio(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
         {
             _jwtConfig = optionsMonitor.CurrentValue;
             _context = context;
+        }
+        public ProductosESRepositorio(AuthorizationHandlerContext HandlerContext)
+        {
             _HandlerContext = HandlerContext;
         }
+
 
         private readonly CultureInfo culture = new CultureInfo("is-IS");
         private readonly CultureInfo cultureFecha = new CultureInfo("en-US");

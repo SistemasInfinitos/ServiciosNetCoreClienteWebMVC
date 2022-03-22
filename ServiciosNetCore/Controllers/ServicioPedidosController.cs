@@ -14,14 +14,17 @@ using System.Threading.Tasks;
 
 namespace ServiciosNetCore.Controllers
 {
+    [Authorize]
+    // esta politica no se implementa, solo se establese como ejemplo. actualmente solo valida lo que ya se realizo con [Authorize].
+    [Authorize(Policy = "UserPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class ServicioPedidosController : ControllerBase
     {
         private readonly IPedidosESRepositorio _repositoryPedido;
-        public ServicioPedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context, AuthorizationHandlerContext HandlerContext)
+        public ServicioPedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, Context context)
         {
-            _repositoryPedido = new PedidosESRepositorio(optionsMonitor, context, HandlerContext);
+            _repositoryPedido = new PedidosESRepositorio(optionsMonitor, context);
         }
 
         [Route("[action]")]
