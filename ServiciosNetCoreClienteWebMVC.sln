@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTokenJwt", "ServerTok
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentacionGeneral", "DocumentacionGeneral", "{92E61DF5-FB62-41CA-A538-99A3A432BA54}"
 	ProjectSection(SolutionItems) = preProject
-		DocumentacionGeneral\DesarrolladorSemiSenior_DB_bak = DocumentacionGeneral\DesarrolladorSemiSenior_DB_bak
+		DocumentacionGeneral\AdventureWorksDW2012.bak = DocumentacionGeneral\AdventureWorksDW2012.bak
 		DocumentacionGeneral\MER_FULL.png = DocumentacionGeneral\MER_FULL.png
 		DocumentacionGeneral\script.txt = DocumentacionGeneral\script.txt
 		DocumentacionGeneral\SQLQuery1.sql = DocumentacionGeneral\SQLQuery1.sql
