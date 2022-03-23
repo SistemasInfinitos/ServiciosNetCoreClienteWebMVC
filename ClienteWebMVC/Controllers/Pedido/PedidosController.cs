@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Identity.Web;
 
 namespace ClienteWebMVC.Controllers.Pedido
 {
@@ -17,9 +18,13 @@ namespace ClienteWebMVC.Controllers.Pedido
     public class PedidosController : Controller
     {
         private readonly JwtConfiguracion _jwtConfig;
-        public PedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor)
+        readonly ITokenAcquisition tokenAcquisition;
+
+        public PedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, ITokenAcquisition tokenAcquisition)
         {
             this._jwtConfig = optionsMonitor.CurrentValue;
+            this.tokenAcquisition = tokenAcquisition;
+
         }
 
         [Route("[action]")]
