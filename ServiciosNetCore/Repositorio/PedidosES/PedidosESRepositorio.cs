@@ -112,7 +112,11 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (detalle == true)
                     {
-                        nuevoRegistro.usuarioId = 1;//entidad.usuarioId.Value; Aqui deb ir el usuario del claims jwt
+                        var httpContext = new HttpContextAccessor().HttpContext;
+                        var claims = httpContext.User.Claims;
+                        string userId = claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
+
+                        nuevoRegistro.usuarioId = Convert.ToInt32(userId);
                         nuevoRegistro.clientePersonaId = entidad.clientePersonaId;
                         nuevoRegistro.valorNeto = Math.Round(valorNeto, 2);
                         nuevoRegistro.valorIva = Math.Round(valorIva, 2);
@@ -229,12 +233,6 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
         public async Task<DataTableResponsePedido> GetPedidosDataTable(DataTableParameter dtParameters)
         {
-
-            var httpContext = new HttpContextAccessor().HttpContext;
-            var claims = httpContext.User.Claims;
-            //var claims = ((ClaimsIdentity)Thread.CurrentPrincipal.Identity);
-            //string NombreUsuario = claims.Name;
-            string userId = claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
             try
             {
                 DataTableResponsePedido datos = new DataTableResponsePedido();
