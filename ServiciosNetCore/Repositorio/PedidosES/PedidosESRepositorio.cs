@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
@@ -228,6 +229,12 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
 
         public async Task<DataTableResponsePedido> GetPedidosDataTable(DataTableParameter dtParameters)
         {
+
+            var httpContext = new HttpContextAccessor().HttpContext;
+            var claims = httpContext.User.Claims;
+            //var claims = ((ClaimsIdentity)Thread.CurrentPrincipal.Identity);
+            //string NombreUsuario = claims.Name;
+            string userId = claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
             try
             {
                 DataTableResponsePedido datos = new DataTableResponsePedido();
