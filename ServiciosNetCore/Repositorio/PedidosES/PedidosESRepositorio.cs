@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiciosNetCore.Configuration;
@@ -111,7 +112,11 @@ namespace ServiciosNetCore.Repositorio.ProcuctosES
                     EncabezadoPedido nuevoRegistro = new EncabezadoPedido();
                     if (detalle == true)
                     {
-                        nuevoRegistro.usuarioId = 1;//entidad.usuarioId.Value; Aqui deb ir el usuario del claims jwt
+                        var httpContext = new HttpContextAccessor().HttpContext;
+                        var claims = httpContext.User.Claims;
+                        string userId = claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
+
+                        nuevoRegistro.usuarioId = Convert.ToInt32(userId);
                         nuevoRegistro.clientePersonaId = entidad.clientePersonaId;
                         nuevoRegistro.valorNeto = Math.Round(valorNeto, 2);
                         nuevoRegistro.valorIva = Math.Round(valorIva, 2);
