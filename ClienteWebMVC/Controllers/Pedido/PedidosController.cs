@@ -29,10 +29,11 @@ namespace ClienteWebMVC.Controllers.Pedido
 
         [Route("[action]")]
         [HttpGet]
-        public async Task<ActionResult> Gestion(string id, string accessToken)
+        public async Task<ActionResult> Gestion(string id)
         {
             // esta es una forma de trabajar, aumenta la seguridad pero tanbien el tiempo de desarrollo
             var httpClient = new HttpClient();
+            string accessToken = "";
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
             List<JwtConfiguracionAPI> api = new List<JwtConfiguracionAPI>();
             api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
