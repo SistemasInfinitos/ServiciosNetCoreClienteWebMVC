@@ -20,11 +20,10 @@ namespace ClienteWebMVC.Controllers.Pedido
         private readonly JwtConfiguracion _jwtConfig;
         readonly ITokenAcquisition tokenAcquisition;
 
-        public PedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, ITokenAcquisition tokenAcquisition)
+        public PedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor/*, ITokenAcquisition tokenAcquisition*/)
         {
             this._jwtConfig = optionsMonitor.CurrentValue;
-            this.tokenAcquisition = tokenAcquisition;
-
+            //this.tokenAcquisition = tokenAcquisition;
         }
 
         [Route("[action]")]
