@@ -20,16 +20,15 @@ namespace ClienteWebMVC.Controllers.Pedido
         private readonly JwtConfiguracion _jwtConfig;
         readonly ITokenAcquisition tokenAcquisition;
 
-        public PedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor, ITokenAcquisition tokenAcquisition)
+        public PedidosController(IOptionsMonitor<JwtConfiguracion> optionsMonitor/*, ITokenAcquisition tokenAcquisition*/)
         {
             this._jwtConfig = optionsMonitor.CurrentValue;
-            this.tokenAcquisition = tokenAcquisition;
-
+            //this.tokenAcquisition = tokenAcquisition;
         }
 
         [Route("[action]")]
         [HttpGet]
-        public async Task<ActionResult> Gestion(string id, string accessToken)
+        public async Task<ActionResult> Gestion(string id)
         {
 
             //var tok = Request.Querystring("id");
@@ -38,6 +37,7 @@ namespace ClienteWebMVC.Controllers.Pedido
 
             // esta es una forma de trabajar, aumenta la seguridad pero tanbien el tiempo de desarrollo
             var httpClient = new HttpClient();
+            string accessToken = "";
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
             List<JwtConfiguracionAPI> api = new List<JwtConfiguracionAPI>();
             api = _jwtConfig.api; // esto garantiza la migracion a produccion ya que la url siempre cambia
