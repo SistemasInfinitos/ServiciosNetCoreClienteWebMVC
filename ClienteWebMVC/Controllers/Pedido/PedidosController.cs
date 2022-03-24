@@ -31,6 +31,11 @@ namespace ClienteWebMVC.Controllers.Pedido
         [HttpGet]
         public async Task<ActionResult> Gestion(string id, string accessToken)
         {
+
+            //var tok = Request.Querystring("id");
+            //var tok2 = Request.ServerVariables("id");
+
+
             // esta es una forma de trabajar, aumenta la seguridad pero tanbien el tiempo de desarrollo
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
