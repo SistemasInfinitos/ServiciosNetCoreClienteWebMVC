@@ -105,7 +105,7 @@ namespace ServerTokenJwt.Controllers
                 }),
                 NotBefore = DateTime.UtcNow,
                 IssuedAt = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddMinutes(90),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = multiAudience[0],
                 Audience = multiAudience[0],
