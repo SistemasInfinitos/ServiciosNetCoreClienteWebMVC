@@ -131,7 +131,7 @@
 
     function Gestion(id) {
         if (id != "" && id != undefined && id != NaN) {
-            var url = '?' + $.param({ "id": id, "accessToken": accessToken });
+            var url = '?' + $.param({ "id": id });
             window.location.href = "/web/ped/Gestion" + url;
         }
     };

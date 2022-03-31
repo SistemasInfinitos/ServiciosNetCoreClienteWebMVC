@@ -163,6 +163,7 @@ namespace ServiciosNetCore.Controllers
             return BadRequest(data);
         }
 
+        [AllowAnonymous]//
         [Route("[action]", Name = "GetPedido")]
         [HttpGet]
         public async Task<IActionResult> GetPedido(string buscar, int? id)
