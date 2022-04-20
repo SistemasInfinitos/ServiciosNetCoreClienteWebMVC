@@ -25,7 +25,7 @@ namespace ServicioPersonas
         {
             services.AddOptions();
             services.Configure<JwtConfiguracion>(Configuration.GetSection($"JwtConfiguracion"));
-            string[] audience = Configuration["JwtConfiguracion:Audience"].ToString().Split(",");
+            string[] audience = Configuration["JwtConfiguracion:audience"].ToString().Split(",");
             string connectionString = Configuration["JwtConfiguracion:connectionString"];
 
             services.AddCors(options =>
